@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Portfolio de Holy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            padding: 2rem;
+        }
+        h1 {
+            color: #f7c400;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bienvenue sur mon portfolio!</h1>
+    <p>Je m'appelle Holy et je suis étudiant en science des données et développeur C++/Java.</p>
+</body>
+</html>
