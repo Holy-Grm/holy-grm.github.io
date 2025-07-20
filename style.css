@@ -106,6 +106,34 @@ nav.scrolled {
     background: rgba(64, 224, 208, 0.2);
 }
 
+/* Hamburger (mobile menu)*/
+.hamburger {
+    display: none;
+    font-size: 28px;
+    cursor: pointer;
+    color: white;}
+
+    @media (max-width: 768px) {
+        .hamburger {
+            display: block;
+        }
+
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            background-color: #111;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        .nav-links.show {
+            display: flex;
+        }
+    }
+
 .lang-toggle {
     background: linear-gradient(45deg, #40e0d0, #20b2aa);
     color: #000;

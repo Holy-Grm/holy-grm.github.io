@@ -122,3 +122,13 @@ document.addEventListener('keydown', (e) => {
         }
     }
 });
+
+// === Menu hamburger pour les écrans étroits ===
+const hamburger = document.getElementById('hamburger');
+const navLinksContainer = document.querySelector('.nav-links');
+
+if (hamburger && navLinksContainer) {
+    hamburger.addEventListener('click', () => {
+        navLinksContainer.classList.toggle('show');
+    });
+}
