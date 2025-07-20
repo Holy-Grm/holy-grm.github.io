@@ -123,7 +123,7 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// === Menu hamburger pour les écrans étroits ===
+// = Hamburger menu
 const hamburger = document.getElementById('hamburger');
 const navLinksContainer = document.querySelector('.nav-links');
 
