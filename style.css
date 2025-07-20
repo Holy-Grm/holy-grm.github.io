@@ -476,3 +476,325 @@ nav.scrolled {
         grid-template-columns: 1fr;
     }
 }
+
+/* Timeline Styles */
+.timeline-container {
+    position: relative;
+    padding: 80px 0 200px 0;
+    margin-top: 80px;
+}
+
+.timeline-container h2 {
+    text-align: center;
+    font-size: 3rem;
+    color: #40e0d0;
+    margin-bottom: 80px;
+    position: relative;
+    z-index: 10;
+}
+
+/* Ligne centrale de la timeline */
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 200px;
+    bottom: 100px;
+    width: 3px;
+    background: linear-gradient(180deg,
+    transparent 0%,
+    #40e0d0 10%,
+    #40e0d0 90%,
+    transparent 100%);
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+/* Indicateur d'année flottant */
+.year-indicator {
+    position: fixed;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    font-size: 3rem;
+    font-weight: bold;
+    color: #40e0d0;
+    opacity: 0.3;
+    z-index: 100;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 20px rgba(64, 224, 208, 0.5);
+}
+
+.year-indicator.active {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.2);
+}
+
+/* Wrapper de la timeline */
+.timeline-wrapper {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Événements de la timeline */
+.timeline-event {
+    position: relative;
+    margin: 150px 0;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.timeline-event.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animation différente selon le côté */
+.timeline-event[data-side="left"] {
+    transform: translateX(-50px) translateY(50px);
+}
+
+.timeline-event[data-side="right"] {
+    transform: translateX(50px) translateY(50px);
+}
+
+.timeline-event.visible[data-side="left"],
+.timeline-event.visible[data-side="right"] {
+    transform: translateX(0) translateY(0);
+}
+
+/* Point sur la timeline */
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 50px;
+    width: 20px;
+    height: 20px;
+    background: #40e0d0;
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    box-shadow: 0 0 0 5px rgba(64, 224, 208, 0.2),
+    0 0 20px rgba(64, 224, 208, 0.5);
+    transition: all 0.3s ease;
+}
+
+.timeline-event.visible .timeline-dot {
+    animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        box-shadow: 0 0 0 5px rgba(64, 224, 208, 0.2),
+        0 0 20px rgba(64, 224, 208, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 0 15px rgba(64, 224, 208, 0.1),
+        0 0 40px rgba(64, 224, 208, 0.7);
+    }
+}
+
+/* Dot spécial pour l'éducation */
+.timeline-dot.education {
+    background: linear-gradient(45deg, #40e0d0, #20b2aa);
+    width: 25px;
+    height: 25px;
+}
+
+/* Contenu de la timeline */
+.timeline-content {
+    background: rgba(26, 26, 26, 0.95);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(64, 224, 208, 0.3);
+    position: relative;
+    width: calc(50% - 80px);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+/* Positionnement gauche/droite */
+.timeline-event[data-side="left"] .timeline-content {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.timeline-event[data-side="right"] .timeline-content {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* Flèches pointant vers la ligne */
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 50px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+.timeline-event[data-side="left"] .timeline-content::before {
+    right: -20px;
+    border-width: 10px 0 10px 20px;
+    border-color: transparent transparent transparent rgba(26, 26, 26, 0.95);
+}
+
+.timeline-event[data-side="right"] .timeline-content::before {
+    left: -20px;
+    border-width: 10px 20px 10px 0;
+    border-color: transparent rgba(26, 26, 26, 0.95) transparent transparent;
+}
+
+/* Hover effects */
+.timeline-content:hover {
+    transform: scale(1.02);
+    border-color: #40e0d0;
+    box-shadow: 0 10px 40px rgba(64, 224, 208, 0.3);
+}
+
+/* Année */
+.timeline-year {
+    position: absolute;
+    top: -20px;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #40e0d0;
+    background: #0f0f0f;
+    padding: 5px 15px;
+    border-radius: 20px;
+    text-shadow: 0 0 20px rgba(64, 224, 208, 0.5);
+}
+
+.timeline-event[data-side="left"] .timeline-year {
+    right: 30px;
+}
+
+.timeline-event[data-side="right"] .timeline-year {
+    left: 30px;
+}
+
+/* Détails de la timeline */
+.timeline-details {
+    margin-top: 15px;
+    padding-left: 20px;
+    list-style: none;
+}
+
+.timeline-details li {
+    position: relative;
+    margin: 10px 0;
+    color: #cccccc;
+    font-size: 0.95rem;
+}
+
+.timeline-details li::before {
+    content: '▸';
+    position: absolute;
+    left: -20px;
+    color: #40e0d0;
+    font-size: 1.2rem;
+}
+
+/* Style spécial pour l'éducation */
+.education-content {
+    background: linear-gradient(135deg,
+    rgba(64, 224, 208, 0.1) 0%,
+    rgba(26, 26, 26, 0.95) 50%);
+    border: 2px solid rgba(64, 224, 208, 0.5);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .timeline-line {
+        left: 30px;
+    }
+
+    .timeline-dot {
+        left: 30px;
+    }
+
+    .timeline-content {
+        width: calc(100% - 80px);
+        margin-left: 60px !important;
+    }
+
+    .timeline-content::before {
+        display: none;
+    }
+
+    .timeline-year {
+        position: relative;
+        top: 0;
+        left: 0 !important;
+        right: auto !important;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .year-indicator {
+        font-size: 2rem;
+        right: 20px;
+    }
+}
+
+/* About intro section améliorée */
+.about-intro {
+    margin-bottom: 100px;
+}
+
+.about-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.about-text {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #cccccc;
+}
+
+.about-image {
+    position: relative;
+    text-align: center;
+}
+
+.profile-placeholder {
+    width: 300px;
+    height: 300px;
+    background: linear-gradient(45deg, #40e0d0, #20b2aa);
+    border-radius: 50%;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: #000;
+    font-weight: bold;
+    box-shadow: 0 20px 60px rgba(64, 224, 208, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.profile-placeholder::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
