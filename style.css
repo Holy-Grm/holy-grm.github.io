@@ -237,6 +237,15 @@ nav.scrolled {
     transition: all 0.3s ease;
     box-shadow: 0 10px 30px rgba(64, 224, 208, 0.3);
 }
+.cta-button::before {
+    content: '';
+    position: absolute;
+    top: -50px;
+    bottom: -50px;
+    left: -50px;
+    right: -50px;
+    z-index: -1;
+}
 
 .cta-button:hover {
     transform: translateY(-5px);
