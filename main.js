@@ -398,6 +398,8 @@ document.head.appendChild(styleSheet);
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
+
+
     // Charger le contenu de toutes les pages
     await loadHomeContent();
     await loadProjectsContent();
@@ -412,3 +414,4 @@ document.addEventListener('DOMContentLoaded', async () => {
         observer.observe(card);
     });
 });
+

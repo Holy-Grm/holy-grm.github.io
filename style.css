@@ -352,27 +352,6 @@ nav.scrolled {
     margin-bottom: 20px;
     color: #40e0d0;
 }
-
-/* About Page */
-.about-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: center;
-    margin-top: 40px;
-}
-
-.about-text {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #cccccc;
-}
-
-.about-image {
-    position: relative;
-    text-align: center;
-}
-
 .profile-placeholder {
     width: 300px;
     height: 300px;
@@ -414,7 +393,14 @@ nav.scrolled {
 /* Contact Page */
 .contact-content {
     text-align: center;
-    margin-top: 60px;
+    margin-top: 10px;
+}
+
+.contact-text {
+    text-align: left;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    color: #cccccc;
 }
 
 .contact-links {
@@ -462,10 +448,7 @@ nav.scrolled {
         font-size: 1.2rem;
     }
 
-    .about-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-    }
+
 
     .contact-links {
         flex-direction: column;
@@ -634,17 +617,17 @@ nav.scrolled {
     height: 0;
     border-style: solid;
 }
-
+/*Petit triangle*/
 .timeline-event[data-side="left"] .timeline-content::before {
     right: -20px;
     border-width: 10px 0 10px 20px;
-    border-color: transparent transparent transparent rgba(26, 26, 26, 0.95);
+    border-color: transparent transparent transparent rgba(64, 224, 208, 0.3);
 }
 
 .timeline-event[data-side="right"] .timeline-content::before {
     left: -20px;
     border-width: 10px 20px 10px 0;
-    border-color: transparent rgba(26, 26, 26, 0.95) transparent transparent;
+    border-color: transparent rgba(64, 224, 208, 0.3) transparent transparent;
 }
 
 /* Hover effects */
@@ -753,6 +736,7 @@ nav.scrolled {
 }
 
 .about-text {
+    margin-top: 10px;
     font-size: 1.2rem;
     line-height: 1.8;
     color: #cccccc;
