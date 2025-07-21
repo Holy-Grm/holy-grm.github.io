@@ -661,7 +661,7 @@ nav.scrolled {
     font-size: 2rem;
     font-weight: bold;
     color: #40e0d0;
-    background: #0f0f0f;
+    background: rgba(26, 26, 26, 0.95);
     padding: 5px 15px;
     border-radius: 20px;
     text-shadow: 0 0 20px rgba(64, 224, 208, 0.5);
@@ -797,4 +797,65 @@ nav.scrolled {
 @keyframes shimmer {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+/* Style pour l'image de profil */
+.profile-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    position: relative;
+    z-index: 2;
+}
+
+/* Animation alternative sans rotation pour la photo */
+.profile-placeholder {
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 20px 60px rgba(64, 224, 208, 0.3);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 25px 80px rgba(64, 224, 208, 0.5);
+        transform: scale(1.02);
+    }
+}
+
+/* Retire l'animation de rotation si tu as une photo */
+.profile-placeholder:has(img) {
+    animation: pulse-glow 4s ease-in-out infinite;
+}
+
+/* Overlay effet pour la photo */
+.profile-placeholder::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg,
+    transparent 0%,
+    rgba(64, 224, 208, 0.1) 50%,
+    transparent 100%);
+    pointer-events: none;
+    z-index: 3;
+}
+
+/* Hover effect sur la photo */
+.profile-placeholder:hover {
+    transform: scale(1.05);
+    box-shadow: 0 30px 100px rgba(64, 224, 208, 0.6);
+}
+
+.profile-placeholder:hover::after {
+    background: linear-gradient(135deg,
+    transparent 0%,
+    rgba(64, 224, 208, 0.2) 50%,
+    transparent 100%);
 }
