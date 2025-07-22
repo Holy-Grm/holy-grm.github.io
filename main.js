@@ -33,8 +33,55 @@ navLinks.forEach(link => {
         // Show corresponding page
         const targetPage = link.getAttribute('data-page');
         document.getElementById(targetPage).classList.add('active');
+
+        // Scroll to top
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
+
+const logo = document.querySelector('.logo');
+
+if (logo) {
+    logo.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Désactive toutes les sections et liens actifs
+        navLinks.forEach(l => l.classList.remove('active'));
+        pages.forEach(p => p.classList.remove('active'));
+
+        // Active la section Home et son lien
+        const homeLink = document.querySelector('[data-page="home"]');
+        const homePage = document.getElementById('home');
+        if (homeLink && homePage) {
+            homeLink.classList.add('active');
+            homePage.classList.add('active');
+        }
+
+        // Scroll vers le haut
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+}
+
+// Fonction pour initialiser les clics sur les cartes de compétences
+function initializeSkillCards() {
+    document.querySelectorAll('.skill-card').forEach(card => {
+        card.style.cursor = 'pointer';
+
+        card.addEventListener('click', () => {
+            navLinks.forEach(l => l.classList.remove('active'));
+            pages.forEach(p => p.classList.remove('active'));
+
+            const projectsLink = document.querySelector('[data-page="projects"]');
+            const projectsPage = document.getElementById('projects');
+
+            if (projectsLink && projectsPage) {
+                projectsLink.classList.add('active');
+                projectsPage.classList.add('active');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    });
+}
 
 // Fonction générique pour charger le contenu des pages
 async function loadPageContent(pageName, targetElementId, callback = null) {
@@ -66,6 +113,7 @@ async function loadPageContent(pageName, targetElementId, callback = null) {
 async function loadHomeContent() {
     await loadPageContent('home', 'home', () => {
         initializeCTAButton();
+        initializeSkillCards(); // Nom de fonction corrigé
         initializeMouseEffect();
     });
 }
@@ -398,8 +446,6 @@ document.head.appendChild(styleSheet);
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
-
-
     // Charger le contenu de toutes les pages
     await loadHomeContent();
     await loadProjectsContent();
@@ -414,4 +460,3 @@ document.addEventListener('DOMContentLoaded', async () => {
         observer.observe(card);
     });
 });
-

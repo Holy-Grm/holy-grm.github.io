@@ -11,6 +11,11 @@ body {
     color: #ffffff;
     overflow-x: hidden;
     position: relative;
+
+    min-height: 100vh;
+    min-height: 100dvh; /* Support for dynamic viewport height on mobile */
+    width: 100vw;
+
 }
 
 /* Animated background particles */
@@ -279,6 +284,7 @@ nav.scrolled {
     transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .skill-card::before {
