@@ -11,54 +11,142 @@ const navLinks = document.querySelectorAll('.nav-link');
 const pages = document.querySelectorAll('.page');
 const logo = document.querySelector('.logo');
 
+// ============ CONFIGURATION ============
+const ROUTING_CONFIG = {
+    defaultLang: 'en',           // Langue par défaut pour les URLs invalides
+    defaultPage: 'home',         // Page par défaut pour les URLs invalides
+    validPages: ['home', 'projects', 'about', 'contact'],
+    validLangs: ['en', 'fr']
+};
+
+// Fonction utilitaire pour ajouter facilement de nouvelles pages
+function addValidPage(pageName) {
+    if (!ROUTING_CONFIG.validPages.includes(pageName)) {
+        ROUTING_CONFIG.validPages.push(pageName);
+        console.log(`📄 Nouvelle page ajoutée: ${pageName}`);
+    }
+}
+
+// Fonction utilitaire pour ajouter facilement de nouvelles langues
+function addValidLang(langCode) {
+    if (!ROUTING_CONFIG.validLangs.includes(langCode)) {
+        ROUTING_CONFIG.validLangs.push(langCode);
+        console.log(`🌍 Nouvelle langue ajoutée: ${langCode}`);
+    }
+}
+
 // ============ SYSTÈME DE ROUTING URL ============
 
-// Fonction pour parser l'URL actuelle
-function parseCurrentURL() {
-    const path = window.location.pathname;
-    const segments = path.split('/').filter(segment => segment !== '');
+// Fonction pour obtenir le chemin de base (pour GitHub Pages avec repository)
+function getBasePath() {
+    // Récupérer le chemin depuis window.location
+    const pathParts = window.location.pathname.split('/').filter(Boolean);
 
-    // Valeurs par défaut
-    let lang = 'en';
-    let page = 'home';
-
-    // Si l'URL contient des segments
-    if (segments.length > 0) {
-        // Premier segment = langue (si valide)
-        if (segments[0] === 'en' || segments[0] === 'fr') {
-            lang = segments[0];
-            // Deuxième segment = page (si présent)
-            if (segments[1]) {
-                const validPages = ['home', 'projects', 'about', 'contact'];
-                if (validPages.includes(segments[1])) {
-                    page = segments[1];
-                }
-            }
-        } else {
-            // Si pas de langue en premier, on considère que c'est une page
-            const validPages = ['home', 'projects', 'about', 'contact'];
-            if (validPages.includes(segments[0])) {
-                page = segments[0];
-            }
+    // Si on a des parties et que la première n'est pas une langue/page connue,
+    // c'est probablement le nom du repository
+    if (pathParts.length > 0) {
+        const firstPart = pathParts[0];
+        const allKnownPaths = [...ROUTING_CONFIG.validLangs, ...ROUTING_CONFIG.validPages];
+        if (!allKnownPaths.includes(firstPart)) {
+            return '/' + firstPart;
         }
     }
 
-    return { lang, page };
+    return '';
+}
+
+// Fonction pour parser l'URL actuelle
+function parseCurrentURL() {
+    // Vérifier s'il y a un chemin redirigé depuis 404.html
+    let path = sessionStorage.getItem('redirectPath');
+    if (path) {
+        // Nettoyer le sessionStorage immédiatement
+        sessionStorage.removeItem('redirectPath');
+        sessionStorage.removeItem('redirectCount'); // Nettoyer aussi le compteur
+        console.log('🔄 Redirection depuis 404:', path);
+    } else {
+        // Utiliser le chemin actuel
+        path = window.location.pathname;
+    }
+
+    // Retirer le chemin de base si présent
+    const basePath = getBasePath();
+    if (basePath && path.startsWith(basePath)) {
+        path = path.substring(basePath.length);
+    }
+
+    const segments = path.split('/').filter(segment => segment !== '');
+
+    // Valeurs par défaut
+    let lang = ROUTING_CONFIG.defaultLang;
+    let page = ROUTING_CONFIG.defaultPage;
+    let isValidPath = false;
+
+    // Si l'URL contient des segments
+    if (segments.length === 0) {
+        // URL racine - c'est valide
+        isValidPath = true;
+    } else if (segments.length === 1) {
+        // Un seul segment
+        if (ROUTING_CONFIG.validLangs.includes(segments[0])) {
+            // C'est une langue - page d'accueil dans cette langue
+            lang = segments[0];
+            page = ROUTING_CONFIG.defaultPage;
+            isValidPath = true;
+        } else if (ROUTING_CONFIG.validPages.includes(segments[0])) {
+            // C'est une page valide (en langue par défaut)
+            lang = ROUTING_CONFIG.defaultLang;
+            page = segments[0];
+            isValidPath = true;
+        }
+    } else if (segments.length === 2) {
+        // Deux segments : langue/page
+        if (ROUTING_CONFIG.validLangs.includes(segments[0]) &&
+            ROUTING_CONFIG.validPages.includes(segments[1])) {
+            lang = segments[0];
+            page = segments[1];
+            isValidPath = true;
+        }
+    }
+
+    // Si le chemin n'est pas valide, forcer la redirection vers la page par défaut
+    if (!isValidPath) {
+        console.log('⚠️ Chemin invalide détecté:', path,
+            `-> redirection vers ${ROUTING_CONFIG.defaultPage} en ${ROUTING_CONFIG.defaultLang}`);
+        lang = ROUTING_CONFIG.defaultLang;
+        page = ROUTING_CONFIG.defaultPage;
+
+        // Marquer qu'on doit rediriger
+        // On le fera dans initializeApp() pour éviter les boucles
+        sessionStorage.setItem('needsRedirectToHome', 'true');
+    }
+
+    console.log('📍 URL parsée:', {
+        originalPath: path,
+        basePath,
+        lang,
+        page,
+        isValid: isValidPath
+    });
+
+    return { lang, page, isValid: isValidPath };
 }
 
 // Fonction pour construire une nouvelle URL
 function buildURL(lang, page) {
+    const basePath = getBasePath();
+
     // Si c'est la page d'accueil en anglais, on garde l'URL racine
     if (lang === 'en' && page === 'home') {
-        return '/';
+        return basePath + '/';
     }
 
     // Sinon on construit l'URL avec langue/page
     if (page === 'home') {
-        return `/${lang}/`;
+        return basePath + `/${lang}/`;
     }
 
-    return `/${lang}/${page}`;
+    return basePath + `/${lang}/${page}`;
 }
 
 // Fonction pour mettre à jour l'URL dans le navigateur
@@ -274,7 +362,10 @@ function initializeSkillCards() {
 // Fonction générique pour charger le contenu des pages
 async function loadPageContent(pageName, targetElementId, callback = null) {
     try {
-        const response = await fetch(`${pageName}.html`);
+        // Utiliser le chemin de base pour les ressources
+        const basePath = getBasePath();
+        const resourcePath = basePath ? `${basePath}/${pageName}.html` : `/${pageName}.html`;
+        const response = await fetch(resourcePath);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
@@ -835,6 +926,8 @@ function enableMouseParticles() {
 
 // Fonction d'initialisation MODIFIÉE pour le routing
 async function initializeApp() {
+    console.log('🔄 Initialisation de l\'app...');
+
     // Charger le contenu de toutes les pages
     await loadHomeContent();
     await loadProjectsContent();
@@ -852,8 +945,15 @@ async function initializeApp() {
 
     // ============ ROUTING : INITIALISATION ============
 
+    console.log('🔄 Initialisation du routing...');
+    console.log('📍 URL actuelle:', window.location.href);
+    console.log('📍 Pathname:', window.location.pathname);
+    console.log('📍 SessionStorage redirectPath:', sessionStorage.getItem('redirectPath'));
+
     // Parser l'URL actuelle au chargement
-    const { lang, page } = parseCurrentURL();
+    const { lang, page, isValid } = parseCurrentURL();
+
+    console.log('📍 Résultat du parsing:', { lang, page, isValid });
 
     // Définir la langue et la page initiales
     currentLang = lang;
@@ -870,17 +970,38 @@ async function initializeApp() {
     updateLanguage(currentLang);
 
     // Naviguer vers la page initiale (sans mettre à jour l'URL)
+    console.log('🔄 Navigation vers la page:', page);
     navigateToPage(page);
 
-    // Mettre à jour l'URL si nécessaire (pour standardiser)
+    // Vérifier si on doit rediriger vers home à cause d'une URL invalide
+    const needsRedirectToHome = sessionStorage.getItem('needsRedirectToHome');
+    if (needsRedirectToHome === 'true') {
+        sessionStorage.removeItem('needsRedirectToHome');
+        console.log('🏠 Redirection forcée vers la page par défaut');
+
+        // Rediriger vers la page par défaut avec un petit délai
+        setTimeout(() => {
+            window.location.replace(buildURL(ROUTING_CONFIG.defaultLang, ROUTING_CONFIG.defaultPage));
+        }, 100);
+        return; // Arrêter ici pour éviter d'autres actions
+    }
+
+    // IMPORTANT : Mettre à jour l'URL pour refléter la page/langue correcte
+    // Ceci est crucial quand on vient d'une redirection 404
+    const currentURL = window.location.pathname;
     const expectedURL = buildURL(lang, page);
-    if (window.location.pathname !== expectedURL) {
+
+    console.log('🔄 Vérification URLs:', { currentURL, expectedURL });
+
+    if (currentURL !== expectedURL) {
+        console.log(`🔄 Mise à jour URL: ${currentURL} -> ${expectedURL}`);
         updateURL(lang, page, false); // false = replace, pas push
     }
 
     // Ajouter l'état initial à l'historique si nécessaire
     if (!window.history.state) {
-        window.history.replaceState({ lang, page }, '', window.location.pathname);
+        window.history.replaceState({ lang, page }, '', expectedURL);
+        console.log('🔄 État ajouté à l\'historique:', { lang, page });
     }
 
     // Écouter les changements d'historique (bouton retour/avant)
@@ -890,4 +1011,7 @@ async function initializeApp() {
 }
 
 // Initialisation au chargement de la page
-document.addEventListener('DOMContentLoaded', initializeApp);
+document.addEventListener('DOMContentLoaded', () => {
+    // Petit délai pour s'assurer que tout est prêt
+    setTimeout(initializeApp, 100);
+});
