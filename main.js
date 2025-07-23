@@ -15,7 +15,17 @@ const logo = document.querySelector('.logo');
 
 // Fonction pour parser l'URL actuelle
 function parseCurrentURL() {
-    const path = window.location.pathname;
+    // Vérifier s'il y a un chemin redirigé depuis 404.html
+    let path = sessionStorage.getItem('redirectPath');
+    if (path) {
+        // Nettoyer le sessionStorage
+        sessionStorage.removeItem('redirectPath');
+        console.log('🔄 Redirection depuis 404:', path);
+    } else {
+        // Utiliser le chemin actuel
+        path = window.location.pathname;
+    }
+
     const segments = path.split('/').filter(segment => segment !== '');
 
     // Valeurs par défaut
@@ -274,7 +284,8 @@ function initializeSkillCards() {
 // Fonction générique pour charger le contenu des pages
 async function loadPageContent(pageName, targetElementId, callback = null) {
     try {
-        const response = await fetch(`${pageName}.html`);
+        // Utiliser un chemin absolu pour éviter les problèmes avec les sous-dossiers virtuels
+        const response = await fetch(`/${pageName}.html`);
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
