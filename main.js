@@ -34,6 +34,12 @@ navLinks.forEach(link => {
         const targetPage = link.getAttribute('data-page');
         document.getElementById(targetPage).classList.add('active');
 
+        // Close hamburger menu if it's open
+        const navLinksContainer = document.querySelector('.nav-links');
+        if (navLinksContainer && navLinksContainer.classList.contains('show')) {
+            navLinksContainer.classList.remove('show');
+        }
+
         // Scroll to top
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
@@ -55,6 +61,12 @@ if (logo) {
         if (homeLink && homePage) {
             homeLink.classList.add('active');
             homePage.classList.add('active');
+        }
+
+        // Close hamburger menu if it's open
+        const navLinksContainer = document.querySelector('.nav-links');
+        if (navLinksContainer && navLinksContainer.classList.contains('show')) {
+            navLinksContainer.classList.remove('show');
         }
 
         // Scroll vers le haut
@@ -250,6 +262,13 @@ const navLinksContainer = document.querySelector('.nav-links');
 if (hamburger && navLinksContainer) {
     hamburger.addEventListener('click', () => {
         navLinksContainer.classList.toggle('show');
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!hamburger.contains(e.target) && !navLinksContainer.contains(e.target)) {
+            navLinksContainer.classList.remove('show');
+        }
     });
 }
 

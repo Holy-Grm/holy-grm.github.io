@@ -5,17 +5,71 @@
     box-sizing: border-box;
 }
 
+html {
+    /* Assure que le html couvre toute la zone */
+    min-height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+}
+
 body {
     font-family: 'Arial', sans-serif;
+    /* Background fixe qui couvre toujours toute la zone */
     background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
     color: #ffffff;
     overflow-x: hidden;
     position: relative;
 
+    /* Assure une couverture complète */
     min-height: 100vh;
     min-height: 100dvh; /* Support for dynamic viewport height on mobile */
     width: 100vw;
 
+    /* Fallback pour éviter les espaces blancs */
+    background-color: #0f0f0f;
+}
+
+/* Alternative pour mobile - background fixe avec couverture étendue */
+@media (max-width: 768px) {
+    body {
+        /* Sur mobile, utilise un background qui s'étend au-delà de la zone visible */
+        background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 50%, #0f0f0f 100%);
+        background-size: 120% 120%; /* Étend le background de 20% de chaque côté */
+        background-position: center center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+
+        /* Assure une couverture complète sur mobile */
+        min-height: 100vh;
+        min-height: 100svh; /* Small viewport height pour mobile */
+        min-height: 100dvh; /* Dynamic viewport height */
+
+        /* Évite le scroll horizontal sur mobile */
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Assure que le html couvre aussi toute la zone sur mobile */
+    html {
+        background-color: #0f0f0f;
+        min-height: 100vh;
+        min-height: 100svh;
+        min-height: 100dvh;
+    }
+}
+
+/* Si le background fixe pose des problèmes de performance sur certains appareils */
+@media (max-width: 480px) {
+    body {
+        /* Utilise scroll au lieu de fixed pour de meilleures performances */
+        background-attachment: scroll;
+        /* Étend encore plus le background */
+        background-size: 150% 150%;
+        background-position: center center;
+    }
 }
 
 /* Animated background particles */
@@ -116,28 +170,29 @@ nav.scrolled {
     display: none;
     font-size: 28px;
     cursor: pointer;
-    color: white;}
+    color: white;
+}
 
-    @media (max-width: 768px) {
-        .hamburger {
-            display: block;
-        }
-
-        .nav-links {
-            display: none;
-            flex-direction: column;
-            background-color: #111;
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            padding: 10px;
-            border-radius: 10px;
-        }
-
-        .nav-links.show {
-            display: flex;
-        }
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
     }
+
+    .nav-links {
+        display: none;
+        flex-direction: column;
+        background-color: #111;
+        position: absolute;
+        top: 60px;
+        right: 20px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .nav-links.show {
+        display: flex;
+    }
+}
 
 .lang-toggle {
     background: linear-gradient(45deg, #40e0d0, #20b2aa);
@@ -242,6 +297,7 @@ nav.scrolled {
     transition: all 0.3s ease;
     box-shadow: 0 10px 30px rgba(64, 224, 208, 0.3);
 }
+
 .cta-button::before {
     content: '';
     position: absolute;
@@ -358,6 +414,7 @@ nav.scrolled {
     margin-bottom: 20px;
     color: #40e0d0;
 }
+
 .profile-placeholder {
     width: 300px;
     height: 300px;
@@ -453,8 +510,6 @@ nav.scrolled {
     .hero p {
         font-size: 1.2rem;
     }
-
-
 
     .contact-links {
         flex-direction: column;
@@ -623,6 +678,7 @@ nav.scrolled {
     height: 0;
     border-style: solid;
 }
+
 /*Petit triangle*/
 .timeline-event[data-side="left"] .timeline-content::before {
     right: -20px;
