@@ -534,6 +534,196 @@ styleSheet.textContent = `
     }
 `;
 document.head.appendChild(styleSheet);
+// ✨ SYSTÈME DE PARTICULES POUR LA SOURIS ✨
+// À ajouter dans votre main.js
+
+class MouseParticle {
+    constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.size = 5; // Particules plus petites
+        this.life = 1.0;
+        this.decay = Math.random() * 0.05 + 0.0; // Disparaissent plus vite
+
+        // Direction aléatoire pour l'étoile filante - MOUVEMENT TRÈS RAPIDE
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 8 + 12; // Vitesse très élevée (12-20)
+        this.vx = Math.cos(angle) * speed;
+        this.vy = Math.sin(angle) * speed;
+
+        // Couleur turquoise uniquement (comme les autres particules du site)
+        this.color = 'rgba(64, 224, 208, '; // Turquoise principal seulement
+
+        // Créer l'élément DOM
+        this.element = document.createElement('div');
+        this.element.style.position = 'fixed';
+        this.element.style.width = this.size + 'px';
+        this.element.style.height = this.size + 'px';
+        this.element.style.borderRadius = '50%';
+        this.element.style.pointerEvents = 'none';
+        this.element.style.zIndex = '10000';
+        this.element.style.left = x + 'px';
+        this.element.style.top = y + 'px';
+        this.updateStyle();
+
+        document.body.appendChild(this.element);
+    }
+
+    updateStyle() {
+        const alpha = this.life;
+        this.element.style.background = `${this.color}${alpha})`;
+        this.element.style.boxShadow = `0 0 ${this.size * 2}px ${this.color}${alpha * 0.8})`;
+        this.element.style.transform = `scale(${this.life})`;
+    }
+
+    update() {
+        // Mouvement en ligne droite (pas de gravité, pas de changement de direction)
+        this.x += this.vx;
+        this.y += this.vy;
+
+        // Dégradation de la vie (les particules disparaissent rapidement)
+        this.life -= this.decay;
+
+        // Mise à jour de la position et du style
+        this.element.style.left = this.x + 'px';
+        this.element.style.top = this.y + 'px';
+        this.updateStyle();
+
+        // Retourner true si la particule est morte
+        // Mort plus rapide quand elle sort de l'écran (même un peu)
+        return this.life <= 0 ||
+            this.x < -20 || this.x > window.innerWidth + 20 ||
+            this.y < -20 || this.y > window.innerHeight + 20;
+    }
+
+    destroy() {
+        if (this.element && this.element.parentNode) {
+            this.element.parentNode.removeChild(this.element);
+        }
+    }
+}
+
+class MouseParticleSystem {
+    constructor() {
+        this.particles = [];
+        this.lastMouseX = 0;
+        this.lastMouseY = 0;
+        this.lastTime = 0;
+        this.enabled = true;
+        this.distanceCounter = 0; // Compteur de distance parcourue
+        this.particleThreshold = 500; // 1 particule tous les 5 pixels
+
+        this.bindEvents();
+        this.animate();
+    }
+
+    bindEvents() {
+        document.addEventListener('mousemove', (e) => {
+            if (!this.enabled) return;
+
+            // Calculer la distance parcourue depuis la dernière position
+            const deltaX = e.clientX - this.lastMouseX;
+            const deltaY = e.clientY - this.lastMouseY;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+            // Ajouter à notre compteur de distance
+            this.distanceCounter += distance;
+
+            // Créer une particule seulement tous les 5 pixels parcourus
+            if (this.distanceCounter >= this.particleThreshold) {
+                this.createParticle(e.clientX, e.clientY);
+                this.distanceCounter = 0; // Reset du compteur
+            }
+
+            this.lastMouseX = e.clientX;
+            this.lastMouseY = e.clientY;
+        });
+
+        // Désactiver sur mobile pour éviter les problèmes de performance
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if (isMobile) {
+            this.enabled = false;
+        }
+    }
+
+    createParticle(x, y) {
+        // Créer UNE SEULE particule par appel (pas plusieurs)
+        const particle = new MouseParticle(x, y);
+        this.particles.push(particle);
+
+        // Limiter le nombre total de particules pour les performances
+        if (this.particles.length > 50) { // Réduit de 100 à 50
+            const excess = this.particles.length - 50;
+            for (let i = 0; i < excess; i++) {
+                this.particles[i].destroy();
+            }
+            this.particles.splice(0, excess);
+        }
+    }
+
+    animate() {
+        // Mettre à jour toutes les particules
+        for (let i = this.particles.length - 1; i >= 0; i--) {
+            const particle = this.particles[i];
+            const isDead = particle.update();
+
+            if (isDead) {
+                particle.destroy();
+                this.particles.splice(i, 1);
+            }
+        }
+
+        // Continuer l'animation
+        requestAnimationFrame(() => this.animate());
+    }
+
+    // Méthodes pour contrôler l'effet
+    enable() {
+        this.enabled = true;
+    }
+
+    disable() {
+        this.enabled = false;
+        // Nettoyer toutes les particules existantes
+        this.particles.forEach(particle => particle.destroy());
+        this.particles = [];
+    }
+
+    destroy() {
+        this.disable();
+    }
+}
+
+// Variable globale pour contrôler le système
+let mouseParticleSystem;
+
+// Fonction pour initialiser l'effet de particules de souris
+function initializeMouseParticles() {
+    if (!mouseParticleSystem) {
+        mouseParticleSystem = new MouseParticleSystem();
+        console.log('✨ Effet particules souris activé !');
+    }
+}
+
+// Fonction pour désactiver l'effet (utile pour les performances)
+function disableMouseParticles() {
+    if (mouseParticleSystem) {
+        mouseParticleSystem.disable();
+        console.log('❌ Effet particules souris désactivé');
+    }
+}
+
+// Fonction pour réactiver l'effet
+function enableMouseParticles() {
+    if (mouseParticleSystem) {
+        mouseParticleSystem.enable();
+        console.log('✅ Effet particules souris réactivé');
+    }
+}
+
+// INTÉGRATION DANS VOTRE SYSTÈME EXISTANT
+// Ajoutez cette ligne dans votre DOMContentLoaded existant :
+// initializeMouseParticles();
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
@@ -545,6 +735,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialiser les particules
     createParticles();
+
+    initializeMouseParticles();
 
     // Observer les cartes existantes (projects, about, etc.)
     document.querySelectorAll('.skill-card, .project-card, .timeline-item').forEach(card => {
