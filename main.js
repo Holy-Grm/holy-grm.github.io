@@ -611,7 +611,7 @@ class MouseParticleSystem {
         this.lastTime = 0;
         this.enabled = true;
         this.distanceCounter = 0; // Compteur de distance parcourue
-        this.particleThreshold = 500; // 1 particule tous les 5 pixels
+        this.particleThreshold = 2000; // 1 particule tous les 5 pixels
 
         this.bindEvents();
         this.animate();
