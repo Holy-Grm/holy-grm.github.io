@@ -11,6 +11,129 @@ const navLinks = document.querySelectorAll('.nav-link');
 const pages = document.querySelectorAll('.page');
 const logo = document.querySelector('.logo');
 
+// ============ SYSTÈME DE ROUTING URL ============
+
+// Fonction pour parser l'URL actuelle
+function parseCurrentURL() {
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(segment => segment !== '');
+
+    // Valeurs par défaut
+    let lang = 'en';
+    let page = 'home';
+
+    // Si l'URL contient des segments
+    if (segments.length > 0) {
+        // Premier segment = langue (si valide)
+        if (segments[0] === 'en' || segments[0] === 'fr') {
+            lang = segments[0];
+            // Deuxième segment = page (si présent)
+            if (segments[1]) {
+                const validPages = ['home', 'projects', 'about', 'contact'];
+                if (validPages.includes(segments[1])) {
+                    page = segments[1];
+                }
+            }
+        } else {
+            // Si pas de langue en premier, on considère que c'est une page
+            const validPages = ['home', 'projects', 'about', 'contact'];
+            if (validPages.includes(segments[0])) {
+                page = segments[0];
+            }
+        }
+    }
+
+    return { lang, page };
+}
+
+// Fonction pour construire une nouvelle URL
+function buildURL(lang, page) {
+    // Si c'est la page d'accueil en anglais, on garde l'URL racine
+    if (lang === 'en' && page === 'home') {
+        return '/';
+    }
+
+    // Sinon on construit l'URL avec langue/page
+    if (page === 'home') {
+        return `/${lang}/`;
+    }
+
+    return `/${lang}/${page}`;
+}
+
+// Fonction pour mettre à jour l'URL dans le navigateur
+function updateURL(lang, page, addToHistory = true) {
+    const newURL = buildURL(lang, page);
+
+    if (addToHistory) {
+        // Ajouter à l'historique
+        window.history.pushState({ lang, page }, '', newURL);
+    } else {
+        // Remplacer l'URL actuelle
+        window.history.replaceState({ lang, page }, '', newURL);
+    }
+}
+
+// Fonction pour naviguer vers une page avec mise à jour de l'URL
+function navigateToPageWithURL(targetPage, updateBrowserURL = true) {
+    navigateToPage(targetPage);
+
+    if (updateBrowserURL) {
+        updateURL(currentLang, targetPage);
+    }
+}
+
+// Fonction pour changer de langue avec mise à jour de l'URL
+function changeLanguageWithURL(newLang, updateBrowserURL = true) {
+    const oldLang = currentLang;
+    currentLang = newLang;
+
+    // Mettre à jour les boutons de langue
+    if (langToggle) {
+        langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+    }
+    if (mobileLangToggle) {
+        mobileLangToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+    }
+
+    // Mettre à jour les textes
+    updateLanguage(currentLang);
+
+    // Mettre à jour l'URL si nécessaire
+    if (updateBrowserURL) {
+        const currentPage = getCurrentActivePage();
+        updateURL(currentLang, currentPage);
+    }
+}
+
+// Fonction pour obtenir la page actuellement active
+function getCurrentActivePage() {
+    const activePage = document.querySelector('.page.active');
+    return activePage ? activePage.id : 'home';
+}
+
+// Gestionnaire pour le bouton retour/avant du navigateur
+function handlePopState(event) {
+    if (event.state) {
+        const { lang, page } = event.state;
+
+        // Changer la langue si nécessaire (sans mettre à jour l'URL)
+        if (lang !== currentLang) {
+            changeLanguageWithURL(lang, false);
+        }
+
+        // Naviguer vers la page (sans mettre à jour l'URL)
+        navigateToPage(page);
+    } else {
+        // Fallback si pas de state (première visite)
+        const { lang, page } = parseCurrentURL();
+        changeLanguageWithURL(lang, false);
+        navigateToPage(page);
+    }
+}
+
+// ============ FIN SYSTÈME DE ROUTING URL ============
+
 // Fonction pour mettre à jour la langue
 function updateLanguage(lang) {
     document.querySelectorAll('[data-en]').forEach(el => {
@@ -18,31 +141,19 @@ function updateLanguage(lang) {
     });
 }
 
-// Système de langue ORIGINAL (desktop)
+// Système de langue MODIFIÉ pour utiliser le routing
 if (langToggle) {
     langToggle.addEventListener('click', () => {
-        currentLang = currentLang === 'en' ? 'fr' : 'en';
-        langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
-        updateLanguage(currentLang);
-
-        // Mettre à jour aussi le bouton mobile si il existe
-        if (mobileLangToggle) {
-            mobileLangToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
-        }
+        const newLang = currentLang === 'en' ? 'fr' : 'en';
+        changeLanguageWithURL(newLang);
     });
 }
 
-// Bouton langue mobile (simple)
+// Bouton langue mobile MODIFIÉ
 if (mobileLangToggle) {
     mobileLangToggle.addEventListener('click', () => {
-        currentLang = currentLang === 'en' ? 'fr' : 'en';
-        mobileLangToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
-        updateLanguage(currentLang);
-
-        // Mettre à jour aussi le bouton desktop si il existe
-        if (langToggle) {
-            langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
-        }
+        const newLang = currentLang === 'en' ? 'fr' : 'en';
+        changeLanguageWithURL(newLang);
     });
 }
 
@@ -92,12 +203,12 @@ function navigateToPage(targetPage) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// Navigation desktop
+// Navigation desktop MODIFIÉE pour utiliser le routing
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const targetPage = link.getAttribute('data-page');
-        navigateToPage(targetPage);
+        navigateToPageWithURL(targetPage);
 
         // Close hamburger menu if it's open
         const navLinksContainer = document.querySelector('.nav-links');
@@ -107,12 +218,12 @@ navLinks.forEach(link => {
     });
 });
 
-// Navigation mobile
+// Navigation mobile MODIFIÉE
 mobileNavLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
         const targetPage = link.getAttribute('data-page');
-        navigateToPage(targetPage);
+        navigateToPageWithURL(targetPage);
 
         // Fermer le menu mobile après sélection
         setTimeout(() => {
@@ -121,11 +232,11 @@ mobileNavLinks.forEach(link => {
     });
 });
 
-// Logo navigation
+// Logo navigation MODIFIÉ
 if (logo) {
     logo.addEventListener('click', (e) => {
         e.preventDefault();
-        navigateToPage('home');
+        navigateToPageWithURL('home');
 
         // Fermer le menu mobile si ouvert
         if (hamburger && hamburger.classList.contains('active')) {
@@ -155,7 +266,7 @@ function initializeSkillCards() {
         card.style.cursor = 'pointer';
 
         card.addEventListener('click', () => {
-            navigateToPage('projects');
+            navigateToPageWithURL('projects');
         });
     });
 }
@@ -226,7 +337,7 @@ function initializeCTAButton() {
         // Ajouter le nouvel event listener
         document.querySelector('.cta-button').addEventListener('click', (e) => {
             e.preventDefault();
-            navigateToPage('projects');
+            navigateToPageWithURL('projects');
         });
     }
 }
@@ -302,14 +413,14 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Add keyboard navigation
+// Add keyboard navigation MODIFIÉ
 document.addEventListener('keydown', (e) => {
     if (e.key >= '1' && e.key <= '4') {
         const index = parseInt(e.key) - 1;
         const links = document.querySelectorAll('.nav-link');
         if (links[index]) {
             const targetPage = links[index].getAttribute('data-page');
-            navigateToPage(targetPage);
+            navigateToPageWithURL(targetPage);
             if (hamburger && hamburger.classList.contains('active')) {
                 closeMobileMenu();
             }
@@ -534,9 +645,8 @@ styleSheet.textContent = `
     }
 `;
 document.head.appendChild(styleSheet);
-// ✨ SYSTÈME DE PARTICULES POUR LA SOURIS ✨
-// À ajouter dans votre main.js
 
+// ✨ SYSTÈME DE PARTICULES POUR LA SOURIS ✨
 class MouseParticle {
     constructor(x, y) {
         this.x = x;
@@ -721,12 +831,10 @@ function enableMouseParticles() {
     }
 }
 
-// INTÉGRATION DANS VOTRE SYSTÈME EXISTANT
-// Ajoutez cette ligne dans votre DOMContentLoaded existant :
-// initializeMouseParticles();
+// ============ INITIALISATION AVEC ROUTING ============
 
-// Initialisation au chargement de la page
-document.addEventListener('DOMContentLoaded', async () => {
+// Fonction d'initialisation MODIFIÉE pour le routing
+async function initializeApp() {
     // Charger le contenu de toutes les pages
     await loadHomeContent();
     await loadProjectsContent();
@@ -735,11 +843,51 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Initialiser les particules
     createParticles();
-
     initializeMouseParticles();
 
     // Observer les cartes existantes (projects, about, etc.)
     document.querySelectorAll('.skill-card, .project-card, .timeline-item').forEach(card => {
         observer.observe(card);
     });
-});
+
+    // ============ ROUTING : INITIALISATION ============
+
+    // Parser l'URL actuelle au chargement
+    const { lang, page } = parseCurrentURL();
+
+    // Définir la langue et la page initiales
+    currentLang = lang;
+
+    // Mettre à jour l'interface pour refléter la langue
+    if (langToggle) {
+        langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+    }
+    if (mobileLangToggle) {
+        mobileLangToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+    }
+
+    // Appliquer la langue
+    updateLanguage(currentLang);
+
+    // Naviguer vers la page initiale (sans mettre à jour l'URL)
+    navigateToPage(page);
+
+    // Mettre à jour l'URL si nécessaire (pour standardiser)
+    const expectedURL = buildURL(lang, page);
+    if (window.location.pathname !== expectedURL) {
+        updateURL(lang, page, false); // false = replace, pas push
+    }
+
+    // Ajouter l'état initial à l'historique si nécessaire
+    if (!window.history.state) {
+        window.history.replaceState({ lang, page }, '', window.location.pathname);
+    }
+
+    // Écouter les changements d'historique (bouton retour/avant)
+    window.addEventListener('popstate', handlePopState);
+
+    console.log(`🚀 App initialisée avec langue: ${lang}, page: ${page}`);
+}
+
+// Initialisation au chargement de la page
+document.addEventListener('DOMContentLoaded', initializeApp);

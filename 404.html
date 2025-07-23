@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy - Data Science Student</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <ul class="mobile-nav-links">
+        <li><a href="#" class="mobile-nav-link active" data-page="home" data-en="Home" data-fr="Accueil">Home</a></li>
+        <li><a href="#" class="mobile-nav-link" data-page="projects" data-en="Projects" data-fr="Projets">Projects</a></li>
+        <li><a href="#" class="mobile-nav-link" data-page="about" data-en="About" data-fr="À Propos">About</a></li>
+        <li><a href="#" class="mobile-nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
+    </ul>
+</div>
+<div class="particles" id="particles"></div>
+
+<!-- Abstract Particle Loading Screen -->
+<div class="loading-screen" id="loadingScreen">
+    <!-- Particle Container -->
+    <div class="particle-container" id="particleContainer">
+        <!-- Central Mass -->
+        <div class="central-mass" id="centralMass"></div>
+
+        <!-- Explosion Effect -->
+        <div class="explosion" id="explosion"></div>
+    </div>
+
+    <!-- Loading Text -->
+    <div class="loading-text" id="loadingText">
+        Gathering particles...
+    </div>
+
+    <!-- Progress Dots -->
+    <div class="progress-dots" id="progressDots">
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+    </div>
+</div>
+
+<nav id="nav">
+    <div class="nav-container">
+        <a href="#" class="logo">HOLY</a>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link active" data-page="home" data-en="Home" data-fr="Accueil">Home</a></li>
+            <li><a href="#" class="nav-link" data-page="projects" data-en="Projects" data-fr="Projets">Projects</a></li>
+            <li><a href="#" class="nav-link" data-page="about" data-en="About" data-fr="À Propos">About</a></li>
+            <li><a href="#" class="nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
+        </ul>
+
+        <button class="hamburger" id="hamburger">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </button>
+        <button class="lang-toggle" id="langToggle">FR</button>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="page active" id="home"></div>
+    <div class="page" id="projects"></div>
+    <div class="page" id="about"></div>
+    <div class="page" id="contact"></div>
+</div>
+
+<script src="main.js"></script>
+
+</body>
+</html>
