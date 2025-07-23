@@ -311,9 +311,6 @@ nav.scrolled {
         display: none;
     }
 
-    .lang-toggle {
-        display: none;
-    }
 
     /* Assure que le menu mobile soit au-dessus de tout */
     .mobile-menu-overlay {

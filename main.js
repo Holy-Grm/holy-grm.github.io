@@ -18,27 +18,31 @@ function updateLanguage(lang) {
     });
 }
 
-// Fonction pour synchroniser les boutons de langue
-function syncLanguageButtons() {
-    const buttonText = currentLang === 'en' ? 'FR' : 'EN';
-    if (langToggle) langToggle.textContent = buttonText;
-    if (mobileLangToggle) mobileLangToggle.textContent = buttonText;
-}
-
-// Event listeners pour les boutons de langue
+// Système de langue ORIGINAL (desktop)
 if (langToggle) {
     langToggle.addEventListener('click', () => {
         currentLang = currentLang === 'en' ? 'fr' : 'en';
-        syncLanguageButtons();
+        langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
         updateLanguage(currentLang);
+
+        // Mettre à jour aussi le bouton mobile si il existe
+        if (mobileLangToggle) {
+            mobileLangToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+        }
     });
 }
 
+// Bouton langue mobile (simple)
 if (mobileLangToggle) {
     mobileLangToggle.addEventListener('click', () => {
         currentLang = currentLang === 'en' ? 'fr' : 'en';
-        syncLanguageButtons();
+        mobileLangToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
         updateLanguage(currentLang);
+
+        // Mettre à jour aussi le bouton desktop si il existe
+        if (langToggle) {
+            langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
+        }
     });
 }
 
@@ -533,9 +537,6 @@ document.head.appendChild(styleSheet);
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
-    // Synchroniser les boutons de langue au chargement
-    syncLanguageButtons();
-
     // Charger le contenu de toutes les pages
     await loadHomeContent();
     await loadProjectsContent();
