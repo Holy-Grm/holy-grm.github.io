@@ -165,33 +165,179 @@ nav.scrolled {
     background: rgba(64, 224, 208, 0.2);
 }
 
-/* Hamburger (mobile menu) */
+/* Apple-style Hamburger Menu - Remplacer votre section hamburger existante */
 .hamburger {
     display: none;
-    font-size: 28px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
-    color: white;
+    z-index: 1001;
+    position: relative;
+    background: none;
+    border: none;
+    padding: 0;
 }
 
+.hamburger-line {
+    width: 25px;
+    height: 2px;
+    background-color: #ffffff;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    position: absolute;
+}
+
+.hamburger-line:nth-child(1) {
+    top: 8px;
+}
+
+.hamburger-line:nth-child(2) {
+    top: 14px;
+}
+
+.hamburger-line:nth-child(3) {
+    top: 20px;
+}
+
+/* Animation du hamburger vers X */
+.hamburger.active .hamburger-line:nth-child(1) {
+    transform: rotate(45deg);
+    top: 14px;
+}
+
+.hamburger.active .hamburger-line:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-20px);
+}
+
+.hamburger.active .hamburger-line:nth-child(3) {
+    transform: rotate(-45deg);
+    top: 14px;
+}
+
+/* Overlay du menu full-screen */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(20px);
+    z-index: 999;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(-100%);
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    opacity: 0;
+}
+
+.mobile-menu-overlay.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    text-align: center;
+    list-style: none;
+}
+
+.mobile-nav-links li {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.mobile-menu-overlay.active .mobile-nav-links li {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Délais pour l'animation en cascade */
+.mobile-nav-links li:nth-child(1) { transition-delay: 0.1s; }
+.mobile-nav-links li:nth-child(2) { transition-delay: 0.2s; }
+.mobile-nav-links li:nth-child(3) { transition-delay: 0.3s; }
+.mobile-nav-links li:nth-child(4) { transition-delay: 0.4s; }
+
+.mobile-nav-links li a {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 2.5rem;
+    font-weight: 300;
+    transition: all 0.3s ease;
+    display: block;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.mobile-nav-links li a:hover {
+    color: #40e0d0;
+    background: rgba(64, 224, 208, 0.1);
+    transform: scale(1.05);
+}
+
+.mobile-nav-links li a.active {
+    color: #40e0d0;
+}
+
+/* Language toggle dans le menu mobile */
+.mobile-lang-toggle {
+    margin-top: 40px;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition-delay: 0.5s;
+}
+
+.mobile-menu-overlay.active .mobile-lang-toggle {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Modifications du responsive existant */
 @media (max-width: 768px) {
     .hamburger {
-        display: block;
+        display: flex;
     }
 
     .nav-links {
         display: none;
-        flex-direction: column;
-        background-color: #111;
-        position: absolute;
-        top: 60px;
-        right: 20px;
-        padding: 10px;
-        border-radius: 10px;
     }
 
-    .nav-links.show {
-        display: flex;
+    .lang-toggle {
+        display: none;
     }
+
+    /* Assure que le menu mobile soit au-dessus de tout */
+    .mobile-menu-overlay {
+        z-index: 999;
+    }
+
+    .hamburger {
+        z-index: 1001;
+    }
+
+    .logo {
+        z-index: 1001;
+    }
+}
+
+/* Ajustements pour les z-index existants */
+.logo {
+    z-index: 1001;
+    position: relative;
+}
+
+.lang-toggle {
+    z-index: 1001;
+    position: relative;
 }
 
 .lang-toggle {

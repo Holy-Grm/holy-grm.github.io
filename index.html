@@ -8,6 +8,15 @@
 
 </head>
 <body>
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+    <ul class="mobile-nav-links">
+        <li><a href="#" class="mobile-nav-link active" data-page="home" data-en="Home" data-fr="Accueil">Home</a></li>
+        <li><a href="#" class="mobile-nav-link" data-page="projects" data-en="Projects" data-fr="Projets">Projects</a></li>
+        <li><a href="#" class="mobile-nav-link" data-page="about" data-en="About" data-fr="À Propos">About</a></li>
+        <li><a href="#" class="mobile-nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
+    </ul>
+    <button class="lang-toggle mobile-lang-toggle" id="mobileLangToggle">FR</button>
+</div>
 <div class="particles" id="particles"></div>
 
 <!-- Abstract Particle Loading Screen -->
@@ -45,7 +54,12 @@
             <li><a href="#" class="nav-link" data-page="about" data-en="About" data-fr="À Propos">About</a></li>
             <li><a href="#" class="nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
         </ul>
-        <div class="hamburger" id="hamburger">&#9776;</div>
+
+        <button class="hamburger" id="hamburger">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </button>
         <button class="lang-toggle" id="langToggle">FR</button>
     </div>
 </nav>

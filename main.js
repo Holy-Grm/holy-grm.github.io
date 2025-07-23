@@ -1,6 +1,15 @@
 // Language toggle functionality
 let currentLang = 'en';
+
+// Déclaration de toutes les variables nécessaires
 const langToggle = document.getElementById('langToggle');
+const mobileLangToggle = document.getElementById('mobileLangToggle');
+const hamburger = document.getElementById('hamburger');
+const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+const navLinks = document.querySelectorAll('.nav-link');
+const pages = document.querySelectorAll('.page');
+const logo = document.querySelector('.logo');
 
 // Fonction pour mettre à jour la langue
 function updateLanguage(lang) {
@@ -9,58 +18,114 @@ function updateLanguage(lang) {
     });
 }
 
-langToggle.addEventListener('click', () => {
-    currentLang = currentLang === 'en' ? 'fr' : 'en';
-    langToggle.textContent = currentLang === 'en' ? 'FR' : 'EN';
-    updateLanguage(currentLang);
-});
+// Fonction pour synchroniser les boutons de langue
+function syncLanguageButtons() {
+    const buttonText = currentLang === 'en' ? 'FR' : 'EN';
+    if (langToggle) langToggle.textContent = buttonText;
+    if (mobileLangToggle) mobileLangToggle.textContent = buttonText;
+}
 
-// Navigation functionality
-const navLinks = document.querySelectorAll('.nav-link');
-const pages = document.querySelectorAll('.page');
+// Event listeners pour les boutons de langue
+if (langToggle) {
+    langToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        syncLanguageButtons();
+        updateLanguage(currentLang);
+    });
+}
 
+if (mobileLangToggle) {
+    mobileLangToggle.addEventListener('click', () => {
+        currentLang = currentLang === 'en' ? 'fr' : 'en';
+        syncLanguageButtons();
+        updateLanguage(currentLang);
+    });
+}
+
+// Fonctions pour le menu mobile
+function closeMobileMenu() {
+    if (hamburger) hamburger.classList.remove('active');
+    if (mobileMenuOverlay) mobileMenuOverlay.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+function openMobileMenu() {
+    if (hamburger) hamburger.classList.add('active');
+    if (mobileMenuOverlay) mobileMenuOverlay.classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+// Toggle du menu hamburger
+if (hamburger) {
+    hamburger.addEventListener('click', () => {
+        if (hamburger.classList.contains('active')) {
+            closeMobileMenu();
+        } else {
+            openMobileMenu();
+        }
+    });
+}
+
+// Fonction pour changer de page (utilisée par desktop et mobile)
+function navigateToPage(targetPage) {
+    // Remove active class from all links and pages
+    navLinks.forEach(l => l.classList.remove('active'));
+    mobileNavLinks.forEach(l => l.classList.remove('active'));
+    pages.forEach(p => p.classList.remove('active'));
+
+    // Add active class to corresponding links
+    const desktopLink = document.querySelector(`[data-page="${targetPage}"]`);
+    const mobileLink = document.querySelector(`.mobile-nav-link[data-page="${targetPage}"]`);
+
+    if (desktopLink) desktopLink.classList.add('active');
+    if (mobileLink) mobileLink.classList.add('active');
+
+    // Show corresponding page
+    const targetPageElement = document.getElementById(targetPage);
+    if (targetPageElement) targetPageElement.classList.add('active');
+
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Navigation desktop
 navLinks.forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
-
-        // Remove active class from all links and pages
-        navLinks.forEach(l => l.classList.remove('active'));
-        pages.forEach(p => p.classList.remove('active'));
-
-        // Add active class to clicked link
-        link.classList.add('active');
-
-        // Show corresponding page
         const targetPage = link.getAttribute('data-page');
-        document.getElementById(targetPage).classList.add('active');
+        navigateToPage(targetPage);
 
         // Close hamburger menu if it's open
         const navLinksContainer = document.querySelector('.nav-links');
         if (navLinksContainer && navLinksContainer.classList.contains('show')) {
             navLinksContainer.classList.remove('show');
         }
-
-        // Scroll to top
-        window.scrollTo({ top: 0, behavior: 'smooth' });
     });
 });
 
-const logo = document.querySelector('.logo');
+// Navigation mobile
+mobileNavLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetPage = link.getAttribute('data-page');
+        navigateToPage(targetPage);
 
+        // Fermer le menu mobile après sélection
+        setTimeout(() => {
+            closeMobileMenu();
+        }, 300);
+    });
+});
+
+// Logo navigation
 if (logo) {
     logo.addEventListener('click', (e) => {
         e.preventDefault();
+        navigateToPage('home');
 
-        // Désactive toutes les sections et liens actifs
-        navLinks.forEach(l => l.classList.remove('active'));
-        pages.forEach(p => p.classList.remove('active'));
-
-        // Active la section Home et son lien
-        const homeLink = document.querySelector('[data-page="home"]');
-        const homePage = document.getElementById('home');
-        if (homeLink && homePage) {
-            homeLink.classList.add('active');
-            homePage.classList.add('active');
+        // Fermer le menu mobile si ouvert
+        if (hamburger && hamburger.classList.contains('active')) {
+            closeMobileMenu();
         }
 
         // Close hamburger menu if it's open
@@ -68,9 +133,15 @@ if (logo) {
         if (navLinksContainer && navLinksContainer.classList.contains('show')) {
             navLinksContainer.classList.remove('show');
         }
+    });
+}
 
-        // Scroll vers le haut
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+// Fermer le menu mobile en cliquant en dehors
+if (mobileMenuOverlay) {
+    mobileMenuOverlay.addEventListener('click', (e) => {
+        if (e.target === mobileMenuOverlay) {
+            closeMobileMenu();
+        }
     });
 }
 
@@ -80,17 +151,7 @@ function initializeSkillCards() {
         card.style.cursor = 'pointer';
 
         card.addEventListener('click', () => {
-            navLinks.forEach(l => l.classList.remove('active'));
-            pages.forEach(p => p.classList.remove('active'));
-
-            const projectsLink = document.querySelector('[data-page="projects"]');
-            const projectsPage = document.getElementById('projects');
-
-            if (projectsLink && projectsPage) {
-                projectsLink.classList.add('active');
-                projectsPage.classList.add('active');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            }
+            navigateToPage('projects');
         });
     });
 }
@@ -125,7 +186,7 @@ async function loadPageContent(pageName, targetElementId, callback = null) {
 async function loadHomeContent() {
     await loadPageContent('home', 'home', () => {
         initializeCTAButton();
-        initializeSkillCards(); // Nom de fonction corrigé
+        initializeSkillCards();
         initializeMouseEffect();
     });
 }
@@ -161,14 +222,7 @@ function initializeCTAButton() {
         // Ajouter le nouvel event listener
         document.querySelector('.cta-button').addEventListener('click', (e) => {
             e.preventDefault();
-
-            // Remove active class from all links and pages
-            navLinks.forEach(l => l.classList.remove('active'));
-            pages.forEach(p => p.classList.remove('active'));
-
-            // Activate projects page
-            document.querySelector('[data-page="projects"]').classList.add('active');
-            document.getElementById('projects').classList.add('active');
+            navigateToPage('projects');
         });
     }
 }
@@ -250,21 +304,33 @@ document.addEventListener('keydown', (e) => {
         const index = parseInt(e.key) - 1;
         const links = document.querySelectorAll('.nav-link');
         if (links[index]) {
-            links[index].click();
+            const targetPage = links[index].getAttribute('data-page');
+            navigateToPage(targetPage);
+            if (hamburger && hamburger.classList.contains('active')) {
+                closeMobileMenu();
+            }
         }
     }
 });
 
-// Hamburger menu
-const hamburger = document.getElementById('hamburger');
+// Fermer le menu mobile avec Escape et redimensionnement
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && hamburger && hamburger.classList.contains('active')) {
+        closeMobileMenu();
+    }
+});
+
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && hamburger && hamburger.classList.contains('active')) {
+        closeMobileMenu();
+    }
+});
+
+// Ancien système hamburger (pour compatibilité avec desktop)
 const navLinksContainer = document.querySelector('.nav-links');
 
 if (hamburger && navLinksContainer) {
-    hamburger.addEventListener('click', () => {
-        navLinksContainer.classList.toggle('show');
-    });
-
-    // Close menu when clicking outside
+    // Close menu when clicking outside (desktop)
     document.addEventListener('click', (e) => {
         if (!hamburger.contains(e.target) && !navLinksContainer.contains(e.target)) {
             navLinksContainer.classList.remove('show');
@@ -322,17 +388,19 @@ function initializeTimeline() {
 
         if (closestYear !== currentYear) {
             currentYear = closestYear;
-            yearIndicator.style.opacity = '0';
+            if (yearIndicator) {
+                yearIndicator.style.opacity = '0';
 
-            setTimeout(() => {
-                yearIndicator.textContent = currentYear;
-                yearIndicator.style.opacity = '0.3';
-            }, 300);
+                setTimeout(() => {
+                    yearIndicator.textContent = currentYear;
+                    yearIndicator.style.opacity = '0.3';
+                }, 300);
+            }
         }
 
         // Active l'indicateur quand on est dans la zone de la timeline
         const timelineContainer = document.querySelector('.timeline-container');
-        if (timelineContainer) {
+        if (timelineContainer && yearIndicator) {
             const containerRect = timelineContainer.getBoundingClientRect();
             if (containerRect.top < window.innerHeight && containerRect.bottom > 0) {
                 yearIndicator.classList.add('active');
@@ -465,6 +533,9 @@ document.head.appendChild(styleSheet);
 
 // Initialisation au chargement de la page
 document.addEventListener('DOMContentLoaded', async () => {
+    // Synchroniser les boutons de langue au chargement
+    syncLanguageButtons();
+
     // Charger le contenu de toutes les pages
     await loadHomeContent();
     await loadProjectsContent();
