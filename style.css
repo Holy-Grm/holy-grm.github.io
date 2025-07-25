@@ -664,11 +664,14 @@ nav.scrolled {
     }
 }
 
-/* Timeline Styles */
+/* Timeline Styles - Version corrigée */
+
+/* Timeline container amélioré */
 .timeline-container {
     position: relative;
     padding: 80px 0 200px 0;
     margin-top: 80px;
+    overflow: hidden; /* Évite les débordements */
 }
 
 .timeline-container h2 {
@@ -680,23 +683,29 @@ nav.scrolled {
     z-index: 10;
 }
 
-/* Ligne centrale de la timeline */
+/* Ligne centrale de la timeline - VERSION CORRIGÉE */
 .timeline-line {
     position: absolute;
     left: 50%;
-    top: 200px;
-    bottom: 100px;
+    top: 160px; /* Ajusté pour un meilleur alignement */
+    bottom: 80px; /* Ajusté pour un meilleur alignement */
     width: 3px;
     background: linear-gradient(180deg,
     transparent 0%,
-    #40e0d0 10%,
-    #40e0d0 90%,
+    rgba(64, 224, 208, 0.3) 5%,
+    #40e0d0 15%,
+    #40e0d0 85%,
+    rgba(64, 224, 208, 0.3) 95%,
     transparent 100%);
     transform: translateX(-50%);
     z-index: 1;
+    transition: background 0.3s ease;
+
+    /* Éviter que la ligne soit affectée par d'autres transformations */
+    will-change: background;
 }
 
-/* Indicateur d'année flottant */
+/* Indicateur d'année flottant - amélioré */
 .year-indicator {
     position: fixed;
     top: 50%;
@@ -705,15 +714,16 @@ nav.scrolled {
     font-size: 3rem;
     font-weight: bold;
     color: #40e0d0;
-    opacity: 0.3;
+    opacity: 0;
     z-index: 100;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     text-shadow: 0 0 20px rgba(64, 224, 208, 0.5);
+    pointer-events: none;
 }
 
 .year-indicator.active {
-    opacity: 1;
-    transform: translateY(-50%) scale(1.2);
+    opacity: 0.8;
+    transform: translateY(-50%) scale(1.1);
 }
 
 /* Wrapper de la timeline */
@@ -721,14 +731,15 @@ nav.scrolled {
     position: relative;
     max-width: 1200px;
     margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* Événements de la timeline */
 .timeline-event {
     position: relative;
-    margin: 150px 0;
+    margin: 120px 0;
     opacity: 0;
-    transform: translateY(50px);
+    transform: translateY(40px);
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -739,11 +750,11 @@ nav.scrolled {
 
 /* Animation différente selon le côté */
 .timeline-event[data-side="left"] {
-    transform: translateX(-50px) translateY(50px);
+    transform: translateX(-30px) translateY(40px);
 }
 
 .timeline-event[data-side="right"] {
-    transform: translateX(50px) translateY(50px);
+    transform: translateX(30px) translateY(40px);
 }
 
 .timeline-event.visible[data-side="left"],
@@ -751,20 +762,21 @@ nav.scrolled {
     transform: translateX(0) translateY(0);
 }
 
-/* Point sur la timeline */
+/* Point sur la timeline - VERSION CORRIGÉE */
 .timeline-dot {
     position: absolute;
     left: 50%;
-    top: 50px;
+    top: 60px; /* Meilleur alignement */
     width: 20px;
     height: 20px;
     background: #40e0d0;
     border-radius: 50%;
     transform: translateX(-50%);
     z-index: 10;
-    box-shadow: 0 0 0 5px rgba(64, 224, 208, 0.2),
-    0 0 20px rgba(64, 224, 208, 0.5);
-    transition: all 0.3s ease;
+    box-shadow:
+            0 0 0 5px rgba(64, 224, 208, 0.2),
+            0 0 20px rgba(64, 224, 208, 0.5);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .timeline-event.visible .timeline-dot {
@@ -773,12 +785,16 @@ nav.scrolled {
 
 @keyframes pulse-dot {
     0%, 100% {
-        box-shadow: 0 0 0 5px rgba(64, 224, 208, 0.2),
-        0 0 20px rgba(64, 224, 208, 0.5);
+        box-shadow:
+                0 0 0 5px rgba(64, 224, 208, 0.2),
+                0 0 20px rgba(64, 224, 208, 0.5);
+        transform: translateX(-50%) scale(1);
     }
     50% {
-        box-shadow: 0 0 0 15px rgba(64, 224, 208, 0.1),
-        0 0 40px rgba(64, 224, 208, 0.7);
+        box-shadow:
+                0 0 0 15px rgba(64, 224, 208, 0.1),
+                0 0 40px rgba(64, 224, 208, 0.7);
+        transform: translateX(-50%) scale(1.1);
     }
 }
 
@@ -796,9 +812,9 @@ nav.scrolled {
     border-radius: 20px;
     border: 1px solid rgba(64, 224, 208, 0.3);
     position: relative;
-    width: calc(50% - 80px);
+    width: calc(50% - 60px); /* Ajusté pour une meilleure répartition */
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Positionnement gauche/droite */
@@ -812,47 +828,56 @@ nav.scrolled {
     margin-right: 0;
 }
 
-/* Flèches pointant vers la ligne */
+/* Flèches pointant vers la ligne - VERSION CORRIGÉE */
 .timeline-content::before {
     content: '';
     position: absolute;
-    top: 50px;
+    top: 60px; /* Aligné avec le dot */
     width: 0;
     height: 0;
     border-style: solid;
+    transition: all 0.3s ease;
 }
 
-/*Petit triangle*/
 .timeline-event[data-side="left"] .timeline-content::before {
-    right: -20px;
-    border-width: 10px 0 10px 20px;
+    right: -15px; /* Ajusté */
+    border-width: 8px 0 8px 15px;
     border-color: transparent transparent transparent rgba(64, 224, 208, 0.3);
 }
 
 .timeline-event[data-side="right"] .timeline-content::before {
-    left: -20px;
-    border-width: 10px 20px 10px 0;
+    left: -15px; /* Ajusté */
+    border-width: 8px 15px 8px 0;
     border-color: transparent rgba(64, 224, 208, 0.3) transparent transparent;
 }
 
-/* Hover effects */
+/* Hover effects améliorés */
 .timeline-content:hover {
     transform: scale(1.02);
     border-color: #40e0d0;
-    box-shadow: 0 10px 40px rgba(64, 224, 208, 0.3);
+    box-shadow: 0 15px 50px rgba(64, 224, 208, 0.3);
+}
+
+.timeline-content:hover::before {
+    border-color: transparent rgba(64, 224, 208, 0.6) transparent transparent;
+}
+
+.timeline-event[data-side="left"] .timeline-content:hover::before {
+    border-color: transparent transparent transparent rgba(64, 224, 208, 0.6);
 }
 
 /* Année */
 .timeline-year {
     position: absolute;
-    top: -20px;
-    font-size: 2rem;
+    top: -15px;
+    font-size: 1.8rem;
     font-weight: bold;
     color: #40e0d0;
     background: rgba(26, 26, 26, 0.95);
     padding: 5px 15px;
     border-radius: 20px;
     text-shadow: 0 0 20px rgba(64, 224, 208, 0.5);
+    border: 1px solid rgba(64, 224, 208, 0.3);
 }
 
 .timeline-event[data-side="left"] .timeline-year {
@@ -863,67 +888,83 @@ nav.scrolled {
     left: 30px;
 }
 
-/* Détails de la timeline */
-.timeline-details {
-    margin-top: 15px;
-    padding-left: 20px;
-    list-style: none;
-}
-
-.timeline-details li {
-    position: relative;
-    margin: 10px 0;
-    color: #cccccc;
-    font-size: 0.95rem;
-}
-
-.timeline-details li::before {
-    content: '▸';
-    position: absolute;
-    left: -20px;
-    color: #40e0d0;
-    font-size: 1.2rem;
-}
-
-/* Style spécial pour l'éducation */
-.education-content {
-    background: linear-gradient(135deg,
-    rgba(64, 224, 208, 0.1) 0%,
-    rgba(26, 26, 26, 0.95) 50%);
-    border: 2px solid rgba(64, 224, 208, 0.5);
-}
-
-/* Responsive */
+/* Responsive - VERSION CORRIGÉE */
 @media (max-width: 768px) {
     .timeline-line {
-        left: 30px;
+        left: 30px !important;
+        transform: none !important; /* Éviter les conflits */
     }
 
     .timeline-dot {
-        left: 30px;
+        left: 30px !important;
+        transform: translateX(-50%) !important;
     }
 
     .timeline-content {
-        width: calc(100% - 80px);
+        width: calc(100% - 80px) !important;
         margin-left: 60px !important;
+        margin-right: 0 !important;
     }
 
     .timeline-content::before {
-        display: none;
+        display: none; /* Masquer les flèches sur mobile */
     }
 
     .timeline-year {
-        position: relative;
-        top: 0;
+        position: relative !important;
+        top: 0 !important;
         left: 0 !important;
         right: auto !important;
         display: inline-block;
         margin-bottom: 10px;
+        font-size: 1.5rem;
     }
 
     .year-indicator {
         font-size: 2rem;
         right: 20px;
+    }
+
+    .timeline-container {
+        padding: 60px 0 150px 0;
+    }
+
+    .timeline-event {
+        margin: 80px 0;
+    }
+
+    /* Assurer que tous les éléments soient bien alignés sur mobile */
+    .timeline-event[data-side="left"],
+    .timeline-event[data-side="right"] {
+        transform: translateY(40px);
+    }
+
+    .timeline-event.visible[data-side="left"],
+    .timeline-event.visible[data-side="right"] {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline-content {
+        width: calc(100% - 60px) !important;
+        margin-left: 50px !important;
+        padding: 20px;
+    }
+
+    .timeline-line {
+        left: 25px !important;
+    }
+
+    .timeline-dot {
+        left: 25px !important;
+        width: 16px;
+        height: 16px;
+    }
+
+    .year-indicator {
+        font-size: 1.5rem;
+        right: 15px;
     }
 }
 

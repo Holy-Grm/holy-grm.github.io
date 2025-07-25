@@ -1,4 +1,4 @@
-// timelineManager.js - Gestion de la timeline interactive
+// timelineManager.js - Version corrigée
 import { CONFIG } from './config.js';
 
 export class TimelineManager {
@@ -6,6 +6,8 @@ export class TimelineManager {
         this.router = router;
         this.currentYear = '2025';
         this.isActive = false;
+        this.timelineLine = null;
+        this.timelineContainer = null;
 
         // S'abonner aux changements de page
         this.router.addObserver((type, data) => {
@@ -23,6 +25,8 @@ export class TimelineManager {
         // Attendre que le DOM soit prêt
         setTimeout(() => {
             if (this.hasTimelineElements()) {
+                this.cacheElements();
+                this.resetTimelineStyles();
                 this.setupObserver();
                 this.setupScrollHandlers();
                 this.setupInteractions();
@@ -35,6 +39,20 @@ export class TimelineManager {
 
     hasTimelineElements() {
         return document.querySelector('.timeline-container') !== null;
+    }
+
+    cacheElements() {
+        this.timelineLine = document.querySelector('.timeline-line');
+        this.timelineContainer = document.querySelector('.timeline-container');
+        this.yearIndicator = document.querySelector('.year-indicator');
+    }
+
+    resetTimelineStyles() {
+        // Réinitialiser les styles de la ligne pour éviter les conflits
+        if (this.timelineLine) {
+            this.timelineLine.style.transform = 'translateX(-50%)';
+            this.timelineLine.style.background = '';
+        }
     }
 
     setupObserver() {
@@ -63,23 +81,21 @@ export class TimelineManager {
     }
 
     setupScrollHandlers() {
-        this.scrollHandler = () => {
+        this.scrollHandler = this.throttle(() => {
             if (!this.isActive) return;
 
             this.updateYearIndicator();
-            this.updateTimelineParallax();
             this.updateTimelineFill();
-        };
+        }, 16); // 60fps
 
         window.addEventListener('scroll', this.scrollHandler);
     }
 
     updateYearIndicator() {
         const scrollPosition = window.scrollY + window.innerHeight / 2;
-        const yearIndicator = document.querySelector('.year-indicator');
         const timelineEvents = document.querySelectorAll('.timeline-event');
 
-        let closestYear = '2025';
+        let closestYear = '2026';
         let closestDistance = Infinity;
 
         timelineEvents.forEach(event => {
@@ -95,54 +111,56 @@ export class TimelineManager {
 
         if (closestYear !== this.currentYear) {
             this.currentYear = closestYear;
-            if (yearIndicator) {
-                yearIndicator.style.opacity = '0';
+            if (this.yearIndicator) {
+                this.yearIndicator.style.opacity = '0';
                 setTimeout(() => {
-                    yearIndicator.textContent = this.currentYear;
-                    yearIndicator.style.opacity = '0.3';
-                }, 300);
+                    this.yearIndicator.textContent = this.currentYear;
+                    this.yearIndicator.style.opacity = '0.3';
+                }, 150);
             }
         }
 
         // Activer l'indicateur dans la zone de la timeline
-        const timelineContainer = document.querySelector('.timeline-container');
-        if (timelineContainer && yearIndicator) {
-            const containerRect = timelineContainer.getBoundingClientRect();
-            if (containerRect.top < window.innerHeight && containerRect.bottom > 0) {
-                yearIndicator.classList.add('active');
+        if (this.timelineContainer && this.yearIndicator) {
+            const containerRect = this.timelineContainer.getBoundingClientRect();
+            const isInView = containerRect.top < window.innerHeight && containerRect.bottom > 0;
+
+            if (isInView) {
+                this.yearIndicator.classList.add('active');
             } else {
-                yearIndicator.classList.remove('active');
+                this.yearIndicator.classList.remove('active');
             }
         }
     }
 
-    updateTimelineParallax() {
-        const timelineLine = document.querySelector('.timeline-line');
-        if (timelineLine) {
-            const scrolled = window.scrollY;
-            const yPos = -(scrolled * CONFIG.timeline.parallaxSpeed);
-            timelineLine.style.transform = `translateX(-50%) translateY(${yPos}px)`;
-        }
-    }
-
     updateTimelineFill() {
-        const timelineLine = document.querySelector('.timeline-line');
-        const timelineContainer = document.querySelector('.timeline-container');
+        if (!this.timelineLine || !this.timelineContainer) return;
 
-        if (!timelineLine || !timelineContainer) return;
+        const containerRect = this.timelineContainer.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
 
-        const containerRect = timelineContainer.getBoundingClientRect();
-        const containerHeight = containerRect.height;
-        const scrollProgress = Math.max(0, Math.min(1,
-            (window.innerHeight - containerRect.top) / (containerHeight + window.innerHeight)
-        ));
+        // Calculer le progrès basé sur la position du container
+        let scrollProgress = 0;
 
+        if (containerRect.top <= windowHeight && containerRect.bottom >= 0) {
+            // Le container est visible
+            const visibleTop = Math.max(0, windowHeight - containerRect.bottom);
+            const visibleHeight = Math.min(windowHeight, containerRect.bottom) - Math.max(0, containerRect.top);
+            const totalHeight = containerRect.height + windowHeight;
+
+            scrollProgress = Math.max(0, Math.min(1,
+                (windowHeight - containerRect.top) / totalHeight
+            ));
+        }
+
+        // Appliquer le gradient de remplissage
         const gradientPercentage = scrollProgress * 100;
-        timelineLine.style.background = `linear-gradient(180deg, 
+
+        this.timelineLine.style.background = `linear-gradient(180deg, 
             #40e0d0 0%, 
             #40e0d0 ${gradientPercentage}%, 
-            rgba(64, 224, 208, 0.2) ${gradientPercentage}%, 
-            rgba(64, 224, 208, 0.2) 100%)`;
+            rgba(64, 224, 208, 0.3) ${gradientPercentage}%, 
+            rgba(64, 224, 208, 0.3) 100%)`;
     }
 
     setupInteractions() {
@@ -220,9 +238,47 @@ export class TimelineManager {
                         transform: scale(1) translateY(0);
                     }
                 }
+
+                /* Amélioration de la ligne de timeline */
+                .timeline-line {
+                    transition: background 0.3s ease;
+                }
+
+                /* Amélioration pour mobile */
+                @media (max-width: 768px) {
+                    .timeline-line {
+                        left: 30px !important;
+                        transform: translateX(0) !important;
+                    }
+
+                    .timeline-dot {
+                        left: 30px !important;
+                        transform: translateX(-50%) !important;
+                    }
+                }
             `;
             document.head.appendChild(styleSheet);
         }
+    }
+
+    // Fonction utilitaire pour throttler les événements scroll
+    throttle(func, delay) {
+        let timeoutId;
+        let lastExecTime = 0;
+        return function (...args) {
+            const currentTime = Date.now();
+
+            if (currentTime - lastExecTime > delay) {
+                func.apply(this, args);
+                lastExecTime = currentTime;
+            } else {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                    lastExecTime = Date.now();
+                }, delay - (currentTime - lastExecTime));
+            }
+        };
     }
 
     deactivateTimeline() {
@@ -237,6 +293,11 @@ export class TimelineManager {
         if (this.timelineObserver) {
             this.timelineObserver.disconnect();
         }
+
+        // Réinitialiser les références
+        this.timelineLine = null;
+        this.timelineContainer = null;
+        this.yearIndicator = null;
 
         console.log('📅 Timeline désactivée');
     }
