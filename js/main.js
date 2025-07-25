@@ -1,4 +1,4 @@
-// main.js - Orchestrateur principal (version refactorisée)
+// main.js - Orchestrateur principal (version avec loading screen)
 import { CONFIG } from './config.js';
 import { Router } from './router.js';
 import { LanguageManager } from './languageManager.js';
@@ -6,6 +6,7 @@ import { NavigationUI } from './navigationUI.js';
 import { PageLoader } from './pageLoader.js';
 import { ParticleSystem } from './particleSystem.js';
 import { TimelineManager } from './timelineManager.js';
+import { LoadingScreenManager } from './loadingScreenManager.js';
 
 /**
  * Classe principale de l'application
@@ -15,6 +16,7 @@ class Application {
     constructor() {
         this.modules = new Map();
         this.isInitialized = false;
+        this.loadingScreenManager = null;
     }
 
     async initialize() {
@@ -26,7 +28,10 @@ class Application {
         console.log('🚀 Initialisation de l\'application...');
 
         try {
-            // Initialiser les modules dans l'ordre correct
+            // 1. Initialiser le loading screen EN PREMIER
+            this.loadingScreenManager = new LoadingScreenManager();
+
+            // 2. Initialiser les modules dans l'ordre correct
             await this.initializeCore();
             await this.initializeUI();
             await this.initializeEffects();
@@ -35,8 +40,15 @@ class Application {
             this.isInitialized = true;
             console.log('✅ Application initialisée avec succès');
 
+            // 3. MASQUER le loading screen une fois tout prêt
+            await this.loadingScreenManager.hide();
+
         } catch (error) {
             console.error('❌ Erreur lors de l\'initialisation:', error);
+            // En cas d'erreur, masquer quand même le loading screen
+            if (this.loadingScreenManager) {
+                await this.loadingScreenManager.hide();
+            }
         }
     }
 
@@ -135,6 +147,10 @@ class Application {
         return this.modules.get('timelineManager');
     }
 
+    getLoadingScreenManager() {
+        return this.loadingScreenManager;
+    }
+
     // Méthodes de contrôle de l'application
     enableParticles() {
         const particleSystem = this.modules.get('particleSystem');
@@ -173,9 +189,28 @@ class Application {
         }
     }
 
+    // Méthodes de contrôle du loading screen
+    showLoadingScreen() {
+        if (this.loadingScreenManager) {
+            this.loadingScreenManager.show();
+        }
+    }
+
+    hideLoadingScreen() {
+        if (this.loadingScreenManager) {
+            this.loadingScreenManager.hide();
+        }
+    }
+
     // Cleanup pour tests ou changements majeurs
     destroy() {
         console.log('🧹 Nettoyage de l\'application...');
+
+        // Nettoyer le loading screen en premier
+        if (this.loadingScreenManager) {
+            this.loadingScreenManager.destroy();
+            this.loadingScreenManager = null;
+        }
 
         // Nettoyer tous les modules dans l'ordre inverse
         const moduleNames = Array.from(this.modules.keys()).reverse();
@@ -206,7 +241,8 @@ class Application {
             modules: Array.from(this.modules.keys()),
             currentLang: router?.getCurrentLang(),
             currentPage: router?.getCurrentPage(),
-            url: window.location.href
+            url: window.location.href,
+            loadingScreenHidden: this.loadingScreenManager?.isHidden
         };
     }
 
@@ -239,6 +275,12 @@ async function initializeApp() {
 
     } catch (error) {
         console.error('💥 Erreur fatale lors de l\'initialisation:', error);
+
+        // En cas d'erreur fatale, forcer le masquage du loading screen
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+        }
     }
 }
 
@@ -279,6 +321,19 @@ window.toggleParticles = () => {
     if (app) {
         const particleSystem = app.getParticleSystem();
         // Implémenter la logique de toggle si nécessaire
+    }
+};
+
+// Fonctions de contrôle du loading screen
+window.showLoadingScreen = () => {
+    if (app) {
+        app.showLoadingScreen();
+    }
+};
+
+window.hideLoadingScreen = () => {
+    if (app) {
+        app.hideLoadingScreen();
     }
 };
 
