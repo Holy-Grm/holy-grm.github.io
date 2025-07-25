@@ -1,7 +1,7 @@
-/* base/typography.css - Styles typographiques */
+/* base/typography.css - Système typographique centralisé */
 
 /* ====================================
-   TITRES ET HEADERS
+   TITRES DE BASE
    ==================================== */
 
 h1, h2, h3, h4, h5, h6 {
@@ -44,7 +44,87 @@ h6 {
 }
 
 /* ====================================
-   TEXTE CORPOREL
+   CLASSES DE TITRES RÉUTILISABLES
+   ==================================== */
+
+/* Titre de page avec ligne décorative */
+.page-title {
+    font-size: var(--font-size-6xl);
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    position: relative;
+}
+
+.page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    width: 80px;
+    height: 4px;
+    background: var(--gradient-primary);
+    transform: translateX(-50%);
+    border-radius: var(--border-radius-full);
+}
+
+/* Variantes de largeur pour la ligne décorative */
+.page-title--wide::after { width: 100px; }
+.page-title--narrow::after { width: 60px; }
+
+/* Titre de section */
+.section-title {
+    font-size: var(--font-size-5xl);
+    margin-bottom: var(--spacing-4xl);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-bold);
+    text-align: center;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 60px;
+    height: 3px;
+    background: var(--gradient-primary);
+    transform: translateX(-50%);
+    border-radius: var(--border-radius-full);
+}
+
+/* Titre de carte/composant */
+.card-title {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--spacing-md);
+    color: var(--color-primary);
+    font-weight: var(--font-weight-semibold);
+}
+
+/* Titre avec gradient animé (pour hero) */
+.hero-title {
+    font-size: var(--font-size-6xl);
+    margin-bottom: var(--spacing-md);
+    background: var(--gradient-text);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s infinite;
+    text-shadow: 0 0 30px rgba(64, 224, 208, 0.3);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--line-height-tight);
+}
+
+@keyframes gradientShift {
+    0%, 100% { background-position: 0 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+/* ====================================
+   TEXTE CORPOREL ET PARAGRAPHES
    ==================================== */
 
 p {
@@ -54,117 +134,106 @@ p {
     margin-bottom: var(--spacing-md);
 }
 
-.text-large {
+/* Classes utilitaires pour les paragraphes */
+.lead-text {
     font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--spacing-lg);
 }
 
-.text-small {
-    font-size: var(--font-size-sm);
+.intro-text {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
 }
 
-.text-xs {
-    font-size: var(--font-size-xs);
+.page-intro {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
 }
+
+.page-subtitle {
+    font-size: var(--font-size-2xl);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-lg);
+    font-weight: var(--font-weight-medium);
+    text-align: center;
+}
+
+.highlighted-text {
+    font-size: var(--font-size-2xl);
+    color: var(--color-text-primary);
+    font-weight: var(--font-weight-medium);
+}
+
+/* ====================================
+   TAILLES DE TEXTE UTILITAIRES
+   ==================================== */
+
+.text-xs { font-size: var(--font-size-xs); }
+.text-sm { font-size: var(--font-size-sm); }
+.text-base { font-size: var(--font-size-base); }
+.text-lg { font-size: var(--font-size-lg); }
+.text-xl { font-size: var(--font-size-xl); }
+.text-2xl { font-size: var(--font-size-2xl); }
+.text-3xl { font-size: var(--font-size-3xl); }
+.text-4xl { font-size: var(--font-size-4xl); }
+.text-5xl { font-size: var(--font-size-5xl); }
+.text-6xl { font-size: var(--font-size-6xl); }
 
 /* ====================================
    COULEURS DE TEXTE
    ==================================== */
 
-.text-primary {
-    color: var(--color-primary);
-}
-
-.text-secondary {
-    color: var(--color-text-secondary);
-}
-
-.text-muted {
-    color: var(--color-text-muted);
-}
-
-.text-white {
-    color: var(--color-white);
-}
-
-.text-black {
-    color: var(--color-black);
-}
+.text-primary { color: var(--color-primary); }
+.text-secondary { color: var(--color-text-secondary); }
+.text-muted { color: var(--color-text-muted); }
+.text-white { color: var(--color-white); }
+.text-black { color: var(--color-black); }
 
 /* ====================================
-   POIDS ET STYLES DE TEXTE
+   POIDS DE POLICE
    ==================================== */
 
-.font-light {
-    font-weight: var(--font-weight-light);
-}
+.font-light { font-weight: var(--font-weight-light); }
+.font-normal { font-weight: var(--font-weight-normal); }
+.font-medium { font-weight: var(--font-weight-medium); }
+.font-semibold { font-weight: var(--font-weight-semibold); }
+.font-bold { font-weight: var(--font-weight-bold); }
 
-.font-normal {
-    font-weight: var(--font-weight-normal);
-}
+/* ====================================
+   STYLES DE TEXTE
+   ==================================== */
 
-.font-medium {
-    font-weight: var(--font-weight-medium);
-}
-
-.font-semibold {
-    font-weight: var(--font-weight-semibold);
-}
-
-.font-bold {
-    font-weight: var(--font-weight-bold);
-}
-
-.italic {
-    font-style: italic;
-}
-
-.uppercase {
-    text-transform: uppercase;
-}
-
-.lowercase {
-    text-transform: lowercase;
-}
-
-.capitalize {
-    text-transform: capitalize;
-}
+.italic { font-style: italic; }
+.uppercase { text-transform: uppercase; }
+.lowercase { text-transform: lowercase; }
+.capitalize { text-transform: capitalize; }
 
 /* ====================================
    ALIGNEMENT DE TEXTE
    ==================================== */
 
-.text-left {
-    text-align: left;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.text-right {
-    text-align: right;
-}
-
-.text-justify {
-    text-align: justify;
-}
+.text-left { text-align: left; }
+.text-center { text-align: center; }
+.text-right { text-align: right; }
+.text-justify { text-align: justify; }
 
 /* ====================================
    HAUTEUR DE LIGNE
    ==================================== */
 
-.leading-tight {
-    line-height: var(--line-height-tight);
-}
-
-.leading-normal {
-    line-height: var(--line-height-normal);
-}
-
-.leading-relaxed {
-    line-height: var(--line-height-relaxed);
-}
+.leading-tight { line-height: var(--line-height-tight); }
+.leading-normal { line-height: var(--line-height-normal); }
+.leading-relaxed { line-height: var(--line-height-relaxed); }
 
 /* ====================================
    EFFETS TYPOGRAPHIQUES SPÉCIAUX
@@ -192,54 +261,128 @@ p {
 /* Texte avec effet néon */
 .text-neon {
     color: var(--color-primary);
-    text-shadow: 
-        0 0 5px var(--color-primary),
-        0 0 10px var(--color-primary),
-        0 0 15px var(--color-primary),
-        0 0 20px var(--color-primary);
+    text-shadow:
+            0 0 5px var(--color-primary),
+            0 0 10px var(--color-primary),
+            0 0 15px var(--color-primary),
+            0 0 20px var(--color-primary);
 }
 
 /* ====================================
-   LISTES
+   RESPONSIVE TYPOGRAPHY SYSTEM
    ==================================== */
 
-ul, ol {
-    margin-bottom: var(--spacing-md);
-    padding-left: var(--spacing-lg);
+/* Tailles responsive pour les titres principaux */
+@media (max-width: 768px) {
+    .page-title,
+    .hero-title {
+        font-size: var(--font-size-4xl);
+    }
+
+    .section-title {
+        font-size: var(--font-size-3xl);
+    }
+
+    .card-title {
+        font-size: var(--font-size-xl);
+    }
+
+    .page-intro,
+    .intro-text {
+        font-size: var(--font-size-lg);
+    }
+
+    .page-subtitle {
+        font-size: var(--font-size-xl);
+    }
+
+    .lead-text {
+        font-size: var(--font-size-lg);
+    }
 }
 
-ul {
-    list-style-type: none;
+@media (max-width: 480px) {
+    .page-title,
+    .hero-title {
+        font-size: var(--font-size-3xl);
+    }
+
+    .section-title {
+        font-size: var(--font-size-2xl);
+    }
+
+    .card-title {
+        font-size: var(--font-size-lg);
+    }
+
+    .page-intro,
+    .intro-text,
+    .lead-text {
+        font-size: var(--font-size-base);
+    }
+
+    .page-subtitle {
+        font-size: var(--font-size-lg);
+    }
+
+    /* Ajustement des lignes décoratives sur mobile */
+    .page-title::after {
+        width: 60px;
+        height: 3px;
+    }
+
+    .section-title::after {
+        width: 40px;
+        height: 2px;
+    }
 }
 
-ol {
-    list-style-type: decimal;
-}
-
-li {
-    margin-bottom: var(--spacing-xs);
-    line-height: var(--line-height-relaxed);
-}
+/* ====================================
+   LISTES STYLÉES
+   ==================================== */
 
 /* Liste avec puces personnalisées */
-.custom-list {
+.styled-list {
     list-style: none;
     padding-left: 0;
 }
 
-.custom-list li {
+.styled-list li {
     position: relative;
     padding-left: var(--spacing-lg);
     margin-bottom: var(--spacing-sm);
+    line-height: var(--line-height-relaxed);
 }
 
-.custom-list li::before {
+.styled-list li::before {
     content: '▸';
     position: absolute;
     left: 0;
     color: var(--color-primary);
     font-size: var(--font-size-lg);
     line-height: inherit;
+}
+
+/* Liste de détails pour timeline */
+.detail-list {
+    list-style: none;
+    padding: 0;
+}
+
+.detail-list li {
+    padding: var(--spacing-sm) 0;
+    color: var(--color-text-secondary);
+    position: relative;
+    padding-left: var(--spacing-lg);
+    line-height: var(--line-height-relaxed);
+}
+
+.detail-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
 }
 
 /* ====================================
@@ -305,43 +448,29 @@ pre code {
 }
 
 /* ====================================
-   RESPONSIVE TYPOGRAPHY
+   UTILITAIRES DE TEXTE
    ==================================== */
 
-@media (max-width: 768px) {
-    h1 {
-        font-size: var(--font-size-4xl);
-    }
-    
-    h2 {
-        font-size: var(--font-size-3xl);
-    }
-    
-    h3 {
-        font-size: var(--font-size-2xl);
-    }
-    
-    p {
-        font-size: var(--font-size-base);
-    }
-    
-    .text-large {
-        font-size: var(--font-size-lg);
-    }
+.text-ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: var(--font-size-3xl);
-    }
-    
-    h2 {
-        font-size: var(--font-size-2xl);
-    }
-    
-    p {
-        font-size: var(--font-size-sm);
-    }
+.text-wrap {
+    white-space: normal;
+    word-break: break-word;
+}
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.no-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 /* ====================================
@@ -377,44 +506,17 @@ button:focus-visible {
 }
 
 /* ====================================
-   UTILITAIRES DE DÉBORDEMENT DE TEXTE
+   PRÉFÉRENCES UTILISATEUR
    ==================================== */
 
-.text-ellipsis {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.text-clip {
-    overflow: hidden;
-    text-overflow: clip;
-    white-space: nowrap;
-}
-
-.text-wrap {
-    white-space: normal;
-    word-break: break-word;
-}
-
-.text-nowrap {
-    white-space: nowrap;
-}
-
-/* ====================================
-   SÉLECTION DE TEXTE
-   ==================================== */
-
-.no-select {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.select-all {
-    -webkit-user-select: all;
-    -moz-user-select: all;
-    -ms-user-select: all;
-    user-select: all;
+/* Support des préférences de mouvement réduit */
+@media (prefers-reduced-motion: reduce) {
+    .text-gradient,
+    .hero-title {
+        animation: none;
+        background: var(--color-primary);
+        -webkit-background-clip: unset;
+        -webkit-text-fill-color: unset;
+        background-clip: unset;
+    }
 }

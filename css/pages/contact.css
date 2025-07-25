@@ -1,42 +1,4 @@
-/* pages/contact.css - Page contact */
-
-/* ====================================
-   EN-TÊTE DE LA PAGE CONTACT
-   ==================================== */
-
-.contact-header {
-    text-align: center;
-    padding: var(--spacing-4xl) 0;
-    margin-bottom: var(--spacing-xl);
-}
-
-.contact-header h1 {
-    font-size: var(--font-size-6xl);
-    margin-bottom: var(--spacing-lg);
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
-    position: relative;
-}
-
-.contact-header h1::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    width: 80px;
-    height: 4px;
-    background: var(--gradient-primary);
-    transform: translateX(-50%);
-    border-radius: var(--border-radius-full);
-}
-
-.contact-intro {
-    font-size: var(--font-size-xl);
-    color: var(--color-text-secondary);
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: var(--line-height-relaxed);
-}
+/* pages/contact.css - Page contact (nettoyé) */
 
 /* ====================================
    CONTENU PRINCIPAL CONTACT
@@ -58,14 +20,8 @@
     padding: var(--spacing-xl) 0;
 }
 
-.contact-info h2 {
-    font-size: var(--font-size-3xl);
-    margin-bottom: var(--spacing-xl);
-    color: var(--color-primary);
-}
-
 .contact-text {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     line-height: var(--line-height-relaxed);
     color: var(--color-text-secondary);
     margin-bottom: var(--spacing-xl);
@@ -350,10 +306,10 @@
     text-align: center;
     padding: var(--spacing-5xl) 0;
     background: linear-gradient(
-        135deg,
-        var(--color-bg-secondary) 0%,
-        var(--color-bg-primary) 50%,
-        var(--color-bg-secondary) 100%
+            135deg,
+            var(--color-bg-secondary) 0%,
+            var(--color-bg-primary) 50%,
+            var(--color-bg-secondary) 100%
     );
     border-radius: var(--border-radius-2xl);
     margin: var(--spacing-5xl) 0;
@@ -521,42 +477,34 @@
    ==================================== */
 
 @media (max-width: 768px) {
-    .contact-header h1 {
-        font-size: var(--font-size-4xl);
-    }
-    
-    .contact-intro {
-        font-size: var(--font-size-lg);
-    }
-    
     .contact-content {
         grid-template-columns: 1fr;
         gap: var(--spacing-xl);
     }
-    
+
     .contact-form {
         padding: var(--spacing-lg);
     }
-    
+
     .form-row {
         grid-template-columns: 1fr;
     }
-    
+
     .contact-links {
         flex-direction: column;
         align-items: center;
         gap: var(--spacing-lg);
     }
-    
+
     .contact-link {
         width: 100%;
         max-width: 300px;
     }
-    
+
     .social-links {
         gap: var(--spacing-md);
     }
-    
+
     .social-link {
         width: 50px;
         height: 50px;
@@ -565,29 +513,21 @@
 }
 
 @media (max-width: 480px) {
-    .contact-header h1 {
-        font-size: var(--font-size-3xl);
-    }
-    
-    .contact-intro {
-        font-size: var(--font-size-base);
-    }
-    
     .contact-form {
         padding: var(--spacing-md);
     }
-    
+
     .contact-detail {
         flex-direction: column;
         align-items: flex-start;
         gap: var(--spacing-sm);
         text-align: left;
     }
-    
+
     .contact-detail:hover {
         transform: none;
     }
-    
+
     .availability-section {
         padding: var(--spacing-lg);
     }
@@ -649,13 +589,13 @@
     .form-submit:hover {
         transform: none;
     }
-    
+
     .status-indicator,
     .contact-form.animate,
     .contact-info.animate {
         animation: none;
     }
-    
+
     .form-submit.loading::after {
         animation: none;
         border: 2px solid var(--color-black);

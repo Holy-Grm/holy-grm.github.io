@@ -1,4 +1,4 @@
-/* pages/home.css - Page d'accueil */
+/* pages/home.css - Page d'accueil (simplifié) */
 
 /* ====================================
    SECTION HERO PRINCIPALE
@@ -24,9 +24,9 @@
     width: 200px;
     height: 200px;
     background: radial-gradient(
-        circle, 
-        rgba(64, 224, 208, 0.3) 0%, 
-        transparent 70%
+            circle,
+            rgba(64, 224, 208, 0.3) 0%,
+            transparent 70%
     );
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -35,52 +35,14 @@
 }
 
 @keyframes pulse {
-    0%, 100% { 
-        transform: translate(-50%, -50%) scale(1); 
-        opacity: 0.5; 
+    0%, 100% {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 0.5;
     }
-    50% { 
-        transform: translate(-50%, -50%) scale(1.5); 
-        opacity: 0.2; 
+    50% {
+        transform: translate(-50%, -50%) scale(1.5);
+        opacity: 0.2;
     }
-}
-
-/* ====================================
-   TITRE PRINCIPAL AVEC GRADIENT
-   ==================================== */
-
-.hero h1 {
-    font-size: var(--font-size-6xl);
-    margin-bottom: var(--spacing-md);
-    background: var(--gradient-text);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    animation: gradientShift 3s infinite;
-    text-shadow: 0 0 30px rgba(64, 224, 208, 0.3);
-    font-weight: var(--font-weight-bold);
-    line-height: var(--line-height-tight);
-}
-
-@keyframes gradientShift {
-    0%, 100% { background-position: 0 50%; }
-    50% { background-position: 100% 50%; }
-}
-
-/* ====================================
-   SOUS-TITRE ET DESCRIPTION
-   ==================================== */
-
-.hero p {
-    font-size: var(--font-size-2xl);
-    margin-bottom: var(--spacing-4xl);
-    color: var(--color-text-secondary);
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    line-height: var(--line-height-relaxed);
-    font-weight: var(--font-weight-normal);
 }
 
 /* ====================================
@@ -91,39 +53,6 @@
     margin-top: var(--spacing-4xl);
     text-align: center;
     padding: var(--spacing-4xl) 0;
-}
-
-.skills h2 {
-    font-size: var(--font-size-5xl);
-    margin-bottom: var(--spacing-4xl);
-    color: var(--color-primary);
-    font-weight: var(--font-weight-bold);
-    position: relative;
-}
-
-/* Ligne décorative sous le titre */
-.skills h2::after {
-    content: '';
-    position: absolute;
-    bottom: -10px;
-    left: 50%;
-    width: 60px;
-    height: 3px;
-    background: var(--gradient-primary);
-    transform: translateX(-50%);
-    border-radius: var(--border-radius-full);
-}
-
-/* ====================================
-   INTRODUCTION AUX COMPÉTENCES
-   ==================================== */
-
-.skills-intro {
-    max-width: 800px;
-    margin: 0 auto var(--spacing-4xl);
-    font-size: var(--font-size-lg);
-    color: var(--color-text-secondary);
-    line-height: var(--line-height-relaxed);
 }
 
 /* ====================================
@@ -186,10 +115,10 @@
     text-align: center;
     padding: var(--spacing-5xl) 0;
     background: linear-gradient(
-        135deg,
-        var(--color-bg-primary) 0%,
-        var(--color-bg-secondary) 50%,
-        var(--color-bg-primary) 100%
+            135deg,
+            var(--color-bg-primary) 0%,
+            var(--color-bg-secondary) 50%,
+            var(--color-bg-primary) 100%
     );
     border-radius: var(--border-radius-2xl);
     margin: var(--spacing-4xl) 0;
@@ -205,10 +134,10 @@
     width: 200%;
     height: 100%;
     background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(64, 224, 208, 0.05),
-        transparent
+            90deg,
+            transparent,
+            rgba(64, 224, 208, 0.05),
+            transparent
     );
     animation: sweep 3s infinite;
 }
@@ -301,27 +230,6 @@
 }
 
 /* ====================================
-   EFFETS INTERACTIFS
-   ==================================== */
-
-/* Effet de parallaxe sur le hero */
-.hero.parallax {
-    transform-style: preserve-3d;
-}
-
-.hero.parallax h1 {
-    transform: translateZ(30px);
-}
-
-.hero.parallax p {
-    transform: translateZ(20px);
-}
-
-.hero.parallax .cta-button {
-    transform: translateZ(40px);
-}
-
-/* ====================================
    RESPONSIVE DESIGN
    ==================================== */
 
@@ -330,72 +238,39 @@
         padding: var(--spacing-3xl) 0;
         min-height: 60vh;
     }
-    
-    .hero h1 {
-        font-size: var(--font-size-4xl);
-    }
-    
-    .hero p {
-        font-size: var(--font-size-lg);
-        margin-bottom: var(--spacing-xl);
-    }
-    
+
     .skills {
         margin-top: var(--spacing-xl);
         padding: var(--spacing-xl) 0;
     }
-    
-    .skills h2 {
-        font-size: var(--font-size-3xl);
-    }
-    
+
     .stats-section {
         grid-template-columns: repeat(2, 1fr);
         gap: var(--spacing-md);
     }
-    
+
     .stat-number {
         font-size: var(--font-size-4xl);
     }
-    
+
     .cta-section {
         padding: var(--spacing-3xl) var(--spacing-md);
     }
-    
-    .cta-section h2 {
-        font-size: var(--font-size-3xl);
-    }
-    
+
     .quote-text {
         font-size: var(--font-size-xl);
     }
 }
 
 @media (max-width: 480px) {
-    .hero h1 {
-        font-size: var(--font-size-3xl);
-    }
-    
-    .hero p {
-        font-size: var(--font-size-base);
-    }
-    
-    .skills h2 {
-        font-size: var(--font-size-2xl);
-    }
-    
     .stats-section {
         grid-template-columns: 1fr;
     }
-    
+
     .stat-number {
         font-size: var(--font-size-3xl);
     }
-    
-    .cta-section h2 {
-        font-size: var(--font-size-2xl);
-    }
-    
+
     .quote-text {
         font-size: var(--font-size-lg);
     }
@@ -448,16 +323,8 @@
 /* Support des préférences de mouvement réduit */
 @media (prefers-reduced-motion: reduce) {
     .hero::before,
-    .hero h1,
     .cta-section::before,
     .stat-number.animate {
         animation: none;
-    }
-    
-    .hero h1 {
-        background: var(--color-primary);
-        -webkit-background-clip: unset;
-        -webkit-text-fill-color: unset;
-        background-clip: unset;
     }
 }

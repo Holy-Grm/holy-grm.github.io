@@ -1,35 +1,4 @@
-/* pages/about.css - Page à propos */
-
-/* ====================================
-   INTRODUCTION ABOUT
-   ==================================== */
-
-.about-intro {
-    margin-bottom: var(--spacing-5xl);
-    padding: var(--spacing-4xl) 0;
-}
-
-.about-intro h1 {
-    font-size: var(--font-size-6xl);
-    margin-bottom: var(--spacing-xl);
-    color: var(--color-primary);
-    text-align: center;
-    font-weight: var(--font-weight-bold);
-    position: relative;
-}
-
-/* Ligne décorative sous le titre */
-.about-intro h1::after {
-    content: '';
-    position: absolute;
-    bottom: -15px;
-    left: 50%;
-    width: 80px;
-    height: 4px;
-    background: var(--gradient-primary);
-    transform: translateX(-50%);
-    border-radius: var(--border-radius-full);
-}
+/* pages/about.css - Page à propos (nettoyé) */
 
 /* ====================================
    CONTENU PRINCIPAL ABOUT
@@ -57,12 +26,6 @@
 .about-text p {
     margin-bottom: var(--spacing-lg);
     text-align: justify;
-}
-
-.about-text p:first-child {
-    font-size: var(--font-size-2xl);
-    color: var(--color-text-primary);
-    font-weight: var(--font-weight-medium);
 }
 
 /* Mise en évidence des mots-clés */
@@ -104,9 +67,9 @@
     width: 120%;
     height: 120%;
     background: radial-gradient(
-        circle,
-        var(--color-primary-alpha) 0%,
-        transparent 70%
+            circle,
+            var(--color-primary-alpha) 0%,
+            transparent 70%
     );
     border-radius: 50%;
     transform: translate(-50%, -50%);
@@ -127,19 +90,12 @@
     margin: var(--spacing-5xl) 0;
     padding: var(--spacing-4xl) 0;
     background: linear-gradient(
-        135deg,
-        var(--color-bg-secondary) 0%,
-        var(--color-bg-primary) 50%,
-        var(--color-bg-secondary) 100%
+            135deg,
+            var(--color-bg-secondary) 0%,
+            var(--color-bg-primary) 50%,
+            var(--color-bg-secondary) 100%
     );
     border-radius: var(--border-radius-2xl);
-}
-
-.skills-detailed h2 {
-    text-align: center;
-    font-size: var(--font-size-4xl);
-    margin-bottom: var(--spacing-4xl);
-    color: var(--color-primary);
 }
 
 .skills-categories {
@@ -231,13 +187,6 @@
     margin-top: var(--spacing-5xl);
 }
 
-.experience-timeline h2 {
-    text-align: center;
-    font-size: var(--font-size-4xl);
-    margin-bottom: var(--spacing-4xl);
-    color: var(--color-primary);
-}
-
 /* Items de timeline simplifiés pour la section expérience */
 .timeline-item {
     padding: var(--spacing-lg);
@@ -287,12 +236,6 @@
 .values-section {
     margin: var(--spacing-5xl) 0;
     text-align: center;
-}
-
-.values-section h2 {
-    font-size: var(--font-size-4xl);
-    margin-bottom: var(--spacing-xl);
-    color: var(--color-primary);
 }
 
 .values-grid {
@@ -359,10 +302,10 @@
     margin: var(--spacing-5xl) 0;
     padding: var(--spacing-4xl);
     background: linear-gradient(
-        135deg,
-        var(--color-primary-alpha) 0%,
-        transparent 50%,
-        var(--color-primary-alpha) 100%
+            135deg,
+            var(--color-primary-alpha) 0%,
+            transparent 50%,
+            var(--color-primary-alpha) 100%
     );
     border-radius: var(--border-radius-2xl);
     text-align: center;
@@ -394,62 +337,46 @@
         gap: var(--spacing-xl);
         text-align: center;
     }
-    
-    .about-intro h1 {
-        font-size: var(--font-size-4xl);
-    }
-    
+
     .about-text {
         font-size: var(--font-size-lg);
     }
-    
-    .about-text p:first-child {
-        font-size: var(--font-size-xl);
-    }
-    
+
     .skills-categories {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
     }
-    
+
     .values-grid {
         grid-template-columns: 1fr;
         gap: var(--spacing-lg);
     }
-    
+
     .timeline-item {
         margin: var(--spacing-md) 0;
         padding: var(--spacing-md);
     }
-    
+
     .timeline-item:hover {
         transform: translateX(5px);
     }
 }
 
 @media (max-width: 480px) {
-    .about-intro h1 {
-        font-size: var(--font-size-3xl);
-    }
-    
     .about-text {
         font-size: var(--font-size-base);
     }
-    
-    .about-text p:first-child {
-        font-size: var(--font-size-lg);
-    }
-    
+
     .skills-detailed,
     .quick-contact {
         padding: var(--spacing-lg);
     }
-    
+
     .skill-category,
     .value-item {
         padding: var(--spacing-lg);
     }
-    
+
     .value-icon {
         font-size: var(--font-size-4xl);
     }
@@ -509,7 +436,7 @@
         transition: none;
         transform: none;
     }
-    
+
     .about-intro.animate h1,
     .about-content.animate .about-text,
     .about-content.animate .about-image {
