@@ -1,0 +1,485 @@
+/* components/timeline.css - Styles de timeline */
+
+/* ====================================
+   CONTENEUR PRINCIPAL
+   ==================================== */
+
+.timeline-container {
+    position: relative;
+    padding: var(--spacing-4xl) 0 200px 0;
+    margin-top: var(--spacing-4xl);
+    overflow: hidden; /* Évite les débordements */
+}
+
+.timeline-container h2 {
+    text-align: center;
+    font-size: var(--font-size-5xl);
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-4xl);
+    position: relative;
+    z-index: var(--z-index-content);
+    font-weight: var(--font-weight-bold);
+}
+
+/* ====================================
+   LIGNE CENTRALE
+   ==================================== */
+
+.timeline-line {
+    position: absolute;
+    left: 50%;
+    top: 160px; /* Ajusté pour un meilleur alignement */
+    bottom: 80px;
+    width: var(--timeline-line-width);
+    background: linear-gradient(180deg,
+        transparent 0%,
+        rgba(64, 224, 208, 0.3) 5%,
+        var(--color-primary) 15%,
+        var(--color-primary) 85%,
+        rgba(64, 224, 208, 0.3) 95%,
+        transparent 100%);
+    transform: translateX(-50%);
+    z-index: var(--z-index-content);
+    transition: background var(--duration-normal) var(--ease-in-out);
+    will-change: background;
+}
+
+/* ====================================
+   INDICATEUR D'ANNÉE FLOTTANT
+   ==================================== */
+
+.year-indicator {
+    position: fixed;
+    top: 50%;
+    right: var(--spacing-4xl);
+    transform: translateY(-50%);
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    opacity: 0;
+    z-index: var(--z-index-sidebar);
+    transition: all 0.4s var(--ease-smooth);
+    text-shadow: var(--shadow-glow);
+    pointer-events: none;
+}
+
+.year-indicator.active {
+    opacity: 0.8;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* ====================================
+   WRAPPER ET LAYOUT
+   ==================================== */
+
+.timeline-wrapper {
+    position: relative;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 var(--spacing-md);
+}
+
+/* ====================================
+   ÉVÉNEMENTS DE LA TIMELINE
+   ==================================== */
+
+.timeline-event {
+    position: relative;
+    margin: 120px 0;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s var(--ease-smooth);
+}
+
+.timeline-event.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animations différenciées selon le côté */
+.timeline-event[data-side="left"] {
+    transform: translateX(-30px) translateY(40px);
+}
+
+.timeline-event[data-side="right"] {
+    transform: translateX(30px) translateY(40px);
+}
+
+.timeline-event.visible[data-side="left"],
+.timeline-event.visible[data-side="right"] {
+    transform: translateX(0) translateY(0);
+}
+
+/* ====================================
+   POINTS SUR LA TIMELINE
+   ==================================== */
+
+.timeline-dot {
+    position: absolute;
+    left: 50%;
+    top: 60px;
+    width: var(--timeline-dot-size);
+    height: var(--timeline-dot-size);
+    background: var(--color-primary);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-index-content);
+    box-shadow: 
+        0 0 0 5px var(--color-primary-alpha),
+        var(--shadow-glow);
+    transition: all var(--duration-normal) var(--ease-smooth);
+}
+
+.timeline-event.visible .timeline-dot {
+    animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+    0%, 100% {
+        box-shadow: 
+            0 0 0 5px var(--color-primary-alpha),
+            var(--shadow-glow);
+        transform: translateX(-50%) scale(1);
+    }
+    50% {
+        box-shadow: 
+            0 0 0 15px rgba(64, 224, 208, 0.1),
+            var(--shadow-glow-strong);
+        transform: translateX(-50%) scale(1.1);
+    }
+}
+
+/* Point spécial pour l'éducation */
+.timeline-dot.education {
+    background: var(--gradient-primary);
+    width: var(--timeline-dot-size-large);
+    height: var(--timeline-dot-size-large);
+}
+
+/* ====================================
+   CONTENU DES ÉVÉNEMENTS
+   ==================================== */
+
+.timeline-content {
+    background: var(--color-bg-card);
+    padding: var(--card-padding);
+    border-radius: var(--card-border-radius);
+    border: var(--border-width) solid var(--color-border);
+    position: relative;
+    width: var(--timeline-content-width);
+    backdrop-filter: blur(10px);
+    transition: all 0.4s var(--ease-smooth);
+    cursor: pointer;
+}
+
+/* Positionnement gauche/droite */
+.timeline-event[data-side="left"] .timeline-content {
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.timeline-event[data-side="right"] .timeline-content {
+    margin-left: auto;
+    margin-right: 0;
+}
+
+/* ====================================
+   FLÈCHES POINTANT VERS LA LIGNE
+   ==================================== */
+
+.timeline-content::before {
+    content: '';
+    position: absolute;
+    top: 60px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    transition: all var(--duration-normal) var(--ease-in-out);
+}
+
+.timeline-event[data-side="left"] .timeline-content::before {
+    right: -var(--timeline-arrow-size);
+    border-width: 8px 0 8px var(--timeline-arrow-size);
+    border-color: transparent transparent transparent var(--color-border);
+}
+
+.timeline-event[data-side="right"] .timeline-content::before {
+    left: -var(--timeline-arrow-size);
+    border-width: 8px var(--timeline-arrow-size) 8px 0;
+    border-color: transparent var(--color-border) transparent transparent;
+}
+
+/* ====================================
+   EFFETS DE HOVER
+   ==================================== */
+
+.timeline-content:hover {
+    transform: scale(1.02);
+    border-color: var(--color-border-hover);
+    box-shadow: var(--shadow-card);
+    background: var(--color-bg-card-hover);
+}
+
+.timeline-content:hover::before {
+    border-color: transparent var(--color-border-hover) transparent transparent;
+}
+
+.timeline-event[data-side="left"] .timeline-content:hover::before {
+    border-color: transparent transparent transparent var(--color-border-hover);
+}
+
+/* Effet sur le point lors du hover du contenu */
+.timeline-content:hover + .timeline-dot,
+.timeline-content:hover ~ .timeline-dot {
+    transform: translateX(-50%) scale(1.5);
+    box-shadow: 
+        0 0 0 10px rgba(64, 224, 208, 0.3),
+        var(--shadow-glow-strong);
+}
+
+/* ====================================
+   ANNÉE
+   ==================================== */
+
+.timeline-year {
+    position: absolute;
+    top: -15px;
+    font-size: var(--font-size-xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-primary);
+    background: var(--color-bg-card);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius-full);
+    text-shadow: var(--shadow-glow);
+    border: var(--border-width) solid var(--color-border);
+}
+
+.timeline-event[data-side="left"] .timeline-year {
+    right: var(--spacing-xl);
+}
+
+.timeline-event[data-side="right"] .timeline-year {
+    left: var(--spacing-xl);
+}
+
+/* ====================================
+   DÉTAILS DES ÉVÉNEMENTS
+   ==================================== */
+
+.timeline-details {
+    margin-top: var(--spacing-md);
+    padding-left: var(--spacing-md);
+    list-style: none;
+}
+
+.timeline-details li {
+    position: relative;
+    margin: var(--spacing-sm) 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-relaxed);
+}
+
+.timeline-details li::before {
+    content: '▸';
+    position: absolute;
+    left: -var(--spacing-md);
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+}
+
+/* ====================================
+   STYLE SPÉCIAL ÉDUCATION
+   ==================================== */
+
+.education-content {
+    background: linear-gradient(135deg,
+        var(--color-primary-alpha-light) 0%,
+        var(--color-bg-card) 50%);
+    border: var(--border-width-thick) solid rgba(64, 224, 208, 0.5);
+}
+
+.education-content:hover {
+    background: linear-gradient(135deg,
+        var(--color-primary-alpha) 0%,
+        var(--color-bg-card-hover) 50%);
+}
+
+/* ====================================
+   TAGS/BADGES DANS LA TIMELINE
+   ==================================== */
+
+.timeline-tag {
+    display: inline-block;
+    background: var(--color-primary-alpha);
+    color: var(--color-primary);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: var(--border-radius-full);
+    margin: var(--spacing-xs);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    transition: all var(--duration-normal) var(--ease-in-out);
+}
+
+.timeline-tag:hover {
+    background: var(--color-primary);
+    color: var(--color-black);
+    transform: scale(1.05);
+}
+
+/* ====================================
+   RESPONSIVE DESIGN
+   ==================================== */
+
+@media (max-width: 768px) {
+    /* Repositionner pour mobile */
+    .timeline-line {
+        left: var(--mobile-timeline-left) !important;
+        transform: none !important;
+    }
+
+    .timeline-dot {
+        left: var(--mobile-timeline-left) !important;
+        transform: translateX(-50%) !important;
+    }
+
+    .timeline-content {
+        width: calc(100% - 80px) !important;
+        margin-left: var(--mobile-timeline-content-margin) !important;
+        margin-right: 0 !important;
+    }
+
+    .timeline-content::before {
+        display: none;
+    }
+
+    .timeline-year {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: auto !important;
+        display: inline-block;
+        margin-bottom: var(--spacing-sm);
+        font-size: var(--font-size-lg);
+    }
+
+    .year-indicator {
+        font-size: var(--font-size-4xl);
+        right: var(--spacing-md);
+    }
+
+    .timeline-container {
+        padding: var(--spacing-3xl) 0 150px 0;
+    }
+
+    .timeline-event {
+        margin: var(--spacing-4xl) 0;
+    }
+
+    /* Unifier les animations sur mobile */
+    .timeline-event[data-side="left"],
+    .timeline-event[data-side="right"] {
+        transform: translateY(40px);
+    }
+
+    .timeline-event.visible[data-side="left"],
+    .timeline-event.visible[data-side="right"] {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .timeline-content {
+        width: calc(100% - 60px) !important;
+        margin-left: 50px !important;
+        padding: var(--spacing-md);
+    }
+
+    .timeline-line {
+        left: 25px !important;
+    }
+
+    .timeline-dot {
+        left: 25px !important;
+        width: 16px;
+        height: 16px;
+    }
+
+    .year-indicator {
+        font-size: var(--font-size-3xl);
+        right: var(--spacing-sm);
+    }
+
+    .timeline-container h2 {
+        font-size: var(--font-size-4xl);
+    }
+}
+
+/* ====================================
+   ANIMATIONS PERSONNALISÉES
+   ==================================== */
+
+/* Animation d'apparition pour le titre */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8) translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Animation de remplissage de la ligne */
+@keyframes fillLine {
+    from {
+        background: linear-gradient(180deg,
+            transparent 0%,
+            rgba(64, 224, 208, 0.3) 100%);
+    }
+    to {
+        background: linear-gradient(180deg,
+            var(--color-primary) 0%,
+            var(--color-primary) 100%);
+    }
+}
+
+/* ====================================
+   OPTIMISATIONS PERFORMANCE
+   ==================================== */
+
+.timeline-line {
+    will-change: background;
+}
+
+.timeline-dot {
+    will-change: transform, box-shadow;
+}
+
+.timeline-content {
+    will-change: transform, box-shadow;
+}
+
+/* ====================================
+   ACCESSIBILITÉ
+   ==================================== */
+
+.timeline-content:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Réduction de mouvement */
+@media (prefers-reduced-motion: reduce) {
+    .timeline-event,
+    .timeline-dot,
+    .timeline-content {
+        transition: none;
+        animation: none;
+    }
+    
+    .timeline-event.visible .timeline-dot {
+        animation: none;
+    }
+}

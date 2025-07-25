@@ -1,0 +1,253 @@
+/* base/reset.css - Reset et styles de base */
+
+/* ====================================
+   RESET CSS MODERNE
+   ==================================== */
+
+/* Box sizing */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* HTML et Body */
+html {
+    /* Assure que le html couvre toute la zone */
+    min-height: 100%;
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    
+    /* Support pour les unités de viewport dynamiques */
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height sur mobile */
+    
+    /* Fallback background */
+    background-color: var(--color-bg-primary);
+}
+
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-normal);
+    color: var(--color-text-primary);
+    
+    /* Background fixe qui couvre toujours toute la zone */
+    background: var(--gradient-bg);
+    background-attachment: fixed;
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    
+    /* Assure une couverture complète */
+    min-height: 100vh;
+    min-height: 100dvh; /* Support for dynamic viewport height on mobile */
+    width: 100vw;
+    
+    /* Évite le débordement horizontal */
+    overflow-x: hidden;
+    position: relative;
+    
+    /* Fallback pour éviter les espaces blancs */
+    background-color: var(--color-bg-primary);
+    
+    /* Amélioration du rendu des polices */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* ====================================
+   ÉLÉMENTS HTML DE BASE
+   ==================================== */
+
+/* Liens */
+a {
+    color: inherit;
+    text-decoration: none;
+    transition: color var(--duration-normal) var(--ease-in-out);
+}
+
+a:hover {
+    color: var(--color-primary);
+}
+
+/* Listes */
+ul,
+ol {
+    list-style: none;
+}
+
+/* Images */
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Boutons */
+button {
+    border: none;
+    background: none;
+    font-family: inherit;
+    font-size: inherit;
+    cursor: pointer;
+    transition: all var(--duration-normal) var(--ease-in-out);
+}
+
+button:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Inputs */
+input,
+textarea,
+select {
+    font-family: inherit;
+    font-size: inherit;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+/* Tables */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* ====================================
+   ACCESSIBILITÉ
+   ==================================== */
+
+/* Focus visible pour la navigation au clavier */
+*:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
+}
+
+/* Masquer le contenu visuellement mais le garder accessible */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Réduire les animations pour les utilisateurs qui les préfèrent réduites */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* ====================================
+   STYLES DE SÉLECTION
+   ==================================== */
+
+::selection {
+    background: var(--color-primary-alpha);
+    color: var(--color-white);
+}
+
+::-moz-selection {
+    background: var(--color-primary-alpha);
+    color: var(--color-white);
+}
+
+/* ====================================
+   STYLES DE SCROLLBAR (WEBKIT)
+   ==================================== */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: var(--border-radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-primary-dark);
+}
+
+/* ====================================
+   RESPONSIVE POUR LE BACKGROUND
+   ==================================== */
+
+/* Alternative pour mobile - background fixe avec couverture étendue */
+@media (max-width: 768px) {
+    body {
+        /* Sur mobile, utilise un background qui s'étend au-delà de la zone visible */
+        background: var(--gradient-bg);
+        background-size: 120% 120%; /* Étend le background de 20% de chaque côté */
+        background-position: center center;
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+
+        /* Assure une couverture complète sur mobile */
+        min-height: 100vh;
+        min-height: 100svh; /* Small viewport height pour mobile */
+        min-height: 100dvh; /* Dynamic viewport height */
+
+        /* Évite le scroll horizontal sur mobile */
+        max-width: 100vw;
+        overflow-x: hidden;
+    }
+
+    /* Assure que le html couvre aussi toute la zone sur mobile */
+    html {
+        background-color: var(--color-bg-primary);
+        min-height: 100vh;
+        min-height: 100svh;
+        min-height: 100dvh;
+    }
+}
+
+/* Si le background fixe pose des problèmes de performance sur certains appareils */
+@media (max-width: 480px) {
+    body {
+        /* Utilise scroll au lieu de fixed pour de meilleures performances */
+        background-attachment: scroll;
+        /* Étend encore plus le background */
+        background-size: 150% 150%;
+        background-position: center center;
+    }
+}
+
+/* ====================================
+   UTILITAIRES DE DEBUGGING (DÉVELOPPEMENT)
+   ==================================== */
+
+/* Uncomment for debugging layout issues */
+/*
+* {
+    outline: 1px solid red !important;
+}
+*/
