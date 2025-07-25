@@ -1,10 +1,10 @@
-/* main.css - Point d'entrée principal */
+/* main.css - Point d'entrée optimisé */
 
 /* ====================================
    IMPORTS DES MODULES CSS
    ==================================== */
 
-/* Base */
+/* Base - ORDRE IMPORTANT */
 @import url('./base/variables.css');
 @import url('./base/reset.css');
 @import url('./base/typography.css');
@@ -19,19 +19,13 @@
 @import url('./components/particles.css');
 @import url('./components/timeline.css');
 
-/* Pages */
-@import url('./pages/home.css');
-@import url('./pages/about.css');
-@import url('./pages/projects.css');
-@import url('./pages/contact.css');
-
 /* Utils */
 @import url('./utils/animations.css');
 @import url('./utils/responsive.css');
 @import url('./utils/utilities.css');
 
 /* ====================================
-   STYLES GLOBAUX
+   STYLES GLOBAUX UNIFIÉS
    ==================================== */
 
 /* Container principal */
@@ -49,30 +43,53 @@
     min-height: 100vh;
     padding-top: var(--nav-height);
     animation: var(--animation-fade-in);
+    padding-bottom: var(--spacing-5xl);
 }
 
 .page.active {
     display: block;
 }
 
-/* Mise en page générale */
-main {
-    position: relative;
-    z-index: 1;
+/* ====================================
+   ENTÊTE UNIFIÉ POUR TOUTES LES PAGES
+   ==================================== */
+
+.entete {
+    text-align: center;
+    margin: var(--spacing-5xl) auto;
+    max-width: 800px;
+    padding: 0 var(--spacing-lg);
 }
 
-/* Scroll behavior */
-html {
-    scroll-behavior: smooth;
+.entete .page-intro {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    text-align: center;
 }
 
-/* Selection color */
-::selection {
-    background: var(--color-primary-alpha);
-    color: var(--color-white);
+.entete .page-intro p {
+    margin-bottom: var(--spacing-lg);
 }
 
-::-moz-selection {
-    background: var(--color-primary-alpha);
-    color: var(--color-white);
+/* ====================================
+   RESPONSIVE POUR L'ENTÊTE
+   ==================================== */
+
+@media (max-width: 768px) {
+    .entete {
+        margin: var(--spacing-xl) auto;
+        padding: 0 var(--spacing-md);
+    }
+
+    .entete .page-intro {
+        font-size: var(--font-size-lg);
+    }
+}
+
+@media (max-width: 480px) {
+    .entete .page-intro {
+        font-size: var(--font-size-base);
+    }
 }
