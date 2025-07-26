@@ -51,28 +51,7 @@
     display: block;
 }
 
-/* ====================================
-   ENTÊTE UNIFIÉ POUR TOUTES LES PAGES
-   ==================================== */
 
-.entete {
-    text-align: center;
-    margin: var(--spacing-5xl) auto;
-    max-width: 800px;
-    padding: 0 var(--spacing-lg);
-}
-
-.entete .page-intro {
-    font-size: var(--font-size-xl);
-    line-height: var(--line-height-relaxed);
-    color: var(--color-text-secondary);
-    margin-bottom: var(--spacing-xl);
-    text-align: center;
-}
-
-.entete .page-intro p {
-    margin-bottom: var(--spacing-lg);
-}
 
 /* ====================================
    RESPONSIVE POUR L'ENTÊTE
