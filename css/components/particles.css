@@ -4,6 +4,17 @@
    CONTENEUR DE PARTICULES DE FOND
    ==================================== */
 
+:root {
+    /* Variables pour les particules */
+    --particle-size: 3px;
+    --particle-opacity: 0.6;
+    --z-index-background: 1;
+    --z-index-notification: 1000;
+    --z-index-modal: 9999;
+
+
+}
+
 .particles {
     position: fixed;
     top: 0;
@@ -29,15 +40,20 @@
     will-change: transform, opacity;
 }
 
-/* Animation de flottement des particules */
 @keyframes float {
-    0%, 100% { 
-        transform: translateY(0px) rotate(0deg); 
-        opacity: 1; 
+    0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
     }
-    50% { 
-        transform: translateY(-100px) rotate(180deg); 
-        opacity: 0.5; 
+    10% {
+        opacity: var(--particle-opacity);
+    }
+    90% {
+        opacity: var(--particle-opacity);
+    }
+    100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
     }
 }
 
@@ -414,7 +430,7 @@
 /* Réduire les particules sur mobile pour les performances */
 @media (max-width: 768px) {
     .particles {
-        display: none; /* Désactiver les particules de fond sur mobile */
+       /* display: none; /* Désactiver les particules de fond sur mobile */
     }
     
     .profile-placeholder {
