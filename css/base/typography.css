@@ -1,4 +1,3 @@
-
 h1, h2, h3, h4, h5, h6 {
     font-weight: var(--font-weight-bold);
     line-height: var(--line-height-tight);
@@ -140,42 +139,64 @@ p {
 }
 
 /* ====================================
-   PAGE D'ACCUEIL (HOME)
+   PAGE D'ACCUEIL (HOME) - CORRIGÉE
    ==================================== */
 
 .hero {
     text-align: center;
-    padding: var(--spacing-4xl) 0;
     position: relative;
-    min-height: 70vh;
+    /* Calcul pour centrer parfaitement en prenant en compte la navigation */
+    min-height: calc(100vh - var(--nav-height));
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    /* Padding minimal pour éviter de toucher les bords */
+    padding: var(--spacing-lg) var(--spacing-md);
+    /* Background cercle responsive avec min/max */
+    background: radial-gradient(circle at center, rgba(64, 224, 208, 0.3) 0%, transparent 40%);
+    background-size: clamp(100px, 40vw, 500px) clamp(120px, 15vw, 300px);
+    background-repeat: no-repeat;
+    background-position: center;
+    animation: pulse 3s infinite;
 }
 
-.hero::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle, rgba(64, 224, 208, 0.3) 0%, transparent 70%);
-    border-radius: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 3s infinite;
-    z-index: -1;
+/* Suppression des marges par défaut du h1 dans la hero */
+.hero h1 {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-6xl);
+    font-weight: var(--font-weight-bold);
+    background: var(--gradient-text);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s infinite;
+    text-shadow: 0 0 30px rgba(64, 224, 208, 0.3);
+    line-height: var(--line-height-tight);
 }
+
+/* Suppression des marges par défaut du p dans la hero */
+.hero p {
+    margin: 0;
+    padding: 0;
+    margin-top: var(--spacing-md);
+    font-size: var(--font-size-xl);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+}
+
+
 
 @keyframes pulse {
     0%, 100% {
-        transform: translate(-50%, -50%) scale(1);
-        opacity: 0.5;
+        background-size: clamp(120px, 15vw, 300px) clamp(120px, 15vw, 300px);
+        opacity: 1;
     }
     50% {
-        transform: translate(-50%, -50%) scale(1.5);
-        opacity: 0.2;
+        background-size: clamp(180px, 22vw, 400px) clamp(180px, 22vw, 400px);
+        opacity: 0.8;
     }
 }
 
@@ -663,8 +684,21 @@ p {
     }
 
     .hero {
-        padding: var(--spacing-3xl) 0;
-        min-height: 60vh;
+        min-height: calc(100vh - 80px); /* 80px = nav height mobile */
+        padding: var(--spacing-md);
+    }
+
+    .hero h1 {
+        font-size: var(--font-size-4xl);
+    }
+
+    .hero p {
+        font-size: var(--font-size-lg);
+    }
+
+    .hero::before {
+        width: 150px;
+        height: 150px;
     }
 
     .about-content {
@@ -738,6 +772,19 @@ p {
 
     .entete .page-intro {
         font-size: var(--font-size-base);
+    }
+
+    .hero h1 {
+        font-size: var(--font-size-3xl);
+    }
+
+    .hero p {
+        font-size: var(--font-size-base);
+    }
+
+    .hero::before {
+        width: 120px;
+        height: 120px;
     }
 
     .about-text {
