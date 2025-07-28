@@ -3,6 +3,10 @@
 /* ====================================
    CONTENEUR PRINCIPAL
    ==================================== */
+:root {
+    /* Ajouter cette variable manquante */
+    --timeline-arrow-size: 15px;
+}
 
 .timeline-container {
     position: relative;
@@ -124,7 +128,7 @@
     border-radius: 50%;
     transform: translateX(-50%);
     z-index: var(--z-index-content);
-    box-shadow: 
+    box-shadow:
         0 0 0 5px var(--color-primary-alpha),
         var(--shadow-glow);
     transition: all var(--duration-normal) var(--ease-smooth);
@@ -136,13 +140,13 @@
 
 @keyframes pulse-dot {
     0%, 100% {
-        box-shadow: 
+        box-shadow:
             0 0 0 5px var(--color-primary-alpha),
             var(--shadow-glow);
         transform: translateX(-50%) scale(1);
     }
     50% {
-        box-shadow: 
+        box-shadow:
             0 0 0 15px rgba(64, 224, 208, 0.1),
             var(--shadow-glow-strong);
         transform: translateX(-50%) scale(1.1);
@@ -198,13 +202,13 @@
 }
 
 .timeline-event[data-side="left"] .timeline-content::before {
-    right: -var(--timeline-arrow-size);
+    right: calc(-1 * var(--timeline-arrow-size));
     border-width: 8px 0 8px var(--timeline-arrow-size);
     border-color: transparent transparent transparent var(--color-border);
 }
 
 .timeline-event[data-side="right"] .timeline-content::before {
-    left: -var(--timeline-arrow-size);
+    left: calc(-1 * var(--timeline-arrow-size));
     border-width: 8px var(--timeline-arrow-size) 8px 0;
     border-color: transparent var(--color-border) transparent transparent;
 }
@@ -227,12 +231,15 @@
 .timeline-event[data-side="left"] .timeline-content:hover::before {
     border-color: transparent transparent transparent var(--color-border-hover);
 }
+.timeline-event[data-side="right"] .timeline-content:hover::before {
+    border-color: transparent var(--color-border-hover) transparent transparent;
+}
 
 /* Effet sur le point lors du hover du contenu */
 .timeline-content:hover + .timeline-dot,
 .timeline-content:hover ~ .timeline-dot {
     transform: translateX(-50%) scale(1.5);
-    box-shadow: 
+    box-shadow:
         0 0 0 10px rgba(64, 224, 208, 0.3),
         var(--shadow-glow-strong);
 }
@@ -478,7 +485,7 @@
         transition: none;
         animation: none;
     }
-    
+
     .timeline-event.visible .timeline-dot {
         animation: none;
     }

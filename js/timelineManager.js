@@ -85,7 +85,7 @@ export class TimelineManager {
             if (!this.isActive) return;
 
             this.updateYearIndicator();
-            this.updateTimelineFill();
+           // this.updateTimelineFill();
         }, 16); // 60fps
 
         window.addEventListener('scroll', this.scrollHandler);
