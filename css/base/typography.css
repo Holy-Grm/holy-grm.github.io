@@ -188,11 +188,11 @@ p {
 
 @keyframes pulse {
     0%, 100% {
-        background-size: clamp(120px, 15vw, 300px) clamp(120px, 15vw, 300px);
+        background-size: 500px 500px;
         opacity: 1;
     }
     50% {
-        background-size: clamp(180px, 22vw, 400px) clamp(180px, 22vw, 400px);
+        background-size: 600px 600px;
         opacity: 0.8;
     }
 }
