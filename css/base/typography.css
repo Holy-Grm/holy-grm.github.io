@@ -772,6 +772,23 @@ p {
         font-size: var(--font-size-5xl);
     }
 
+    .hero {
+        padding: 30px 15px;
+        background-size: 250px 250px; /* Cercle beaucoup plus petit pour iPhone */
+    }
+
+    /* Animation responsive pour iPhone */
+    @keyframes pulse {
+        0%, 100% {
+            background-size: 250px 250px;
+            opacity: 1;
+        }
+        50% {
+            background-size: 300px 300px;
+            opacity: 0.8;
+        }
+    }
+
     .hero p {
         font-size: var(--font-size-lg);
     }
