@@ -767,12 +767,13 @@ p {
         font-size: var(--font-size-base);
     }
 
+
     .hero h1 {
-        font-size: var(--font-size-3xl);
+        font-size: var(--font-size-5xl);
     }
 
     .hero p {
-        font-size: var(--font-size-base);
+        font-size: var(--font-size-lg);
     }
 
     .hero::before {
