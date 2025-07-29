@@ -1,4 +1,4 @@
-// main.js - Orchestrateur principal (version refactorisée)
+// main.js - Version corrigée de l'initialisation
 import { CONFIG } from './config.js';
 import { Router } from './router.js';
 import { LanguageManager } from './languageManager.js';
@@ -7,11 +7,10 @@ import { PageLoader } from './pageLoader.js';
 import { ParticleSystem } from './particleSystem.js';
 import { TimelineManager } from './timelineManager.js';
 import { LoadingScreenManager } from './loadingScreenManager.js';
-import { LanguagePopup } from './components/languagePopup.js';
+import { LanguagePopup } from './languagePopup.js';
 
 /**
- * Classe principale de l'application
- * Orchestré tous les modules et gère l'initialisation
+ * Classe principale de l'application - Version corrigée
  */
 class Application {
     constructor() {
@@ -33,21 +32,36 @@ class Application {
             // 1. Initialiser le loading screen EN PREMIER
             this.loadingScreenManager = new LoadingScreenManager();
 
-            // 2. Initialiser les modules dans l'ordre correct
+            // 2. Initialiser les modules core dans l'ordre correct
             await this.initializeCore();
             await this.initializeUI();
             await this.initializeEffects();
             await this.loadContent();
 
+            // 3. Finaliser l'initialisation
             this.isInitialized = true;
             console.log('✅ Application initialisée avec succès');
 
-            // 3. MASQUER le loading screen une fois tout prêt
-            await this.loadingScreenManager.hide();
-
-            // 4. Initialiser la persistance de langue et le popup
+            // 4. Gérer la persistance de langue AVANT de masquer le loading screen
             this.initializeLanguagePersistence();
-            this.initializeLanguagePopup();
+
+            // 5. Vérifier si le popup doit être affiché et l'initialiser si nécessaire
+            const shouldShowPopup = this.shouldShowLanguagePopup();
+
+            if (shouldShowPopup) {
+                console.log('🌍 Popup requis - activation du mode popup et préparation');
+                // Activer le mode popup pour un temps de loading plus long
+                this.loadingScreenManager.enablePopupMode();
+                // Initialiser le popup AVANT de masquer le loading screen
+                this.initializeLanguagePopup();
+                // Attendre que le popup soit prêt, puis masquer le loading screen
+                await this.waitForPopupReady();
+                await this.loadingScreenManager.hide();
+            } else {
+                console.log('🌍 Popup non requis - masquage immédiat du loading screen');
+                // Masquer directement le loading screen
+                await this.loadingScreenManager.hide();
+            }
 
         } catch (error) {
             console.error('❌ Erreur lors de l\'initialisation:', error);
@@ -114,13 +128,7 @@ class Application {
         const router = this.modules.get('router');
         const languageManager = this.modules.get('languageManager');
 
-        // Si l'utilisateur a déjà choisi une langue, l'appliquer
-        const savedLang = localStorage.getItem('last-language');
-        if (savedLang && savedLang !== router.getCurrentLang()) {
-            router.changeLanguage(savedLang, false); // false = ne pas mettre à jour l'URL
-        }
-
-        // Appliquer la langue actuelle
+        // Appliquer la langue actuelle aux textes
         languageManager.updatePageTexts();
 
         // Naviguer vers la page initiale (mise à jour UI)
@@ -130,35 +138,101 @@ class Application {
         console.log(`📍 État initial: ${router.getCurrentLang()}/${router.getCurrentPage()}`);
     }
 
+    // Fonction pour vérifier si le popup doit être affiché
+    shouldShowLanguagePopup() {
+        let hasSelected = false;
+        try {
+            if (typeof localStorage !== 'undefined') {
+                hasSelected = localStorage.getItem('language-selected') === 'true';
+            }
+        } catch (e) {
+            // localStorage non disponible, on considère que l'utilisateur n'a pas encore choisi
+            hasSelected = false;
+        }
+
+        return !hasSelected;
+    }
+
+    // Fonction pour attendre que le popup soit prêt
+    async waitForPopupReady() {
+        return new Promise((resolve) => {
+            if (!this.languagePopup) {
+                resolve();
+                return;
+            }
+
+            // Attendre que le popup soit complètement initialisé et visible
+            const checkReady = () => {
+                if (this.languagePopup.popup && this.languagePopup.isVisible) {
+                    console.log('🌍 Popup prêt et visible');
+                    // Attendre encore un peu pour que l'animation soit terminée
+                    setTimeout(resolve, 300);
+                } else {
+                    setTimeout(checkReady, 100);
+                }
+            };
+
+            // Commencer la vérification après un délai initial
+            setTimeout(checkReady, 200);
+
+            // Timeout de sécurité au cas où quelque chose se passe mal
+            setTimeout(() => {
+                console.warn('⚠️ Timeout atteint pour l\'attente du popup');
+                resolve();
+            }, 3000);
+        });
+    }
+
     // Fonction pour initialiser la persistance de la langue
     initializeLanguagePersistence() {
         const router = this.modules.get('router');
 
-        // Sauvegarder la langue actuelle
-        const currentLang = router.getCurrentLang();
-        localStorage.setItem('last-language', currentLang);
+        // Essayer de récupérer la langue sauvegardée
+        let savedLang = null;
+        try {
+            if (typeof localStorage !== 'undefined') {
+                savedLang = localStorage.getItem('last-language');
+            }
+        } catch (e) {
+            console.log('📝 localStorage non disponible pour la persistance');
+        }
+
+        // Si l'utilisateur a déjà choisi une langue, l'appliquer
+        if (savedLang && savedLang !== router.getCurrentLang()) {
+            router.changeLanguage(savedLang, false); // false = ne pas mettre à jour l'URL
+            console.log(`🔄 Langue restaurée: ${savedLang}`);
+        }
 
         // Écouter les changements de langue pour les sauvegarder
         router.addObserver((type, data) => {
             if (type === 'languageChange') {
-                localStorage.setItem('last-language', data.newLang);
-                console.log(`💾 Langue sauvegardée: ${data.newLang}`);
+                try {
+                    if (typeof localStorage !== 'undefined') {
+                        localStorage.setItem('last-language', data.newLang);
+                        console.log(`💾 Langue sauvegardée: ${data.newLang}`);
+                    }
+                } catch (e) {
+                    console.log('📝 Impossible de sauvegarder la langue');
+                }
             }
         });
 
         console.log('🔐 Persistance de langue initialisée');
     }
 
-    // Fonction pour initialiser le popup de langue
+    // Fonction pour initialiser le popup de langue - VERSION SIMPLIFIÉE
     initializeLanguagePopup() {
+        // Créer le popup (la vérification a déjà été faite dans shouldShowLanguagePopup)
         this.languagePopup = new LanguagePopup();
         this.modules.set('languagePopup', this.languagePopup);
 
         // Exposer globalement pour le debug
         window.languagePopupInstance = this.languagePopup;
 
-        console.log('🌍 Popup de langue initialisé');
+        console.log('🌍 Popup de langue créé et prêt');
     }
+
+    // === MÉTHODES PUBLIQUES DE L'APPLICATION ===
 
     // Méthodes utilitaires pour accéder aux modules
     getModule(name) {
@@ -252,6 +326,12 @@ class Application {
     showLanguagePopup() {
         if (this.languagePopup) {
             this.languagePopup.forceShow();
+        } else {
+            // Créer le popup s'il n'existe pas encore
+            this.languagePopup = new LanguagePopup();
+            this.modules.set('languagePopup', this.languagePopup);
+            window.languagePopupInstance = this.languagePopup;
+            this.languagePopup.forceShow();
         }
     }
 
@@ -295,6 +375,17 @@ class Application {
     // Informations de debug
     getStatus() {
         const router = this.modules.get('router');
+
+        // Vérifier localStorage de manière sécurisée
+        let languageSelected = false;
+        try {
+            if (typeof localStorage !== 'undefined') {
+                languageSelected = localStorage.getItem('language-selected') === 'true';
+            }
+        } catch (e) {
+            languageSelected = false;
+        }
+
         return {
             initialized: this.isInitialized,
             modules: Array.from(this.modules.keys()),
@@ -302,8 +393,11 @@ class Application {
             currentPage: router?.getCurrentPage(),
             url: window.location.href,
             loadingScreenHidden: this.loadingScreenManager?.isHidden,
-            languageSelected: localStorage.getItem('language-selected') === 'true',
-            hasLanguagePopup: !!this.languagePopup
+            languageSelected: languageSelected,
+            hasLanguagePopup: !!this.languagePopup,
+            localStorageAvailable: typeof localStorage !== 'undefined',
+            popupVisible: this.languagePopup?.isVisible || false,
+            shouldShowPopup: this.shouldShowLanguagePopup()
         };
     }
 
@@ -400,10 +494,18 @@ window.hideLoadingScreen = () => {
     }
 };
 
-// Fonction pour afficher le popup de langue (remplace l'ancienne fonction)
+// Fonction pour afficher le popup de langue (VERSION CORRIGÉE)
 window.resetLanguageSelection = () => {
-    localStorage.removeItem('language-selected');
-    localStorage.removeItem('last-language');
+    // Nettoyer localStorage si disponible
+    try {
+        if (typeof localStorage !== 'undefined') {
+            localStorage.removeItem('language-selected');
+            localStorage.removeItem('last-language');
+        }
+    } catch (e) {
+        console.log('📝 Impossible de nettoyer localStorage');
+    }
+
     if (app) {
         app.showLanguagePopup();
     }

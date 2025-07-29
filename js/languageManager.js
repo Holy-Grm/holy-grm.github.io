@@ -1,4 +1,4 @@
-// languageManager.js - Gestion des langues et traductions
+// languageManager.js - Version corrigée sans localStorage
 import { CONFIG } from './config.js';
 
 export class LanguageManager {
@@ -49,6 +49,8 @@ export class LanguageManager {
         this.currentLang = newLang;
         this.updateToggleButtons();
         this.updatePageTexts();
+
+        console.log(`🌍 Langue changée vers: ${newLang}`);
     }
 
     updateToggleButtons() {
@@ -71,6 +73,8 @@ export class LanguageManager {
                 element.textContent = text;
             }
         });
+
+        console.log(`📝 Textes mis à jour pour la langue: ${this.currentLang}`);
     }
 
     // Méthode pour ajouter facilement de nouvelles traductions
@@ -92,7 +96,30 @@ export class LanguageManager {
         return element ? element.getAttribute(`data-${lang}`) : null;
     }
 
+    // Méthode pour forcer la mise à jour de tous les textes
+    forceUpdateTexts() {
+        this.updatePageTexts();
+    }
+
+    // Méthode pour vérifier si une langue est supportée
+    isLanguageSupported(lang) {
+        return CONFIG.routing.validLangs.includes(lang);
+    }
+
+    // Getter pour la langue actuelle
     getCurrentLang() {
         return this.currentLang;
+    }
+
+    // Méthode pour obtenir la liste des langues supportées
+    getSupportedLanguages() {
+        return [...CONFIG.routing.validLangs];
+    }
+
+    // Cleanup
+    destroy() {
+        // Supprimer les event listeners si nécessaire
+        // (Pas nécessaire ici car les éléments sont supprimés du DOM)
+        console.log('🧹 LanguageManager nettoyé');
     }
 }

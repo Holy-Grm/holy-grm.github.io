@@ -1,10 +1,12 @@
-// components/languagePopup.js - Gestion du popup de sélection de langue
+// components/languagePopup.js - Version corrigée sans localStorage
 export class LanguagePopup {
     constructor() {
         this.popup = null;
         this.isVisible = false;
         this.keyboardHandler = null;
-        
+        this.hasUserSelected = false; // Utiliser une variable interne au lieu de localStorage
+        this.selectedLanguage = null;
+
         this.init();
     }
 
@@ -18,13 +20,12 @@ export class LanguagePopup {
      * Vérifie si le popup doit être affiché et l'affiche si nécessaire
      */
     checkAndShow() {
-        const hasSelected = localStorage.getItem('language-selected');
-        
-        if (!hasSelected && this.popup) {
-            // Délai pour laisser le temps au loading screen de se terminer
+        // Afficher immédiatement le popup car la vérification est faite en amont
+        if (this.popup) {
+            // Petit délai pour s'assurer que le DOM est prêt
             setTimeout(() => {
                 this.show();
-            }, 1000);
+            }, 200);
         }
     }
 
@@ -37,7 +38,7 @@ export class LanguagePopup {
         this.popup.classList.add('show');
         this.isVisible = true;
         this.createSplitScreenParticles();
-        
+
         console.log('🌍 Popup de sélection de langue affiché');
     }
 
@@ -50,7 +51,7 @@ export class LanguagePopup {
         // Animation de fermeture
         this.popup.style.transform = 'scale(0.95)';
         this.popup.style.opacity = '0';
-        
+
         setTimeout(() => {
             this.popup.classList.remove('show');
             this.popup.style.transform = '';
@@ -69,15 +70,26 @@ export class LanguagePopup {
             return;
         }
 
-        // Sauvegarder la sélection
-        localStorage.setItem('language-selected', 'true');
-        localStorage.setItem('last-language', lang);
-        
+        // Marquer que l'utilisateur a fait une sélection (en mémoire seulement)
+        this.hasUserSelected = true;
+        this.selectedLanguage = lang;
+
+        // Essayer de sauvegarder en localStorage si disponible (pour la version en ligne)
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.setItem('language-selected', 'true');
+                localStorage.setItem('last-language', lang);
+            }
+        } catch (e) {
+            // localStorage non disponible, ignorer silencieusement
+            console.log('📝 localStorage non disponible, utilisation de la mémoire uniquement');
+        }
+
         console.log(`🌍 Langue sélectionnée: ${lang}`);
 
         // Fermer le popup
         this.hide();
-        
+
         // Appliquer la langue dans l'application après fermeture
         setTimeout(() => {
             if (window.app && window.app.changeLanguage) {
@@ -102,21 +114,21 @@ export class LanguagePopup {
     createParticlesForSide(containerId, count) {
         const container = document.getElementById(containerId);
         if (!container) return;
-        
+
         // Nettoyer les particules existantes
         container.innerHTML = '';
-        
+
         for (let i = 0; i < count; i++) {
             const particle = document.createElement('div');
             particle.className = 'popup-particle floating';
-            
+
             // Position aléatoire
             particle.style.left = Math.random() * 100 + '%';
             particle.style.top = Math.random() * 100 + '%';
-            
+
             // Délai d'animation aléatoire
             particle.style.animationDelay = Math.random() * 6 + 's';
-            
+
             container.appendChild(particle);
         }
     }
@@ -153,8 +165,19 @@ export class LanguagePopup {
      * Force l'affichage du popup (pour debug/settings)
      */
     forceShow() {
-        localStorage.removeItem('language-selected');
-        localStorage.removeItem('last-language');
+        this.hasUserSelected = false;
+        this.selectedLanguage = null;
+
+        // Nettoyer localStorage si disponible
+        try {
+            if (typeof localStorage !== 'undefined') {
+                localStorage.removeItem('language-selected');
+                localStorage.removeItem('last-language');
+            }
+        } catch (e) {
+            // Ignorer silencieusement
+        }
+
         this.show();
         console.log('🔄 Popup de langue forcé');
     }
@@ -164,7 +187,21 @@ export class LanguagePopup {
      * @returns {boolean}
      */
     hasUserSelectedLanguage() {
-        return localStorage.getItem('language-selected') === 'true';
+        // Vérifier d'abord la variable interne
+        if (this.hasUserSelected) {
+            return true;
+        }
+
+        // Puis essayer localStorage si disponible
+        try {
+            if (typeof localStorage !== 'undefined') {
+                return localStorage.getItem('language-selected') === 'true';
+            }
+        } catch (e) {
+            // localStorage non disponible
+        }
+
+        return false;
     }
 
     /**
@@ -172,7 +209,21 @@ export class LanguagePopup {
      * @returns {string|null}
      */
     getLastSelectedLanguage() {
-        return localStorage.getItem('last-language');
+        // Vérifier d'abord la variable interne
+        if (this.selectedLanguage) {
+            return this.selectedLanguage;
+        }
+
+        // Puis essayer localStorage si disponible
+        try {
+            if (typeof localStorage !== 'undefined') {
+                return localStorage.getItem('last-language');
+            }
+        } catch (e) {
+            // localStorage non disponible
+        }
+
+        return null;
     }
 
     /**
