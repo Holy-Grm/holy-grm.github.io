@@ -5,7 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holy - Portfolio</title>
     <meta name="description" content="Découvrez le portfolio de Holy, étudiant en sciences informatiques à l'Université de Sherbrooke. Il est passionné par la Data Science, l'IA et la cybersécurité.">
+
+    <!-- Stylesheets -->
     <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/components/languagePopup.css">
+
+    <!-- Meta tags -->
     <meta property="og:title" content="Portfolio de Holy">
     <meta property="og:description" content="Apprenez-en plus sur moi!.">
     <meta property="og:image" content="https://holy-grm.github.io/img/preview.png">
@@ -18,308 +23,6 @@
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#1a1a1a">
-
-    <style>
-        /* Popup de sélection de langue - Split Screen */
-        .language-popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 20000;
-            display: flex;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.6s ease;
-        }
-
-        .language-popup-overlay.show {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .language-side {
-            flex: 1;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            overflow: hidden;
-        }
-
-        /* Côté anglais */
-        .language-side.english {
-            background: linear-gradient(135deg,
-            var(--color-bg-primary, #0f0f0f) 0%,
-            var(--color-bg-secondary, #1a1a1a) 50%,
-            var(--color-bg-primary, #0f0f0f) 100%);
-            border-right: 2px solid var(--color-primary, #40e0d0);
-        }
-
-        /* Côté français */
-        .language-side.french {
-            background: linear-gradient(135deg,
-            var(--color-bg-secondary, #1a1a1a) 0%,
-            var(--color-bg-primary, #0f0f0f) 50%,
-            var(--color-bg-secondary, #1a1a1a) 100%);
-            border-left: 2px solid var(--color-primary, #40e0d0);
-        }
-
-        .language-side:hover {
-            transform: scale(1.02);
-            z-index: 2;
-        }
-
-        .language-side:hover::before {
-            opacity: 1;
-        }
-
-        /* Effet de brillance au hover */
-        .language-side::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(45deg,
-            transparent 30%,
-            rgba(64, 224, 208, 0.1) 50%,
-            transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-        }
-
-        /* Contenu de chaque côté */
-        .language-content {
-            text-align: center;
-            z-index: 1;
-            position: relative;
-            transform: translateY(20px);
-            opacity: 0;
-            transition: all 0.6s ease;
-        }
-
-        .language-popup-overlay.show .language-content {
-            transform: translateY(0);
-            opacity: 1;
-        }
-
-        .language-side.english .language-content {
-            transition-delay: 0.2s;
-        }
-
-        .language-side.french .language-content {
-            transition-delay: 0.4s;
-        }
-
-        .flag-icon {
-            font-size: 4rem;
-            margin-bottom: 2rem;
-            filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-            transition: all 0.3s ease;
-        }
-
-        .language-side:hover .flag-icon {
-            font-size: 4.5rem;
-            filter: drop-shadow(0 12px 24px rgba(64, 224, 208, 0.3));
-        }
-
-        .language-title {
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--color-text-primary, #ffffff);
-            margin-bottom: 1rem;
-            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-        }
-
-        .language-subtitle {
-            font-size: 1.25rem;
-            color: var(--color-text-secondary, #cccccc);
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        .language-action {
-            font-size: 1rem;
-            color: var(--color-primary, #40e0d0);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            font-weight: 600;
-            padding: 0.75rem 2rem;
-            border: 2px solid var(--color-primary, #40e0d0);
-            border-radius: 50px;
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-
-        .language-side:hover .language-action {
-            background: var(--color-primary, #40e0d0);
-            color: var(--color-bg-primary, #0f0f0f);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(64, 224, 208, 0.4);
-        }
-
-        /* Particules dans le popup */
-        .popup-particles {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .popup-particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--color-primary, #40e0d0);
-            border-radius: 50%;
-            opacity: 0.6;
-        }
-
-        /* Animation des particules */
-        .popup-particle.floating {
-            animation: popupFloat 6s infinite ease-in-out;
-        }
-
-        @keyframes popupFloat {
-            0%, 100% {
-                transform: translateY(0) scale(1);
-                opacity: 0.3;
-            }
-            50% {
-                transform: translateY(-50px) scale(1.5);
-                opacity: 0.8;
-            }
-        }
-
-        /* Ligne de séparation centrale */
-        .divider-line {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(180deg,
-            transparent 0%,
-            var(--color-primary, #40e0d0) 20%,
-            var(--color-primary, #40e0d0) 80%,
-            transparent 100%);
-            transform: translateX(-50%);
-            z-index: 3;
-            box-shadow: 0 0 20px rgba(64, 224, 208, 0.5);
-        }
-
-        /* Logo HOLY au centre */
-        .popup-logo {
-            position: absolute;
-            top: 10%;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 3rem;
-            font-weight: bold;
-            color: var(--color-primary, #40e0d0);
-            text-shadow: 0 0 30px rgba(64, 224, 208, 0.5);
-            z-index: 4;
-            opacity: 0;
-            animation: logoFadeIn 1s ease-out 0.8s forwards;
-        }
-
-        @keyframes logoFadeIn {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        /* Instructions en bas */
-        .popup-instructions {
-            position: absolute;
-            bottom: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            color: var(--color-text-secondary, #cccccc);
-            font-size: 0.875rem;
-            z-index: 4;
-            opacity: 0;
-            animation: instructionsFadeIn 1s ease-out 1.2s forwards;
-        }
-
-        @keyframes instructionsFadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .language-popup-overlay {
-                flex-direction: column;
-            }
-
-            .language-side.english {
-                border-right: none;
-                border-bottom: 2px solid var(--color-primary, #40e0d0);
-            }
-
-            .language-side.french {
-                border-left: none;
-                border-top: 2px solid var(--color-primary, #40e0d0);
-            }
-
-            .divider-line {
-                top: 50%;
-                left: 0;
-                width: 100%;
-                height: 2px;
-                transform: translateY(-50%);
-            }
-
-            .popup-logo {
-                top: 5%;
-                font-size: 2rem;
-            }
-
-            .language-title {
-                font-size: 2rem;
-            }
-
-            .flag-icon {
-                font-size: 3rem;
-            }
-
-            .language-side:hover .flag-icon {
-                font-size: 3.2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .language-title {
-                font-size: 1.5rem;
-            }
-
-            .language-subtitle {
-                font-size: 1rem;
-            }
-
-            .popup-logo {
-                font-size: 1.5rem;
-            }
-        }
-    </style>
 </head>
 <body>
 
@@ -360,6 +63,7 @@
     </div>
 </div>
 
+<!-- Interface principale -->
 <div class="mobile-menu-overlay" id="mobileMenuOverlay">
     <ul class="mobile-nav-links">
         <li><a href="#" class="mobile-nav-link active" data-page="home" data-en="Home" data-fr="Accueil">Home</a></li>
@@ -368,25 +72,20 @@
         <li><a href="#" class="mobile-nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
     </ul>
 </div>
+
 <div class="particles" id="particles"></div>
 
 <!-- Abstract Particle Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
-    <!-- Particle Container -->
     <div class="particle-container" id="particleContainer">
-        <!-- Central Mass -->
         <div class="central-mass" id="centralMass"></div>
-
-        <!-- Explosion Effect -->
         <div class="explosion" id="explosion"></div>
     </div>
 
-    <!-- Loading Text -->
     <div class="loading-text" id="loadingText">
         Gathering particles...
     </div>
 
-    <!-- Progress Dots -->
     <div class="progress-dots" id="progressDots">
         <div class="progress-dot"></div>
         <div class="progress-dot"></div>
@@ -422,96 +121,8 @@
     <div class="page" id="contact"></div>
 </div>
 
+<!-- Scripts -->
 <script type="module" src="js/main.js"></script>
-
-<script>
-    // Gestion du popup de langue split-screen
-    function checkLanguageSelection() {
-        const hasSelected = localStorage.getItem('language-selected');
-        const popup = document.getElementById('languagePopup');
-
-        if (!hasSelected) {
-            // Afficher le popup après un délai
-            setTimeout(() => {
-                popup.classList.add('show');
-                createSplitScreenParticles();
-            }, 1000);
-        }
-    }
-
-    function selectLanguage(lang) {
-        const popup = document.getElementById('languagePopup');
-
-        // Animation de fermeture
-        popup.style.transform = 'scale(0.95)';
-        popup.style.opacity = '0';
-
-        // Marquer comme sélectionné et sauvegarder
-        localStorage.setItem('language-selected', 'true');
-        localStorage.setItem('last-language', lang);
-
-        // Fermer le popup après l'animation
-        setTimeout(() => {
-            popup.classList.remove('show');
-
-            // Changer la langue dans l'app après fermeture
-            setTimeout(() => {
-                if (window.app && window.app.changeLanguage) {
-                    window.app.changeLanguage(lang);
-                }
-            }, 100);
-        }, 400);
-    }
-
-    function createSplitScreenParticles() {
-        // Particules côté anglais
-        createParticlesForSide('englishParticles', 15);
-        // Particules côté français
-        createParticlesForSide('frenchParticles', 15);
-    }
-
-    function createParticlesForSide(containerId, count) {
-        const container = document.getElementById(containerId);
-        if (!container) return;
-
-        for (let i = 0; i < count; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'popup-particle floating';
-
-            // Position aléatoire
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.top = Math.random() * 100 + '%';
-
-            // Délai d'animation aléatoire
-            particle.style.animationDelay = Math.random() * 6 + 's';
-
-            container.appendChild(particle);
-        }
-    }
-
-    // Support clavier
-    document.addEventListener('keydown', (e) => {
-        const popup = document.getElementById('languagePopup');
-        if (popup && popup.classList.contains('show')) {
-            if (e.key === 'ArrowLeft' || e.key === '1') {
-                selectLanguage('en');
-            } else if (e.key === 'ArrowRight' || e.key === '2') {
-                selectLanguage('fr');
-            } else if (e.key === 'Escape') {
-                selectLanguage('en'); // Default
-            }
-        }
-    });
-
-    // Fonction pour rouvrir le popup (debug)
-    window.showLanguagePopup = () => {
-        localStorage.removeItem('language-selected');
-        checkLanguageSelection();
-    };
-
-    // Initialisation
-    document.addEventListener('DOMContentLoaded', checkLanguageSelection);
-</script>
 
 </body>
 </html>

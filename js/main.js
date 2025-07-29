@@ -1,4 +1,4 @@
-// main.js - Orchestrateur principal (version avec popup de langue)
+// main.js - Orchestrateur principal (version refactorisée)
 import { CONFIG } from './config.js';
 import { Router } from './router.js';
 import { LanguageManager } from './languageManager.js';
@@ -7,6 +7,7 @@ import { PageLoader } from './pageLoader.js';
 import { ParticleSystem } from './particleSystem.js';
 import { TimelineManager } from './timelineManager.js';
 import { LoadingScreenManager } from './loadingScreenManager.js';
+import { LanguagePopup } from './components/languagePopup.js';
 
 /**
  * Classe principale de l'application
@@ -17,6 +18,7 @@ class Application {
         this.modules = new Map();
         this.isInitialized = false;
         this.loadingScreenManager = null;
+        this.languagePopup = null;
     }
 
     async initialize() {
@@ -43,8 +45,9 @@ class Application {
             // 3. MASQUER le loading screen une fois tout prêt
             await this.loadingScreenManager.hide();
 
-            // 4. Initialiser la persistance de langue APRÈS l'initialisation
+            // 4. Initialiser la persistance de langue et le popup
             this.initializeLanguagePersistence();
+            this.initializeLanguagePopup();
 
         } catch (error) {
             console.error('❌ Erreur lors de l\'initialisation:', error);
@@ -146,6 +149,17 @@ class Application {
         console.log('🔐 Persistance de langue initialisée');
     }
 
+    // Fonction pour initialiser le popup de langue
+    initializeLanguagePopup() {
+        this.languagePopup = new LanguagePopup();
+        this.modules.set('languagePopup', this.languagePopup);
+
+        // Exposer globalement pour le debug
+        window.languagePopupInstance = this.languagePopup;
+
+        console.log('🌍 Popup de langue initialisé');
+    }
+
     // Méthodes utilitaires pour accéder aux modules
     getModule(name) {
         return this.modules.get(name);
@@ -177,6 +191,10 @@ class Application {
 
     getLoadingScreenManager() {
         return this.loadingScreenManager;
+    }
+
+    getLanguagePopup() {
+        return this.languagePopup;
     }
 
     // Méthodes de contrôle de l'application
@@ -230,11 +248,24 @@ class Application {
         }
     }
 
+    // Méthodes de contrôle du popup de langue
+    showLanguagePopup() {
+        if (this.languagePopup) {
+            this.languagePopup.forceShow();
+        }
+    }
+
     // Cleanup pour tests ou changements majeurs
     destroy() {
         console.log('🧹 Nettoyage de l\'application...');
 
-        // Nettoyer le loading screen en premier
+        // Nettoyer le popup de langue
+        if (this.languagePopup) {
+            this.languagePopup.destroy();
+            this.languagePopup = null;
+        }
+
+        // Nettoyer le loading screen
         if (this.loadingScreenManager) {
             this.loadingScreenManager.destroy();
             this.loadingScreenManager = null;
@@ -271,7 +302,8 @@ class Application {
             currentPage: router?.getCurrentPage(),
             url: window.location.href,
             loadingScreenHidden: this.loadingScreenManager?.isHidden,
-            languageSelected: localStorage.getItem('language-selected') === 'true'
+            languageSelected: localStorage.getItem('language-selected') === 'true',
+            hasLanguagePopup: !!this.languagePopup
         };
     }
 
@@ -368,6 +400,16 @@ window.hideLoadingScreen = () => {
     }
 };
 
+// Fonction pour afficher le popup de langue (remplace l'ancienne fonction)
+window.resetLanguageSelection = () => {
+    localStorage.removeItem('language-selected');
+    localStorage.removeItem('last-language');
+    if (app) {
+        app.showLanguagePopup();
+    }
+    console.log('🔄 Sélection de langue réinitialisée');
+};
+
 // Debug helpers
 window.debugApp = () => {
     if (app) {
@@ -375,14 +417,6 @@ window.debugApp = () => {
     } else {
         console.log('Application non initialisée');
     }
-};
-
-// Fonction utilitaire pour réinitialiser la sélection de langue (debug)
-window.resetLanguageSelection = () => {
-    localStorage.removeItem('language-selected');
-    localStorage.removeItem('last-language');
-    window.showLanguagePopup();
-    console.log('🔄 Sélection de langue réinitialisée');
 };
 
 console.log('📦 main.js chargé - En attente du DOM...');
