@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holy - Portfolio</title>
+    <meta name="description" content="Portfolio de Holy - Étudiant en sciences informatiques">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+
+    <style>
+        /* Reset et base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-primary: #40e0d0;
+            --color-primary-dark: #20b2aa;
+            --color-primary-alpha: rgba(64, 224, 208, 0.2);
+            --color-bg-primary: #0f0f0f;
+            --color-bg-secondary: #1a1a1a;
+            --color-bg-card: rgba(26, 26, 26, 0.9);
+            --color-text-primary: #ffffff;
+            --color-text-secondary: #cccccc;
+            --color-border: rgba(64, 224, 208, 0.3);
+            --color-border-hover: #40e0d0;
+
+            --font-size-6xl: 4rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-xl: 1.25rem;
+            --font-size-lg: 1.125rem;
+            --font-size-base: 1rem;
+
+            --spacing-xl: 2rem;
+            --spacing-4xl: 5rem;
+            --spacing-5xl: 6rem;
+
+            --border-radius-xl: 1rem;
+            --border-radius-full: 9999px;
+
+            --gradient-bg: linear-gradient(135deg, var(--color-bg-primary) 0%, var(--color-bg-secondary) 50%, var(--color-bg-primary) 100%);
+            --gradient-primary: linear-gradient(45deg, var(--color-primary), var(--color-primary-dark));
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: var(--gradient-bg);
+            background-attachment: fixed;
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Particules de fond */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: rgba(64, 224, 208, 0.6);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Container principal */
+        .language-selector {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-xl);
+        }
+
+        .main-title {
+            font-size: var(--font-size-6xl);
+            font-weight: bold;
+            margin-bottom: var(--spacing-5xl);
+            background: linear-gradient(45deg, var(--color-primary), var(--color-text-primary), var(--color-primary));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s infinite;
+            text-shadow: 0 0 30px rgba(64, 224, 208, 0.3);
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: var(--font-size-xl);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4xl);
+            line-height: 1.6;
+        }
+
+        /* Conteneur des options de langue */
+        .language-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: var(--spacing-4xl);
+            margin-top: var(--spacing-4xl);
+        }
+
+        .language-option {
+            background: var(--color-bg-card);
+            border: 1px solid var(--color-border);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-5xl) var(--spacing-xl);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            backdrop-filter: blur(10px);
+        }
+
+        .language-option::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--color-primary-alpha), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .language-option:hover::before {
+            left: 100%;
+        }
+
+        .language-option:hover {
+            transform: translateY(-10px);
+            border-color: var(--color-border-hover);
+            box-shadow: 0 20px 40px rgba(64, 224, 208, 0.3);
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .language-title {
+            font-size: var(--font-size-3xl);
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xl);
+            font-weight: bold;
+        }
+
+        .language-description {
+            font-size: var(--font-size-lg);
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-4xl);
+            line-height: 1.6;
+        }
+
+        .discover-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 40px;
+            background: var(--gradient-primary);
+            color: #000;
+            text-decoration: none;
+            border-radius: var(--border-radius-full);
+            font-weight: bold;
+            font-size: var(--font-size-lg);
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 160px;
+        }
+
+        .discover-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(64, 224, 208, 0.5);
+            background: var(--color-primary-dark);
+        }
+
+        .discover-btn:active {
+            transform: translateY(-1px);
+        }
+
+        /* Flag icons */
+        .flag-icon {
+            font-size: 3rem;
+            margin-bottom: var(--spacing-xl);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 3rem;
+            }
+
+            .language-options {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-xl);
+            }
+
+            .language-option {
+                padding: var(--spacing-4xl) var(--spacing-xl);
+            }
+
+            .language-selector {
+                padding: var(--spacing-xl) 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-title {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: var(--font-size-base);
+            }
+
+            .language-title {
+                font-size: var(--font-size-xl);
+            }
+
+            .language-description {
+                font-size: var(--font-size-base);
+            }
+        }
+
+        /* Animations d'entrée */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .fade-in-delay {
+            animation: fadeIn 0.8s ease-out 0.3s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Loading animation pour les boutons */
+        .discover-btn.loading {
+            position: relative;
+            color: transparent;
+        }
+
+        .discover-btn.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid transparent;
+            border-top-color: #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Préférences d'accessibilité */
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+
+            .main-title {
+                animation: none;
+                background: var(--color-primary);
+                -webkit-background-clip: unset;
+                -webkit-text-fill-color: unset;
+                background-clip: unset;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Particules de fond -->
+<div class="particles" id="particles"></div>
+
+<div class="language-selector">
+    <h1 class="main-title fade-in">HOLY</h1>
+    <p class="subtitle fade-in">Choose your language / Choisissez votre langue</p>
+
+    <div class="language-options fade-in-delay">
+        <!-- Option Anglaise -->
+        <div class="language-option" onclick="selectLanguage('en')">
+            <div class="flag-icon">🇺🇸</div>
+            <h2 class="language-title">Welcome to my site</h2>
+            <p class="language-description">
+                Discover my journey as a Data Science student at the University of Sherbrooke, passionate about AI, big data, and cybersecurity.
+            </p>
+            <button class="discover-btn" id="btn-en">
+                Discover
+            </button>
+        </div>
+
+        <!-- Option Française -->
+        <div class="language-option" onclick="selectLanguage('fr')">
+            <div class="flag-icon">🇫🇷</div>
+            <h2 class="language-title">Bienvenue sur mon site</h2>
+            <p class="language-description">
+                Découvrez mon parcours d'étudiant en sciences informatiques à l'Université de Sherbrooke, passionné par l'IA, le big data et la cybersécurité.
+            </p>
+            <button class="discover-btn" id="btn-fr">
+                Découvrir
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Création des particules de fond
+    function createParticles() {
+        const particlesContainer = document.getElementById('particles');
+        const particleCount = 30;
+
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 3 + 5) + 's';
+
+            particlesContainer.appendChild(particle);
+        }
+    }
+
+    // Fonction de sélection de langue
+    function selectLanguage(lang) {
+        const button = document.getElementById(`btn-${lang}`);
+        button.classList.add('loading');
+
+        // Désactiver les clics pendant la transition
+        document.querySelectorAll('.language-option').forEach(option => {
+            option.style.pointerEvents = 'none';
+        });
+
+        // Délai pour l'animation puis redirection
+        setTimeout(() => {
+            // Obtenir le chemin de base s'il existe
+            const pathSegments = window.location.pathname.split('/').filter(Boolean);
+            let basePath = '';
+
+            // Si le premier segment n'est pas une langue connue, c'est probablement un nom de repository
+            if (pathSegments.length > 0) {
+                const firstSegment = pathSegments[0];
+                const knownPaths = ['fr', 'en', 'home', 'projects', 'about', 'contact'];
+                if (!knownPaths.includes(firstSegment)) {
+                    basePath = '/' + firstSegment;
+                }
+            }
+
+            // Construire l'URL de destination
+            const targetURL = `${basePath}/${lang}/home`;
+
+            // Redirection vers l'URL finale
+            window.location.href = targetURL;
+        }, 800);
+    }
+
+    // Gestion des événements clavier pour l'accessibilité
+    document.addEventListener('keydown', (e) => {
+        if (e.key === '1' || e.key === 'ArrowLeft') {
+            selectLanguage('en');
+        } else if (e.key === '2' || e.key === 'ArrowRight') {
+            selectLanguage('fr');
+        }
+    });
+
+    // Initialisation
+    document.addEventListener('DOMContentLoaded', () => {
+        createParticles();
+
+        // Animation d'entrée séquentielle pour les éléments
+        const elements = document.querySelectorAll('.fade-in, .fade-in-delay');
+        elements.forEach((el, index) => {
+            el.style.animationDelay = (index * 0.2) + 's';
+        });
+    });
+
+    // Effet de parallaxe léger pour les particules
+    document.addEventListener('mousemove', (e) => {
+        const particles = document.querySelectorAll('.particle');
+        const x = e.clientX / window.innerWidth;
+        const y = e.clientY / window.innerHeight;
+
+        particles.forEach((particle, index) => {
+            const speed = (index % 3 + 1) * 0.5;
+            const xOffset = (x - 0.5) * speed;
+            const yOffset = (y - 0.5) * speed;
+
+            particle.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
+        });
+    });
+
+    // Préload des ressources pour une transition plus fluide
+    function preloadResources() {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        let basePath = '';
+
+        if (pathSegments.length > 0) {
+            const firstSegment = pathSegments[0];
+            const knownPaths = ['fr', 'en', 'home', 'projects', 'about', 'contact'];
+            if (!knownPaths.includes(firstSegment)) {
+                basePath = '/' + firstSegment;
+            }
+        }
+
+        // Preload des CSS principales
+        const link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.href = `${basePath}/css/main.css`;
+        document.head.appendChild(link);
+    }
+
+    // Démarrer le preload après un délai
+    setTimeout(preloadResources, 1000);
+</script>
+</body>
+</html>

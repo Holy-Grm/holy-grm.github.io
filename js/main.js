@@ -256,6 +256,30 @@ class Application {
     }
 }
 
+// ============ FONCTIONS DE PERSISTANCE DE LANGUE ============
+
+// Fonction pour initialiser la persistance de la langue
+function initializeLanguagePersistence() {
+    // Marquer que l'utilisateur a visité le site
+    localStorage.setItem('language-selected', 'true');
+
+    // Sauvegarder la langue actuelle
+    const currentLang = app ? app.getRouter().getCurrentLang() : 'en';
+    localStorage.setItem('last-language', currentLang);
+
+    // Écouter les changements de langue pour les sauvegarder
+    if (app) {
+        app.getRouter().addObserver((type, data) => {
+            if (type === 'languageChange') {
+                localStorage.setItem('last-language', data.newLang);
+                console.log(`💾 Langue sauvegardée: ${data.newLang}`);
+            }
+        });
+    }
+
+    console.log('🔐 Persistance de langue initialisée');
+}
+
 // ============ INITIALISATION GLOBALE ============
 
 // Instance globale de l'application
@@ -267,11 +291,16 @@ async function initializeApp() {
         app = new Application();
         await app.initialize();
 
+        // Initialiser la persistance de la langue
+        initializeLanguagePersistence();
+
         // Exposer l'app globalement pour le debug (optionnel)
         if (typeof window !== 'undefined') {
             window.app = app;
             window.APP_CONFIG = CONFIG; // Pour debug
         }
+
+        console.log('🎉 Application complètement initialisée !');
 
     } catch (error) {
         console.error('💥 Erreur fatale lors de l\'initialisation:', error);
@@ -344,6 +373,13 @@ window.debugApp = () => {
     } else {
         console.log('Application non initialisée');
     }
+};
+
+// Fonction utilitaire pour réinitialiser la sélection de langue (debug)
+window.resetLanguageSelection = () => {
+    localStorage.removeItem('language-selected');
+    localStorage.removeItem('last-language');
+    console.log('🔄 Sélection de langue réinitialisée');
 };
 
 console.log('📦 main.js chargé - En attente du DOM...');

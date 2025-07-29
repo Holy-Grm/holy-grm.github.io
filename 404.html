@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script>
         // Redirection pour GitHub Pages
-        // Stocke l'URL demandée et redirige vers index.html
+        // Stocke l'URL demandée et redirige vers main.html
         sessionStorage.setItem('redirectPath', window.location.pathname);
 
         // Déterminer l'URL de base (pour gérer les sous-dossiers GitHub Pages)
@@ -21,7 +21,8 @@
             }
         }
 
-        window.location.replace(baseUrl + '/');
+        // Rediriger vers main.html au lieu de index.html
+        window.location.replace(baseUrl + '/main.html');
     </script>
 </head>
 <body>
