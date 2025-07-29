@@ -145,17 +145,14 @@ p {
 .hero {
     text-align: center;
     position: relative;
-    /* Calcul pour centrer parfaitement en prenant en compte la navigation */
-    min-height: calc(100vh - var(--nav-height));
+    margin-top: 50px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    /* Padding minimal pour éviter de toucher les bords */
-    padding: var(--spacing-lg) var(--spacing-md);
-    /* Background cercle responsive avec min/max */
+    padding: 60px;
     background: radial-gradient(circle at center, rgba(64, 224, 208, 0.3) 0%, transparent 40%);
-    background-size: clamp(100px, 40vw, 500px) clamp(120px, 15vw, 300px);
+    background-size: 500px 500px;
     background-repeat: no-repeat;
     background-position: center;
     animation: pulse 3s infinite;
@@ -165,7 +162,7 @@ p {
 .hero h1 {
     margin: 0;
     padding: 0;
-    font-size: var(--font-size-6xl);
+    font-size: var(--font-size-7xl);
     font-weight: var(--font-weight-bold);
     background: var(--gradient-text);
     background-size: 200% 200%;
@@ -182,7 +179,7 @@ p {
     margin: 0;
     padding: 0;
     margin-top: var(--spacing-md);
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-2xl);
     color: var(--color-text-secondary);
     line-height: var(--line-height-relaxed);
 }
@@ -683,17 +680,13 @@ p {
         font-size: var(--font-size-lg);
     }
 
-    .hero {
-        min-height: calc(100vh - 80px); /* 80px = nav height mobile */
-        padding: var(--spacing-md);
-    }
 
     .hero h1 {
-        font-size: var(--font-size-4xl);
+        font-size: var(--font-size-7xl);
     }
 
     .hero p {
-        font-size: var(--font-size-lg);
+        font-size: var(--font-size-xl);
     }
 
     .hero::before {
