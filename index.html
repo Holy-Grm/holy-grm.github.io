@@ -4,85 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Holy - Portfolio</title>
-    <meta name="description" content="Découvrez le portfolio de Holy, étudiant en sciences informatiques à l'Université de Sherbrooke. Il est passionné par la Data Science, l'IA et la cybersécurité.">
-    <link rel="stylesheet" href="css/main.css">
-    <meta property="og:title" content="Portfolio de Holy">
-    <meta property="og:description" content="Apprenez-en plus sur moi!.">
-    <meta property="og:image" content="https://holy-grm.github.io/img/preview.png">
-    <meta property="og:url" content="https://holy-grm.github.io">
-
+    <meta name="description" content="Portfolio de Holy - Étudiant en sciences informatiques">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="manifest" href="site.webmanifest">
-    <meta name="theme-color" content="#1a1a1a">
+    
+    <script>
+        // Vérifier si l'utilisateur a déjà choisi une langue
+        const hasVisited = localStorage.getItem('language-selected');
+        const urlParams = new URLSearchParams(window.location.search);
+        const forceSelect = urlParams.get('select-lang');
+        
+        // Si l'utilisateur revient à la racine et a déjà choisi une langue (et pas de force)
+        if (hasVisited && !forceSelect) {
+            // Rediriger vers la dernière langue utilisée
+            const lastLang = localStorage.getItem('last-language') || 'en';
+            const basePath = getBasePath();
+            window.location.replace(`${basePath}/${lastLang}/home`);
+        } else {
+            // Sinon, aller à la page de sélection
+            window.location.replace('./language-select.html');
+        }
+        
+        function getBasePath() {
+            const pathSegments = window.location.pathname.split('/').filter(Boolean);
+            if (pathSegments.length > 0) {
+                const firstSegment = pathSegments[0];
+                const knownPaths = ['fr', 'en', 'home', 'projects', 'about', 'contact'];
+                if (!knownPaths.includes(firstSegment)) {
+                    return '/' + firstSegment;
+                }
+            }
+            return '';
+        }
+    </script>
 </head>
 <body>
-<div class="mobile-menu-overlay" id="mobileMenuOverlay">
-    <ul class="mobile-nav-links">
-        <li><a href="#" class="mobile-nav-link active" data-page="home" data-en="Home" data-fr="Accueil">Home</a></li>
-        <li><a href="#" class="mobile-nav-link" data-page="projects" data-en="Projects" data-fr="Projets">Projects</a></li>
-        <li><a href="#" class="mobile-nav-link" data-page="about" data-en="About" data-fr="À Propos">About</a></li>
-        <li><a href="#" class="mobile-nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
-    </ul>
-</div>
-<div class="particles" id="particles"></div>
-
-<!-- Abstract Particle Loading Screen -->
-<div class="loading-screen" id="loadingScreen">
-    <!-- Particle Container -->
-    <div class="particle-container" id="particleContainer">
-        <!-- Central Mass -->
-        <div class="central-mass" id="centralMass"></div>
-
-        <!-- Explosion Effect -->
-        <div class="explosion" id="explosion"></div>
-    </div>
-
-    <!-- Loading Text -->
-    <div class="loading-text" id="loadingText">
-        Gathering particles...
-    </div>
-
-    <!-- Progress Dots -->
-    <div class="progress-dots" id="progressDots">
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-        <div class="progress-dot"></div>
-    </div>
-</div>
-
-<nav id="nav">
-    <div class="nav-container">
-        <a href="#" class="logo">HOLY</a>
-        <ul class="nav-links">
-            <li><a href="#" class="nav-link active" data-page="home" data-en="Home" data-fr="Accueil">Home</a></li>
-            <li><a href="#" class="nav-link" data-page="projects" data-en="Projects" data-fr="Projets">Projects</a></li>
-            <li><a href="#" class="nav-link" data-page="about" data-en="About" data-fr="À Propos">About</a></li>
-            <li><a href="#" class="nav-link" data-page="contact" data-en="Contact" data-fr="Contact">Contact</a></li>
-        </ul>
-
-        <button class="hamburger" id="hamburger">
-            <div class="hamburger-line"></div>
-            <div class="hamburger-line"></div>
-            <div class="hamburger-line"></div>
-        </button>
-        <button class="lang-toggle" id="langToggle">FR</button>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="page active" id="home"></div>
-    <div class="page" id="projects"></div>
-    <div class="page" id="about"></div>
-    <div class="page" id="contact"></div>
-</div>
-
-<script type="module" src="js/main.js"></script>
-
+    <!-- Fallback au cas où JavaScript est désactivé -->
+    <p>Redirecting... / Redirection...</p>
+    <p><a href="language-select.html">Click here if not redirected / Cliquez ici si pas de redirection</a></p>
 </body>
 </html>
