@@ -1,4 +1,4 @@
-// main.js - Orchestrateur principal (version avec loading screen)
+// main.js - Orchestrateur principal (version avec popup de langue)
 import { CONFIG } from './config.js';
 import { Router } from './router.js';
 import { LanguageManager } from './languageManager.js';
@@ -42,6 +42,9 @@ class Application {
 
             // 3. MASQUER le loading screen une fois tout prêt
             await this.loadingScreenManager.hide();
+
+            // 4. Initialiser la persistance de langue APRÈS l'initialisation
+            this.initializeLanguagePersistence();
 
         } catch (error) {
             console.error('❌ Erreur lors de l\'initialisation:', error);
@@ -108,6 +111,12 @@ class Application {
         const router = this.modules.get('router');
         const languageManager = this.modules.get('languageManager');
 
+        // Si l'utilisateur a déjà choisi une langue, l'appliquer
+        const savedLang = localStorage.getItem('last-language');
+        if (savedLang && savedLang !== router.getCurrentLang()) {
+            router.changeLanguage(savedLang, false); // false = ne pas mettre à jour l'URL
+        }
+
         // Appliquer la langue actuelle
         languageManager.updatePageTexts();
 
@@ -116,6 +125,25 @@ class Application {
         navigationUI.updateActiveStates(router.getCurrentPage());
 
         console.log(`📍 État initial: ${router.getCurrentLang()}/${router.getCurrentPage()}`);
+    }
+
+    // Fonction pour initialiser la persistance de la langue
+    initializeLanguagePersistence() {
+        const router = this.modules.get('router');
+
+        // Sauvegarder la langue actuelle
+        const currentLang = router.getCurrentLang();
+        localStorage.setItem('last-language', currentLang);
+
+        // Écouter les changements de langue pour les sauvegarder
+        router.addObserver((type, data) => {
+            if (type === 'languageChange') {
+                localStorage.setItem('last-language', data.newLang);
+                console.log(`💾 Langue sauvegardée: ${data.newLang}`);
+            }
+        });
+
+        console.log('🔐 Persistance de langue initialisée');
     }
 
     // Méthodes utilitaires pour accéder aux modules
@@ -242,7 +270,8 @@ class Application {
             currentLang: router?.getCurrentLang(),
             currentPage: router?.getCurrentPage(),
             url: window.location.href,
-            loadingScreenHidden: this.loadingScreenManager?.isHidden
+            loadingScreenHidden: this.loadingScreenManager?.isHidden,
+            languageSelected: localStorage.getItem('language-selected') === 'true'
         };
     }
 
@@ -256,30 +285,6 @@ class Application {
     }
 }
 
-// ============ FONCTIONS DE PERSISTANCE DE LANGUE ============
-
-// Fonction pour initialiser la persistance de la langue
-function initializeLanguagePersistence() {
-    // Marquer que l'utilisateur a visité le site
-    localStorage.setItem('language-selected', 'true');
-
-    // Sauvegarder la langue actuelle
-    const currentLang = app ? app.getRouter().getCurrentLang() : 'en';
-    localStorage.setItem('last-language', currentLang);
-
-    // Écouter les changements de langue pour les sauvegarder
-    if (app) {
-        app.getRouter().addObserver((type, data) => {
-            if (type === 'languageChange') {
-                localStorage.setItem('last-language', data.newLang);
-                console.log(`💾 Langue sauvegardée: ${data.newLang}`);
-            }
-        });
-    }
-
-    console.log('🔐 Persistance de langue initialisée');
-}
-
 // ============ INITIALISATION GLOBALE ============
 
 // Instance globale de l'application
@@ -290,9 +295,6 @@ async function initializeApp() {
     try {
         app = new Application();
         await app.initialize();
-
-        // Initialiser la persistance de la langue
-        initializeLanguagePersistence();
 
         // Exposer l'app globalement pour le debug (optionnel)
         if (typeof window !== 'undefined') {
@@ -379,6 +381,7 @@ window.debugApp = () => {
 window.resetLanguageSelection = () => {
     localStorage.removeItem('language-selected');
     localStorage.removeItem('last-language');
+    window.showLanguagePopup();
     console.log('🔄 Sélection de langue réinitialisée');
 };
 
