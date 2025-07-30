@@ -41,25 +41,29 @@
 
 /* Côté anglais */
 .language-side.english {
-    background: linear-gradient(135deg, 
-        var(--color-bg-primary) 0%, 
-        var(--color-bg-secondary) 50%, 
+    background: linear-gradient(135deg,
+        var(--color-bg-primary) 0%,
+        var(--color-bg-secondary) 50%,
         var(--color-bg-primary) 100%);
     border-right: 2px solid var(--color-primary);
 }
 
 /* Côté français */
 .language-side.french {
-    background: linear-gradient(135deg, 
-        var(--color-bg-secondary) 0%, 
-        var(--color-bg-primary) 50%, 
+    background: linear-gradient(135deg,
+        var(--color-bg-secondary) 0%,
+        var(--color-bg-primary) 50%,
         var(--color-bg-secondary) 100%);
     border-left: 2px solid var(--color-primary);
 }
 
 .language-side:hover {
-    transform: scale(1.02);
+    transform: scale(1.25);
     z-index: 2;
+}
+
+.language-popup-overlay:hover .language-side:not(:hover) .language-content {
+    transform: scale(0.8);
 }
 
 .language-side:hover::before {
@@ -78,9 +82,9 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, 
-        transparent 30%, 
-        var(--color-primary-alpha) 50%, 
+    background: linear-gradient(45deg,
+        transparent 30%,
+        var(--color-primary-alpha) 50%,
         transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -106,24 +110,14 @@
 }
 
 .language-side.english .language-content {
-    transition-delay: 0.2s;
+    transition-delay: 0s;
 }
 
 .language-side.french .language-content {
-    transition-delay: 0.4s;
+    transition-delay: 0s;
 }
 
-.flag-icon {
-    font-size: 4rem;
-    margin-bottom: 2rem;
-    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
-    transition: all 0.3s ease;
-}
 
-.language-side:hover .flag-icon {
-    font-size: 4.5rem;
-    filter: drop-shadow(0 12px 24px rgba(64, 224, 208, 0.3));
-}
 
 .language-title {
     font-size: 3rem;
@@ -203,22 +197,7 @@
    ÉLÉMENTS CENTRAUX
    ==================================== */
 
-/* Ligne de séparation centrale */
-.divider-line {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    width: 2px;
-    height: 100%;
-    background: linear-gradient(180deg, 
-        transparent 0%, 
-        var(--color-primary) 20%, 
-        var(--color-primary) 80%, 
-        transparent 100%);
-    transform: translateX(-50%);
-    z-index: 3;
-    box-shadow: var(--shadow-glow);
-}
+
 
 /* Logo HOLY au centre */
 .popup-logo {
@@ -271,26 +250,29 @@
 
 @media (max-width: 768px) {
     .language-popup-overlay {
-        flex-direction: column;
+        /* flex-direction: column; */  /* ← Supprimer ou commenter cette ligne */
     }
 
+    /* Et aussi ajuster les bordures pour qu'elles restent verticales */
     .language-side.english {
-        border-right: none;
-        border-bottom: 2px solid var(--color-primary);
+        border-right: 2px solid var(--color-primary); /* Garder la bordure droite */
+        /* border-bottom: 2px solid var(--color-primary); */ /* Supprimer */
     }
 
     .language-side.french {
-        border-left: none;
-        border-top: 2px solid var(--color-primary);
+        border-left: 2px solid var(--color-primary); /* Garder la bordure gauche */
+        /* border-top: 2px solid var(--color-primary); */ /* Supprimer */
     }
 
+    /* Et supprimer ou ajuster les propriétés du divider-line */
     .divider-line {
-        top: 50%;
+        /* top: 50%;
         left: 0;
         width: 100%;
         height: 2px;
-        transform: translateY(-50%);
+        transform: translateY(-50%); */
     }
+}
 
     .popup-logo {
         top: 5%;
@@ -301,14 +283,7 @@
         font-size: var(--font-size-4xl);
     }
 
-    .flag-icon {
-        font-size: 3rem;
-        margin-bottom: 1.5rem;
-    }
 
-    .language-side:hover .flag-icon {
-        font-size: 3.2rem;
-    }
 
     .language-subtitle {
         font-size: var(--font-size-lg);
@@ -329,13 +304,7 @@
         font-size: var(--font-size-3xl);
     }
 
-    .flag-icon {
-        font-size: 2.5rem;
-    }
 
-    .language-side:hover .flag-icon {
-        font-size: 2.7rem;
-    }
 }
 
 /* ====================================
@@ -346,16 +315,15 @@
     .language-popup-overlay,
     .language-side,
     .language-content,
-    .flag-icon,
     .language-action {
         transition: none;
         animation: none;
     }
-    
+
     .popup-particle.floating {
         animation: none;
     }
-    
+
     .popup-logo,
     .popup-instructions {
         animation: none;
