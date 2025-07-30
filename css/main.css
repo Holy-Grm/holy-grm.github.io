@@ -18,7 +18,9 @@
 @import url('./components/cards.css');
 @import url('./components/particles.css');
 @import url('./components/timeline.css');
-@import url('components/languagePopup.css');
+@import url('./components/languagePopup.css');
+@import url('./components/simpleCardExpansion.css');
+
 
 /* Utils */
 @import url('./utils/animations.css');

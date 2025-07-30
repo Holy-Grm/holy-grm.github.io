@@ -128,17 +128,6 @@ export class PageLoader {
         skillCards.forEach(card => {
             card.style.cursor = 'pointer';
 
-            // Créer un nouveau handler pour éviter les doublons
-            const handler = () => {
-                this.router.navigateTo('projects');
-            };
-
-            // Supprimer les anciens event listeners en clonant
-            const newCard = card.cloneNode(true);
-            card.parentNode.replaceChild(newCard, card);
-
-            // Ajouter le nouvel event listener
-            newCard.addEventListener('click', handler);
         });
 
         // Observer les nouvelles cartes
