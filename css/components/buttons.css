@@ -49,32 +49,31 @@
     transform: translateY(-2px);
     transition-duration: var(--duration-fast);
 }
-
 /* ====================================
-   BOUTON DE CHANGEMENT DE LANGUE
+   FORME PILL AVEC COULEURS DYNAMIQUES CORRIGÉES
    ==================================== */
 
+/* 1. CADRE PRINCIPAL */
 .lang-toggle {
-    background: var(--gradient-primary);
-    color: var(--color-black);
-    border: none;
-    padding: var(--btn-padding-sm);
-    border-radius: var(--btn-border-radius);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    width: 85px;
+    height: 32px;
+    background: rgba(26, 26, 26, 0.8);
+    border: 2px solid var(--color-border);
+    border-radius: 20px;
     cursor: pointer;
-    font-weight: var(--font-weight-bold);
     transition: all var(--duration-normal) var(--ease-in-out);
-    font-size: var(--font-size-sm);
-    min-width: 40px;
-    text-align: center;
+    padding: 0;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
 }
 
 .lang-toggle:hover {
-    transform: scale(1.1);
-    box-shadow: var(--shadow-glow);
-}
-
-.lang-toggle:active {
-    transform: scale(0.95);
+    border-color: var(--color-border-hover);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(64, 224, 208, 0.3);
 }
 
 .lang-toggle:focus-visible {
@@ -82,6 +81,232 @@
     outline-offset: 2px;
 }
 
+/* ====================================
+   LABELS INTÉGRÉS (EN / FR) - COULEURS DYNAMIQUES
+   ==================================== */
+
+.lang-toggle::before {
+    content: 'EN';
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-secondary); /* Couleur par défaut */
+    transition: all var(--duration-normal) var(--ease-in-out);
+    z-index: 1;
+    pointer-events: none;
+}
+
+.lang-toggle::after {
+    content: 'FR';
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text-secondary); /* Couleur par défaut */
+    transition: all var(--duration-normal) var(--ease-in-out);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* ====================================
+   PASTILLE PILL SHAPE
+   ==================================== */
+
+.lang-toggle-thumb {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 36px;
+    height: 24px;
+    background: var(--gradient-primary);
+    border-radius: 12px;
+    transition: all var(--duration-normal) var(--ease-smooth);
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: var(--font-weight-bold);
+    color: var(--color-black);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ====================================
+   ÉTATS DYNAMIQUES - COULEURS CORRIGÉES
+   ==================================== */
+
+/* État par défaut (EN sélectionné) */
+.lang-toggle[data-lang="en"] .lang-toggle-thumb {
+    left: 2px;
+    transform: translateX(0);
+}
+
+.lang-toggle[data-lang="en"] .lang-toggle-thumb::before {
+    content: 'EN';
+}
+
+/* EN sélectionné = EN en noir, FR en gris */
+.lang-toggle[data-lang="en"]::before {
+    color: var(--color-black) !important; /* EN en noir */
+    font-weight: var(--font-weight-bold);
+}
+
+.lang-toggle[data-lang="en"]::after {
+    color: var(--color-text-muted) !important; /* FR en gris */
+}
+
+/* État FR sélectionné */
+.lang-toggle[data-lang="fr"] .lang-toggle-thumb {
+    left: calc(100% - 38px);
+    transform: translateX(0);
+}
+
+.lang-toggle[data-lang="fr"] .lang-toggle-thumb::before {
+    content: 'FR';
+}
+
+/* FR sélectionné = EN en gris, FR en noir */
+.lang-toggle[data-lang="fr"]::before {
+    color: var(--color-text-muted) !important; /* EN en gris */
+}
+
+.lang-toggle[data-lang="fr"]::after {
+    color: var(--color-black) !important; /* FR en noir */
+    font-weight: var(--font-weight-bold);
+}
+
+/* ====================================
+   ANIMATIONS ET EFFETS
+   ==================================== */
+
+.lang-toggle:hover .lang-toggle-thumb {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(64, 224, 208, 0.4);
+}
+
+.lang-toggle:active .lang-toggle-thumb {
+    transform: scale(0.95);
+}
+
+/* Lueur de fond lors du changement */
+.lang-toggle.changing {
+    background: linear-gradient(90deg,
+    rgba(64, 224, 208, 0.1) 0%,
+    rgba(64, 224, 208, 0.3) 50%,
+    rgba(64, 224, 208, 0.1) 100%);
+    animation: toggleGlow 0.6s ease-in-out;
+}
+
+@keyframes toggleGlow {
+    0%, 100% {
+        box-shadow: 0 0 10px rgba(64, 224, 208, 0.2);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(64, 224, 208, 0.6);
+    }
+}
+
+/* ====================================
+   RESPONSIVE - COULEURS MAINTENUES
+   ==================================== */
+
+/* Mobile 768px */
+@media (max-width: 768px) {
+    .lang-toggle {
+        width: 75px;
+        height: 28px;
+    }
+
+    .lang-toggle-thumb {
+        width: 32px;
+        height: 20px;
+        border-radius: 10px;
+        font-size: 14px;
+    }
+
+    .lang-toggle[data-lang="fr"] .lang-toggle-thumb {
+        left: calc(100% - 34px);
+    }
+
+    .lang-toggle::before,
+    .lang-toggle::after {
+        font-size: 10px;
+    }
+}
+
+/* Mobile 480px */
+@media (max-width: 480px) {
+    .lang-toggle {
+        width: 70px;
+        height: 26px;
+    }
+
+    .lang-toggle-thumb {
+        width: 28px;
+        height: 18px;
+        border-radius: 9px;
+        font-size: 12px;
+    }
+
+    .lang-toggle[data-lang="fr"] .lang-toggle-thumb {
+        left: calc(100% - 30px);
+    }
+}
+
+/* Version compacte */
+.lang-toggle.compact {
+    width: 65px;
+    height: 24px;
+}
+
+.lang-toggle.compact .lang-toggle-thumb {
+    width: 26px;
+    height: 16px;
+    border-radius: 8px;
+    font-size: 12px;
+}
+
+.lang-toggle.compact[data-lang="fr"] .lang-toggle-thumb {
+    left: calc(100% - 28px);
+}
+
+/* ====================================
+   ACCESSIBILITÉ
+   ==================================== */
+
+@media (prefers-contrast: more) {
+    .lang-toggle {
+        border-width: 3px;
+        background: var(--color-black);
+    }
+
+    .lang-toggle-thumb {
+        border: 2px solid var(--color-white);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lang-toggle,
+    .lang-toggle-thumb,
+    .lang-toggle::before,
+    .lang-toggle::after {
+        transition: none;
+        animation: none;
+    }
+
+    .lang-toggle:hover {
+        transform: none;
+    }
+
+    .lang-toggle:hover .lang-toggle-thumb {
+        transform: none;
+    }
+}
 /* ====================================
    STYLES DE BOUTONS GÉNÉRIQUES
    ==================================== */
