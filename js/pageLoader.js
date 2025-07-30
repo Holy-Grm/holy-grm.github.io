@@ -32,7 +32,6 @@ export class PageLoader {
         // Callbacks spécifiques à chaque page
         this.pageCallbacks.set('home', () => {
             this.initializeCTAButton();
-            this.initializeSkillCards();
         });
 
         this.pageCallbacks.set('about', () => {
@@ -123,16 +122,7 @@ export class PageLoader {
         }
     }
 
-    initializeSkillCards() {
-        const skillCards = document.querySelectorAll('.skill-card');
-        skillCards.forEach(card => {
-            card.style.cursor = 'pointer';
 
-        });
-
-        // Observer les nouvelles cartes
-        this.observeNewCards();
-    }
 
     observeNewCards() {
         const selectors = ['.skill-card', '.project-card', '.timeline-item'];

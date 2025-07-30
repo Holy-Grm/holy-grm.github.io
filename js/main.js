@@ -8,8 +8,6 @@ import { ParticleSystem } from './particleSystem.js';
 import { TimelineManager } from './timelineManager.js';
 import { LoadingScreenManager } from './loadingScreenManager.js';
 import { LanguagePopup } from './languagePopup.js';
-import { SimpleCardExpansion } from './simpleCardExpansion.js';
-
 
 /**
  * Classe principale de l'application - Version corrigée
@@ -97,24 +95,16 @@ class Application {
     async initializeUI() {
         console.log('🎨 Initialisation de l\'interface...');
 
-        // NavigationUI (gestion de la navigation)
+        // 4. NavigationUI (gestion de la navigation)
         this.modules.set('navigationUI',
             new NavigationUI(this.modules.get('router'))
         );
 
-        // TimelineManager (timeline de la page about)
+        // 5. TimelineManager (timeline de la page about)
         this.modules.set('timelineManager',
             new TimelineManager(this.modules.get('router'))
         );
-
-        // SimpleCardExpansion (nouveau - expansion simple des cartes)
-        const simpleCardExpansion = new SimpleCardExpansion(this.modules.get('router'));
-        this.modules.set('simpleCardExpansion', simpleCardExpansion);
-
-        // Exposer globalement pour les actions onclick
-        window.simpleCardExpansion = simpleCardExpansion;
     }
-
 
     async initializeEffects() {
         console.log('✨ Initialisation des effets visuels...');

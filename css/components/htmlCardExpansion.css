@@ -1,0 +1,129 @@
+/* css/components/htmlCardExpansion.css - Version HTML pure */
+
+/* ====================================
+   EXPANSION SIMPLE AVEC HTML
+   ==================================== */
+
+/* Section cachée en bas de chaque carte */
+.card-bottom {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    border-top: 1px solid transparent;
+    padding: 0;
+}
+
+/* Quand la carte a la classe 'expanded', la section apparaît */
+.card.expanded .card-bottom,
+.skill-card.expanded .card-bottom,
+.project-card.expanded .card-bottom,
+.timeline-content.expanded .card-bottom {
+    max-height: 100px;
+    border-top-color: var(--color-border);
+    padding: var(--spacing-lg) 0;
+}
+
+/* Contenu de la section avec animation */
+.card-bottom-content {
+    text-align: center;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease 0.1s;
+}
+
+.card.expanded .card-bottom-content,
+.skill-card.expanded .card-bottom-content,
+.project-card.expanded .card-bottom-content,
+.timeline-content.expanded .card-bottom-content {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Bouton dans la section */
+.discover-btn {
+    padding: var(--spacing-md) var(--spacing-xl);
+    background: var(--gradient-primary);
+    color: var(--color-black);
+    border: none;
+    border-radius: var(--border-radius-full);
+    font-weight: var(--font-weight-semibold);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-block;
+    font-size: var(--font-size-base);
+}
+
+.discover-btn:hover {
+    background: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(64, 224, 208, 0.3);
+}
+
+.discover-btn:active {
+    transform: translateY(0);
+}
+
+/* Indicateur visuel optionnel */
+.expand-hint {
+    position: absolute;
+    bottom: var(--spacing-md);
+    right: var(--spacing-md);
+    color: var(--color-primary);
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+    font-size: var(--font-size-sm);
+}
+
+.skill-card:hover .expand-hint,
+.project-card:hover .expand-hint,
+.timeline-content:hover .expand-hint {
+    opacity: 1;
+}
+
+.skill-card.expanded .expand-hint,
+.project-card.expanded .expand-hint,
+.timeline-content.expanded .expand-hint {
+    opacity: 0;
+}
+
+/* Assurer que les cartes sont cliquables */
+.skill-card,
+.project-card,
+.timeline-content {
+    cursor: pointer;
+    position: relative;
+}
+
+/* ====================================
+   RESPONSIVE
+   ==================================== */
+
+@media (max-width: 768px) {
+    .card.expanded .card-bottom,
+    .skill-card.expanded .card-bottom,
+    .project-card.expanded .card-bottom,
+    .timeline-content.expanded .card-bottom {
+        max-height: 80px;
+        padding: var(--spacing-md) 0;
+    }
+    
+    .discover-btn {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        font-size: var(--font-size-sm);
+    }
+}
+
+/* ====================================
+   ACCESSIBILITÉ
+   ==================================== */
+
+@media (prefers-reduced-motion: reduce) {
+    .card-bottom,
+    .card-bottom-content,
+    .discover-btn,
+    .expand-hint {
+        transition: none;
+    }
+}

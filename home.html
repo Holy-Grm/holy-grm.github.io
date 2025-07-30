@@ -10,23 +10,69 @@
 <div class="skills">
     <h2 data-en="Skills & Interest" data-fr="Compétences et Intérêts">Skills & Interest</h2>
     <div class="skill-grid">
-        <div class="skill-card">
+
+        <!-- PREMIÈRE SKILL CARD - Data Science -->
+        <div class="skill-card" onclick="this.classList.toggle('expanded')">
             <h3 data-en="Data Science" data-fr="Science des données">Data Science</h3>
-            <p data-en="Advanced analytics, SQL, R, Python, SAP, Snowflake, and Excel" data-fr="Analyse avancée, SQL, R, Python, SAP, Snowflake et Excel">
+            <p data-en="Advanced analytics, SQL, R, Python, SAP, Snowflake, and Excel"
+               data-fr="Analyse avancée, SQL, R, Python, SAP, Snowflake et Excel">
                 Advanced analytics, SQL, R, Python, SAP, Snowflake, and Excel
             </p>
+
+            <!-- SECTION CACHÉE -->
+            <div class="card-bottom">
+                <div class="card-bottom-content">
+                    <a href="#" class="discover-btn"
+                       onclick="event.stopPropagation(); window.app.navigateTo('projects')"
+                       data-en="My Projects" data-fr="Mes projets">
+                        My Projects
+                    </a>
+                </div>
+            </div>
+            <!--<div class="expand-hint">▼</div>-->
         </div>
-        <div class="skill-card">
+
+        <!-- DEUXIÈME SKILL CARD - AI -->
+        <div class="skill-card" onclick="this.classList.toggle('expanded')">
             <h3 data-en="Artificial Intelligence" data-fr="Intelligence artificielle">Artificial Intelligence</h3>
-            <p data-en="Neural Networks, Deep Learning, and Reinforcement Learning" data-fr="Réseau neuronal, deep learning et apprentissage par renforcement">
+            <p data-en="Neural Networks, Deep Learning, and Reinforcement Learning"
+               data-fr="Réseau neuronal, deep learning et apprentissage par renforcement">
                 Neural Networks, Deep Learning, and Reinforcement Learning
             </p>
+
+            <!-- SECTION CACHÉE -->
+            <div class="card-bottom">
+                <div class="card-bottom-content">
+                    <a href="#" class="discover-btn"
+                       onclick="event.stopPropagation(); window.app.navigateTo('projects')"
+                       data-en="My Projects" data-fr="Mes projets">
+                        My Projects
+                    </a>
+                </div>
+            </div>
+            <!--<div class="expand-hint">▼</div>-->
         </div>
-        <div class="skill-card">
+
+        <!-- TROISIÈME SKILL CARD - Cybersecurity -->
+        <div class="skill-card" onclick="this.classList.toggle('expanded')">
             <h3 data-en="Cybersecurity" data-fr="Cybersécurité">Cybersecurity</h3>
-            <p data-en="Cryptography, Reverse Engineering, and OSINT" data-fr="Cryptographie, reverse engineering et OSINT">
+            <p data-en="Cryptography, Reverse Engineering, and OSINT"
+               data-fr="Cryptographie, reverse engineering et OSINT">
                 Cryptography, Reverse Engineering, and OSINT
             </p>
+
+            <!-- SECTION CACHÉE -->
+            <div class="card-bottom">
+                <div class="card-bottom-content">
+                    <a href="#" class="discover-btn"
+                       onclick="event.stopPropagation(); window.app.navigateTo('projects')"
+                       data-en="My Projects" data-fr="Mes projets">
+                        My Projects
+                    </a>
+                </div>
+            </div>
+            <!--<div class="expand-hint">▼</div>-->
         </div>
+
     </div>
 </div>
