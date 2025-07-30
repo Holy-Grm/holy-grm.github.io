@@ -39,22 +39,61 @@
     overflow: hidden;
 }
 
-/* Côté anglais */
+/* Côté anglais - Gradient symétrique de droite vers gauche */
 .language-side.english {
-    background: linear-gradient(135deg,
-        var(--color-bg-primary) 0%,
-        var(--color-bg-secondary) 50%,
-        var(--color-bg-primary) 100%);
-    border-right: 2px solid var(--color-primary);
+    position: relative;
+    background: linear-gradient(225deg,
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 50%,
+    var(--color-bg-primary) 100%);
 }
 
-/* Côté français */
+.language-side.english::after {
+    content: '';
+    position: absolute;
+    right: -2px;
+    top: 15%;
+    height: 70%;
+    width: 3px;
+    background: linear-gradient(to bottom,
+    transparent 0%,
+    var(--color-primary) 20%,
+    var(--color-primary) 80%,
+    transparent 100%);
+    clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+}
+
+/* Côté français - Gradient symétrique de gauche vers droite */
 .language-side.french {
+    position: relative;
     background: linear-gradient(135deg,
-        var(--color-bg-secondary) 0%,
-        var(--color-bg-primary) 50%,
-        var(--color-bg-secondary) 100%);
-    border-left: 2px solid var(--color-primary);
+    var(--color-bg-primary) 0%,
+    var(--color-bg-secondary) 50%,
+    var(--color-bg-primary) 100%);
+}
+
+.language-side.french::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 15%;
+    height: 70%;
+    width: 3px;
+    background: linear-gradient(to bottom,
+    transparent 0%,
+    var(--color-primary) 20%,
+    var(--color-primary) 80%,
+    transparent 100%);
+    clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
+}
+
+/* Version alternative avec effet plus prononcé */
+.language-side.english.pointed::after {
+    clip-path: polygon(0 0, 100% 15%, 100% 85%, 0 100%);
+}
+
+.language-side.french.pointed::before {
+    clip-path: polygon(0 15%, 100% 0, 100% 100%, 0 85%);
 }
 
 .language-side:hover {
@@ -66,7 +105,8 @@
     transform: scale(0.8);
 }
 
-.language-side:hover::before {
+.language-side.english:hover::before,
+.language-side.french:hover::after {
     opacity: 1;
 }
 
@@ -74,8 +114,8 @@
    EFFETS VISUELS
    ==================================== */
 
-/* Effet de brillance au hover */
-.language-side::before {
+/* Effet de brillance au hover - Côté anglais (diagonal de gauche vers droite) */
+.language-side.english::before {
     content: '';
     position: absolute;
     top: 0;
@@ -83,12 +123,30 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(45deg,
-        transparent 30%,
-        var(--color-primary-alpha) 50%,
-        transparent 70%);
+    transparent 30%,
+    var(--color-primary-alpha) 50%,
+    transparent 70%);
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
+}
+
+/* Effet de brillance au hover - Côté français (diagonal de droite vers gauche - symétrique) */
+.language-side.french::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg,
+    transparent 30%,
+    var(--color-primary-alpha) 50%,
+    transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    z-index: 2;
 }
 
 /* ====================================
@@ -116,8 +174,6 @@
 .language-side.french .language-content {
     transition-delay: 0s;
 }
-
-
 
 .language-title {
     font-size: 3rem;
@@ -197,8 +253,6 @@
    ÉLÉMENTS CENTRAUX
    ==================================== */
 
-
-
 /* Logo HOLY au centre */
 .popup-logo {
     position: absolute;
@@ -253,17 +307,6 @@
         /* flex-direction: column; */  /* ← Supprimer ou commenter cette ligne */
     }
 
-    /* Et aussi ajuster les bordures pour qu'elles restent verticales */
-    .language-side.english {
-        border-right: 2px solid var(--color-primary); /* Garder la bordure droite */
-        /* border-bottom: 2px solid var(--color-primary); */ /* Supprimer */
-    }
-
-    .language-side.french {
-        border-left: 2px solid var(--color-primary); /* Garder la bordure gauche */
-        /* border-top: 2px solid var(--color-primary); */ /* Supprimer */
-    }
-
     /* Et supprimer ou ajuster les propriétés du divider-line */
     .divider-line {
         /* top: 50%;
@@ -272,7 +315,6 @@
         height: 2px;
         transform: translateY(-50%); */
     }
-}
 
     .popup-logo {
         top: 5%;
@@ -282,8 +324,6 @@
     .language-title {
         font-size: var(--font-size-4xl);
     }
-
-
 
     .language-subtitle {
         font-size: var(--font-size-lg);
@@ -303,8 +343,6 @@
     .popup-logo {
         font-size: var(--font-size-3xl);
     }
-
-
 }
 
 /* ====================================
