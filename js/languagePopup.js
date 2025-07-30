@@ -1,10 +1,10 @@
-// components/languagePopup.js - Version corrigée sans localStorage
+// components/languagePopup.js - Version corrigée avec meilleure gestion
 export class LanguagePopup {
     constructor() {
         this.popup = null;
         this.isVisible = false;
         this.keyboardHandler = null;
-        this.hasUserSelected = false; // Utiliser une variable interne au lieu de localStorage
+        this.hasUserSelected = false;
         this.selectedLanguage = null;
 
         this.init();
@@ -16,22 +16,14 @@ export class LanguagePopup {
         this.checkAndShow();
     }
 
-    /**
-     * Vérifie si le popup doit être affiché et l'affiche si nécessaire
-     */
     checkAndShow() {
-        // Afficher immédiatement le popup car la vérification est faite en amont
         if (this.popup) {
-            // Petit délai pour s'assurer que le DOM est prêt
             setTimeout(() => {
                 this.show();
             }, 200);
         }
     }
 
-    /**
-     * Affiche le popup avec les animations
-     */
     show() {
         if (!this.popup || this.isVisible) return;
 
@@ -42,13 +34,9 @@ export class LanguagePopup {
         console.log('🌍 Popup de sélection de langue affiché');
     }
 
-    /**
-     * Cache le popup avec les animations
-     */
     hide() {
         if (!this.popup || !this.isVisible) return;
 
-        // Animation de fermeture
         this.popup.style.transform = 'scale(0.95)';
         this.popup.style.opacity = '0';
 
@@ -60,82 +48,137 @@ export class LanguagePopup {
         }, 400);
     }
 
-    /**
-     * Sélectionne une langue et ferme le popup
-     * @param {string} lang - Code de langue ('en' ou 'fr')
-     */
     selectLanguage(lang) {
         if (!['en', 'fr'].includes(lang)) {
             console.warn('⚠️ Langue invalide:', lang);
             return;
         }
 
-        // Marquer que l'utilisateur a fait une sélection (en mémoire seulement)
+        console.log(`🌍 Langue sélectionnée: ${lang}`);
+
+        // Marquer que l'utilisateur a fait une sélection
         this.hasUserSelected = true;
         this.selectedLanguage = lang;
 
-        // Essayer de sauvegarder en localStorage si disponible (pour la version en ligne)
+        // Sauvegarder en localStorage si disponible
         try {
             if (typeof localStorage !== 'undefined') {
                 localStorage.setItem('language-selected', 'true');
                 localStorage.setItem('last-language', lang);
             }
         } catch (e) {
-            // localStorage non disponible, ignorer silencieusement
-            console.log('📝 localStorage non disponible, utilisation de la mémoire uniquement');
+            console.log('📝 localStorage non disponible');
         }
-
-        console.log(`🌍 Langue sélectionnée: ${lang}`);
 
         // Fermer le popup
         this.hide();
 
-        // Appliquer la langue dans l'application après fermeture
+        // Appliquer la langue - MÉTHODE AMÉLIORÉE
         setTimeout(() => {
-            if (window.app && window.app.changeLanguage) {
-                window.app.changeLanguage(lang);
-            }
+            this.applyLanguageChange(lang);
         }, 500);
     }
 
-    /**
-     * Crée les particules animées pour les deux côtés
-     */
+    // NOUVELLE MÉTHODE pour appliquer le changement de langue de manière robuste
+    applyLanguageChange(lang) {
+        console.log(`🔄 Application du changement de langue vers: ${lang}`);
+
+        // Méthode 1: Via l'app si disponible
+        if (window.app && typeof window.app.changeLanguage === 'function') {
+            console.log('✅ Changement via window.app');
+            window.app.changeLanguage(lang);
+            return;
+        }
+
+        // Méthode 2: Via le router directement
+        if (window.app && window.app.getRouter) {
+            const router = window.app.getRouter();
+            if (router && typeof router.changeLanguage === 'function') {
+                console.log('✅ Changement via router');
+                router.changeLanguage(lang);
+                return;
+            }
+        }
+
+        // Méthode 3: Attendre que l'app soit prête
+        console.log('⏳ App non prête, attente...');
+        let attempts = 0;
+        const maxAttempts = 20; // 2 secondes max
+
+        const waitForApp = () => {
+            attempts++;
+
+            if (window.app && typeof window.app.changeLanguage === 'function') {
+                console.log('✅ App prête, changement de langue');
+                window.app.changeLanguage(lang);
+                return;
+            }
+
+            if (attempts < maxAttempts) {
+                setTimeout(waitForApp, 100);
+            } else {
+                console.error('❌ Impossible de changer la langue - app non disponible');
+                // Méthode de fallback : recharger la page avec la bonne langue
+                this.fallbackLanguageChange(lang);
+            }
+        };
+
+        waitForApp();
+    }
+
+    // Méthode de fallback si l'app n'est pas disponible
+    fallbackLanguageChange(lang) {
+        console.log(`🔄 Fallback: rechargement avec langue ${lang}`);
+
+        // Construire la nouvelle URL
+        let newUrl = window.location.origin + window.location.pathname;
+
+        // Déterminer le chemin de base (pour GitHub Pages)
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        let basePath = '';
+
+        if (pathSegments.length > 0) {
+            const firstSegment = pathSegments[0];
+            const knownPaths = ['en', 'fr', 'home', 'projects', 'about', 'contact'];
+            if (!knownPaths.includes(firstSegment)) {
+                basePath = '/' + firstSegment;
+            }
+        }
+
+        // Construire la nouvelle URL avec la langue
+        if (lang === 'en') {
+            newUrl = window.location.origin + basePath + '/';
+        } else {
+            newUrl = window.location.origin + basePath + '/' + lang + '/';
+        }
+
+        console.log(`🔗 Redirection vers: ${newUrl}`);
+        window.location.href = newUrl;
+    }
+
     createSplitScreenParticles() {
         this.createParticlesForSide('englishParticles', 15);
         this.createParticlesForSide('frenchParticles', 15);
     }
 
-    /**
-     * Crée les particules pour un côté spécifique
-     * @param {string} containerId - ID du conteneur de particules
-     * @param {number} count - Nombre de particules à créer
-     */
     createParticlesForSide(containerId, count) {
         const container = document.getElementById(containerId);
         if (!container) return;
 
-        // Nettoyer les particules existantes
         container.innerHTML = '';
 
         for (let i = 0; i < count; i++) {
             const particle = document.createElement('div');
             particle.className = 'popup-particle floating';
 
-            // Position aléatoire
             particle.style.left = Math.random() * 100 + '%';
             particle.style.top = Math.random() * 100 + '%';
-
-            // Délai d'animation aléatoire
             particle.style.animationDelay = Math.random() * 6 + 's';
 
             container.appendChild(particle);
         }
     }
 
-    /**
-     * Configure le support clavier
-     */
     setupKeyboardSupport() {
         this.keyboardHandler = (e) => {
             if (!this.isVisible) return;
@@ -153,7 +196,7 @@ export class LanguagePopup {
                     break;
                 case 'Escape':
                     e.preventDefault();
-                    this.selectLanguage('en'); // Par défaut
+                    this.selectLanguage('en');
                     break;
             }
         };
@@ -161,38 +204,28 @@ export class LanguagePopup {
         document.addEventListener('keydown', this.keyboardHandler);
     }
 
-    /**
-     * Force l'affichage du popup (pour debug/settings)
-     */
     forceShow() {
         this.hasUserSelected = false;
         this.selectedLanguage = null;
 
-        // Nettoyer localStorage si disponible
         try {
             if (typeof localStorage !== 'undefined') {
                 localStorage.removeItem('language-selected');
                 localStorage.removeItem('last-language');
             }
         } catch (e) {
-            // Ignorer silencieusement
+            // Ignorer
         }
 
         this.show();
         console.log('🔄 Popup de langue forcé');
     }
 
-    /**
-     * Vérifie si l'utilisateur a déjà fait un choix
-     * @returns {boolean}
-     */
     hasUserSelectedLanguage() {
-        // Vérifier d'abord la variable interne
         if (this.hasUserSelected) {
             return true;
         }
 
-        // Puis essayer localStorage si disponible
         try {
             if (typeof localStorage !== 'undefined') {
                 return localStorage.getItem('language-selected') === 'true';
@@ -204,17 +237,11 @@ export class LanguagePopup {
         return false;
     }
 
-    /**
-     * Obtient la dernière langue sélectionnée
-     * @returns {string|null}
-     */
     getLastSelectedLanguage() {
-        // Vérifier d'abord la variable interne
         if (this.selectedLanguage) {
             return this.selectedLanguage;
         }
 
-        // Puis essayer localStorage si disponible
         try {
             if (typeof localStorage !== 'undefined') {
                 return localStorage.getItem('last-language');
@@ -226,16 +253,12 @@ export class LanguagePopup {
         return null;
     }
 
-    /**
-     * Nettoie les event listeners (pour cleanup)
-     */
     destroy() {
         if (this.keyboardHandler) {
             document.removeEventListener('keydown', this.keyboardHandler);
             this.keyboardHandler = null;
         }
 
-        // Nettoyer les particules
         const containers = ['englishParticles', 'frenchParticles'];
         containers.forEach(id => {
             const container = document.getElementById(id);
@@ -248,15 +271,37 @@ export class LanguagePopup {
     }
 }
 
-// Fonctions globales pour la compatibilité avec le HTML
+// FONCTIONS GLOBALES AMÉLIORÉES
 window.selectLanguage = function(lang) {
-    if (window.languagePopupInstance) {
+    console.log(`🖱️ Clic sur langue: ${lang}`);
+
+    // Méthode 1: Via l'instance du popup
+    if (window.languagePopupInstance && typeof window.languagePopupInstance.selectLanguage === 'function') {
+        console.log('✅ Utilisation de l\'instance popup');
         window.languagePopupInstance.selectLanguage(lang);
+        return;
     }
+
+    // Méthode 2: Chercher l'instance dans l'app
+    if (window.app && window.app.getLanguagePopup) {
+        const popup = window.app.getLanguagePopup();
+        if (popup && typeof popup.selectLanguage === 'function') {
+            console.log('✅ Utilisation du popup via app');
+            popup.selectLanguage(lang);
+            return;
+        }
+    }
+
+    // Méthode 3: Créer une instance temporaire pour gérer la sélection
+    console.log('⚠️ Aucune instance trouvée, création temporaire');
+    const tempPopup = new LanguagePopup();
+    tempPopup.selectLanguage(lang);
 };
 
 window.showLanguagePopup = function() {
     if (window.languagePopupInstance) {
         window.languagePopupInstance.forceShow();
+    } else if (window.app && window.app.showLanguagePopup) {
+        window.app.showLanguagePopup();
     }
 };
