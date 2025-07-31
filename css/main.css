@@ -19,7 +19,7 @@
 @import url('./components/particles.css');
 @import url('./components/timeline.css');
 @import url('components/languagePopup.css');
-@import url('./components/htmlCardExpansion.css');
+@import url('components/cardExpansion.css');
 
 
 /* Utils */

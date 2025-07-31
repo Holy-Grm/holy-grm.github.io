@@ -1,7 +1,9 @@
 <!-- Projects Page Content -->
 <h1 data-en="Projects" data-fr="Projets">Projects</h1>
 <div class="project-grid">
-    <div class="project-card">
+
+    <!-- MASTER EXCEL PROJECT -->
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
         <h3 data-en="Master Excel" data-fr="Master Excel">Master Excel</h3>
         <p data-en="Developed a variety of advanced projects involving the consolidation of over 25 Excel files, the creation of interactive pivot tables, and the design of sophisticated dashboards for business analysis."
            data-fr="Réalisation de nombreux projets complexes avec croisement de plus de 25 fichiers Excel, création de tableaux croisés dynamiques interactifs et conception de tableaux de bord avancés pour l'analyse d'affaires.">
@@ -12,9 +14,19 @@
             <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Pivot Table" data-fr="TCD">Pivot Table</span>
             <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Slicer" data-fr="Segment">Slicers</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+            <div class="card-bottom-content">
+                <img src="excelBlurred.jpg" alt="Excel Dashboard Screenshot" style="width: 100%; max-width: 500px; border-radius: 8px; margin: 10px 0;">
+            </div>
+        </div>
+
+        <div class="expand-hint">▼</div>
     </div>
 
-    <div class="project-card">
+    <!-- VISUAL AUTOMATION PROJECT -->
+    <div class="project-card" onclick="this.classList.toggle('expanded')">
         <h3 data-en="Visual Automation" data-fr="Automatisation visuelle">Visual Automation</h3>
         <p data-en="Implemented a webapp that transforms CSV/Excel data into visual graphics to represent a factory production chain."
            data-fr="Implémentation d'une webapp qui transforme des données CSV/Excel en graphiques visuels pour représenter une chaîne de production d'usine.">
@@ -26,8 +38,17 @@
             <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;">Graphviz</span>
             <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;">DOT</span>
         </div>
-    </div>
 
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+            <div class="card-bottom-content">
+                <img src="graphvizDemo.png" alt="Excel Dashboard Screenshot" style="width: 100%; max-width: 500px; border-radius: 8px; margin: 10px 0;">
+                </div>
+            </div>
+
+
+        <div class="expand-hint">▼</div>
+    </div>
 
     <div class="project-card">
         <h3 data-en="Excel VBA" data-fr="Excel VBA">Excel VBA</h3>

@@ -23,10 +23,11 @@
 
   <div class="timeline-wrapper">
 
+    <!-- LOOKING FOR INTERNSHIP -->
     <div class="timeline-event" data-year="2026" data-side="right">
       <div class="timeline-dot"></div>
 
-      <div class="timeline-content">
+      <div class="timeline-content" onclick="this.classList.toggle('expanded')">
         <span class="timeline-year" data-en="Winter 2026" data-fr="Hiver 2026">Winter 2026</span>
         <h3 data-en="Looking for New Internship"
             data-fr="À la recherche d'un stage">
@@ -41,13 +42,25 @@
         <div style="margin-top: 20px;">
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Open to New Opportunities" data-fr="À la recherche d'opportunités">Open to New Opportunities</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+          <div class="card-bottom-content">
+            <a href="#" class="discover-btn"
+               onclick="event.stopPropagation(); window.app.navigateTo('contact')"
+               data-en="Contact" data-fr="Contact">
+              Contact
+            </a>
+          </div>
+        </div>
+
+        <!--<div class="expand-hint">▼</div>-->
       </div>
     </div>
-
-    <!-- Stage 1 -->
+    <!-- BRP STAGE -->
     <div class="timeline-event" data-year="2025" data-side="left">
       <div class="timeline-dot"></div>
-      <div class="timeline-content">
+      <div class="timeline-content" onclick="this.classList.toggle('expanded')">
         <span class="timeline-year" data-en="Summer 2025" data-fr="Été 2025">Summer 2025 </span>
         <h3 data-en="Intern in technology – Manufacturing Processes and System"
             data-fr="Stagiaire aux processus et technologies d'exécution">
@@ -67,13 +80,25 @@
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;">HTML/CSS</span>
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;">VBA</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+          <div class="card-bottom-content">
+            <a href="https://www.brp.com" class="discover-btn"
+               onclick="event.stopPropagation();"
+               data-en="Discover BRP" data-fr="Découvrir BRP">
+              Discover BRP
+            </a>
+          </div>
+        </div>
+        <div class="expand-hint">▼</div>
       </div>
     </div>
 
-    <!-- UdS -->
+    <!-- UNIVERSITÉ SHERBROOKE -->
     <div class="timeline-event" data-year="2025" data-side="right">
       <div class="timeline-dot"></div>
-      <div class="timeline-content">
+      <div class="timeline-content" onclick="this.classList.toggle('expanded')">
         <span class="timeline-year">2024-2027</span>
         <h3 data-en="Bachelor's in Data Science"
             data-fr="Baccalauréat en sciences - informatique de gestion">
@@ -95,13 +120,26 @@
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;">Java</span>
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Assembly" data-fr="Assembleur">Assembly</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+          <div class="card-bottom-content">
+            <a href="https://www.usherbrooke.ca/admission/programme/221/baccalaureat-en-informatique-de-gestion/" class="discover-btn"
+               onclick="event.stopPropagation(); window.app.navigateTo('projects')"
+               data-en="Discover this program" data-fr="Découvrir ce programme">
+              Discover this program
+            </a>
+          </div>
+        </div>
+
+        <div class="expand-hint">▼</div>
       </div>
     </div>
 
-    <!-- 911 -->
+    <!-- 911 DISPATCHER -->
     <div class="timeline-event" data-year="2025" data-side="left">
       <div class="timeline-dot"></div>
-      <div class="timeline-content">
+      <div class="timeline-content" onclick="this.classList.toggle('expanded')">
         <span class="timeline-year">2022-2025</span>
         <h3 data-en="911 Dispatcher"
             data-fr="Répartiteur 911">
@@ -122,13 +160,26 @@
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Stress Management" data-fr="Gestion du stress">Stress Management</span>
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Sharp-minded" data-fr="Vif d'esprit">Sharp-minded</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+          <div class="card-bottom-content">
+            <a href="https://www.sherbrooke.ca/fr/emplois/emplois-en-demande/recrutement-de-policiers-et-policieres" class="discover-btn"
+               onclick="event.stopPropagation();"
+               data-en="Discover Sherbrooke Police" data-fr="Découvrir le SPS">
+              Discover Sherbrooke Police
+            </a>
+          </div>
+        </div>
+
+        <div class="expand-hint">▼</div>
       </div>
     </div>
 
-    <!-- SQ -->
+    <!-- SÛRETÉ DU QUÉBEC -->
     <div class="timeline-event" data-year="2022" data-side="right">
       <div class="timeline-dot"></div>
-      <div class="timeline-content">
+      <div class="timeline-content" onclick="this.classList.toggle('expanded')">
         <span class="timeline-year">2018-2022</span>
         <h3 data-en="Emergency Police Call Dispatcher"
             data-fr="Répartiteur d'appel d'urgence">
@@ -149,13 +200,26 @@
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Stress Management" data-fr="Gestion du stress">Stress Management</span>
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Sharp-minded" data-fr="Vif d'esprit">Sharp-minded</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+          <div class="card-bottom-content">
+            <a href="https://www.sq.gouv.qc.ca/carriere/civil/offre-demploi-asap-telecom-durgence/" class="discover-btn"
+               onclick="event.stopPropagation();"
+               data-en="More Info" data-fr="En savoir plus">
+              More Info
+            </a>
+          </div>
+        </div>
+
+        <div class="expand-hint">▼</div>
       </div>
     </div>
 
-    <!-- DEC -->
+    <!-- DEC MUSIQUE -->
     <div class="timeline-event" data-year="2018" data-side="left">
       <div class="timeline-dot"></div>
-      <div class="timeline-content">
+      <div class="timeline-content" onclick="this.classList.toggle('expanded')">
         <span class="timeline-year">2015-2018</span>
         <h3 data-en="DEC in Classical Music"
             data-fr="DEC en musique classique">
@@ -172,6 +236,19 @@
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Stress Management" data-fr="Gestion du stress">Stress Management</span>
           <span style="display: inline-block; background: rgba(64, 224, 208, 0.2); color: #40e0d0; padding: 5px 15px; border-radius: 20px; margin: 5px;" data-en="Team Work" data-fr="Travail d'équipe">Team Work</span>
         </div>
+
+        <!-- SECTION CACHÉE -->
+        <div class="card-bottom">
+          <div class="card-bottom-content">
+            <a href="https://www.cegepsl.qc.ca/programmes/musique/" class="discover-btn"
+               onclick="event.stopPropagation();"
+               data-en="Discover this program" data-fr="Découvrir ce programme">
+              Discover this program
+            </a>
+          </div>
+        </div>
+
+        <div class="expand-hint">▼</div>
       </div>
     </div>
 
