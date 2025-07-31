@@ -105,7 +105,7 @@
     .skill-card.expanded .card-bottom,
     .project-card.expanded .card-bottom,
     .timeline-content.expanded .card-bottom {
-        max-height: 80px;
+        max-height: 500px;
         padding: var(--spacing-md) 0;
     }
     
