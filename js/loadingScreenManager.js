@@ -129,19 +129,19 @@ export class LoadingScreenManager {
         if (!this.loadingText) return;
 
         const normalTexts = [
-            'Gathering particles...',
-            'Initializing quantum fields...',
-            'Calibrating neural networks...',
-            'Loading portfolio data...',
-            'Almost ready...'
+            'Chargement de l\'intelligence artificielle...',
+            'Connexion au serveur quantique...',
+            'Calibration des réseaux de neuronnes...',
+            'Chargement de trucs très impressionnants...',
+            'Presque prêt...'
         ];
 
         const popupTexts = [
-            'Gathering particles...',
-            'Preparing language selection...',
-            'Initializing interface...',
-            'Getting ready for you...',
-            'Almost there...'
+            'Chargement de l\'intelligence artificielle...',
+            'Connexion au serveur quantique...',
+            'Calibration des réseaux de neuronnes...',
+            'Chargement de trucs très impressionnants...',
+            'Presque prêt...'
         ];
 
         const texts = this.popupMode ? popupTexts : normalTexts;

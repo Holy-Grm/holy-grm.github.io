@@ -108,7 +108,7 @@
         max-height: 500px;
         padding: var(--spacing-md) 0;
     }
-    
+
     .discover-btn {
         padding: var(--spacing-sm) var(--spacing-lg);
         font-size: var(--font-size-sm);
