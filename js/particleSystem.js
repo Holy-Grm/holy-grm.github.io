@@ -52,8 +52,8 @@ export class ParticleSystem {
             particle.style.cssText = `
                 left: ${Math.random() * 100}%;
                 top: ${Math.random() * 100}%;
-                animation-delay: ${Math.random() * 8}s;
-                animation-duration: ${(Math.random() * 3 + 5)}s;
+                animation-delay: ${Math.random() * 8 + 100}s;
+                animation-duration: ${(Math.random() * 3 + 500)}s;
             `;
 
             particlesContainer.appendChild(particle);

@@ -47,12 +47,12 @@ export class MagneticParticleSystem {
                 vy: 0,
 
                 // Propriétés visuelles
-                size: Math.random() * 4 + 2,
-                opacity: Math.random() * 0.6 + 0.3,
+                size: Math.random() * 2 + 1,
+                opacity: Math.random() * 0.6 + 0.1,
 
                 // Animation de base (vertical)
-                baseSpeed: Math.random() * 2 + 1,
-                baseOffset: Math.random() * Math.PI * 2
+                baseSpeed: Math.random() * 0.3,
+                baseOffset: Math.random() * Math.PI * 0.3
             };
 
             // Initialiser la position
