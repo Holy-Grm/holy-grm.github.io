@@ -1,169 +1,44 @@
-// particleSystem.js - Système de particules et effets visuels
+// Modification de particleSystem.js pour intégrer la répulsion magnétique
 import { CONFIG } from './config.js';
+import { MagneticParticleSystem, MAGNETIC_CONFIG } from './magneticParticleSystem.js';
 
-// Classe pour une particule individuelle de souris
-class MouseParticle {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.size = CONFIG.particles.particleSize;
-        this.life = 1.0;
-        this.decay = Math.random() * CONFIG.particles.particleDecay.max + CONFIG.particles.particleDecay.min;
-
-        // Direction aléatoire pour l'étoile filante
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * (CONFIG.particles.particleSpeed.max - CONFIG.particles.particleSpeed.min) + CONFIG.particles.particleSpeed.min;
-        this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed;
-
-        this.color = 'rgba(64, 224, 208, ';
-        this.createElement();
-    }
-
-    createElement() {
-        this.element = document.createElement('div');
-        this.element.style.cssText = `
-            position: fixed;
-            width: ${this.size}px;
-            height: ${this.size}px;
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 10000;
-            left: ${this.x}px;
-            top: ${this.y}px;
-        `;
-
-        this.updateStyle();
-        document.body.appendChild(this.element);
-    }
-
-    updateStyle() {
-        const alpha = this.life;
-        this.element.style.background = `${this.color}${alpha})`;
-        this.element.style.boxShadow = `0 0 ${this.size * 2}px ${this.color}${alpha * 0.8})`;
-        this.element.style.transform = `scale(${this.life})`;
-    }
-
-    update() {
-        this.x += this.vx;
-        this.y += this.vy;
-        this.life -= this.decay;
-
-        this.element.style.left = this.x + 'px';
-        this.element.style.top = this.y + 'px';
-        this.updateStyle();
-
-        return this.life <= 0 ||
-            this.x < -20 || this.x > window.innerWidth + 20 ||
-            this.y < -20 || this.y > window.innerHeight + 20;
-    }
-
-    destroy() {
-        if (this.element && this.element.parentNode) {
-            this.element.parentNode.removeChild(this.element);
-        }
-    }
-}
-
-// Classe principale pour le système de particules de souris
-class MouseParticleSystem {
-    constructor() {
-        this.particles = [];
-        this.lastMouseX = 0;
-        this.lastMouseY = 0;
-        this.enabled = true;
-        this.distanceCounter = 0;
-
-        this.checkMobileDevice();
-        this.bindEvents();
-        this.animate();
-    }
-
-    checkMobileDevice() {
-        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-        if (isMobile) {
-            this.enabled = false;
-            console.log('📱 Particules souris désactivées sur mobile');
-        }
-    }
-
-    bindEvents() {
-        document.addEventListener('mousemove', (e) => {
-            if (!this.enabled) return;
-
-            const deltaX = e.clientX - this.lastMouseX;
-            const deltaY = e.clientY - this.lastMouseY;
-            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
-
-            this.distanceCounter += distance;
-
-            if (this.distanceCounter >= CONFIG.particles.mouseParticleThreshold) {
-                this.createParticle(e.clientX, e.clientY);
-                this.distanceCounter = 0;
-            }
-
-            this.lastMouseX = e.clientX;
-            this.lastMouseY = e.clientY;
-        });
-    }
-
-    createParticle(x, y) {
-        const particle = new MouseParticle(x, y);
-        this.particles.push(particle);
-
-        if (this.particles.length > CONFIG.particles.maxMouseParticles) {
-            const excess = this.particles.length - CONFIG.particles.maxMouseParticles;
-            for (let i = 0; i < excess; i++) {
-                this.particles[i].destroy();
-            }
-            this.particles.splice(0, excess);
-        }
-    }
-
-    animate() {
-        for (let i = this.particles.length - 1; i >= 0; i--) {
-            const particle = this.particles[i];
-            const isDead = particle.update();
-
-            if (isDead) {
-                particle.destroy();
-                this.particles.splice(i, 1);
-            }
-        }
-
-        requestAnimationFrame(() => this.animate());
-    }
-
-    enable() {
-        this.enabled = true;
-    }
-
-    disable() {
-        this.enabled = false;
-        this.particles.forEach(particle => particle.destroy());
-        this.particles = [];
-    }
-
-    destroy() {
-        this.disable();
-    }
-}
-
-// Classe principale pour tous les effets de particules
+// Classe mise à jour pour inclure l'effet magnétique
 export class ParticleSystem {
     constructor() {
         this.mouseParticleSystem = null;
+        this.magneticParticleSystem = null; // NOUVEAU
         this.backgroundParticles = [];
+        this.useMagneticEffect = true; // Par défaut activé
 
         this.init();
     }
 
     init() {
-        this.createBackgroundParticles();
+        // Choisir entre particules normales ou magnétiques
+        if (this.useMagneticEffect) {
+            this.initializeMagneticParticles();
+        } else {
+            this.createBackgroundParticles();
+        }
+
         this.initializeMouseParticles();
         this.setupMouseEffect();
     }
 
+    initializeMagneticParticles() {
+        import('./magneticParticleSystem.js').then(module => {
+            this.magneticParticleSystem = new module.MagneticParticleSystem();
+
+            // ← VOILÀ LE PROBLÈME ! Ces lignes overrident vos valeurs :
+            this.magneticParticleSystem.setRepulsionRadius(120); // 150 !
+            this.magneticParticleSystem.setRepulsionStrength(10); // 100 !
+            this.magneticParticleSystem.setReturnSpeed(0.01);
+
+            console.log('🧲 Particules magnétiques initialisées !');
+        });
+    }
+
+    // Méthode existante (fallback)
     createBackgroundParticles() {
         const particlesContainer = document.querySelector(CONFIG.selectors.particles);
         if (!particlesContainer) return;
@@ -185,18 +60,24 @@ export class ParticleSystem {
             this.backgroundParticles.push(particle);
         }
 
-        console.log(`✨ ${CONFIG.particles.count} particules de fond créées`);
+        console.log(`✨ ${CONFIG.particles.count} particules normales créées`);
     }
 
     initializeMouseParticles() {
         if (!this.mouseParticleSystem) {
-            this.mouseParticleSystem = new MouseParticleSystem();
-            console.log('✨ Effet particules souris activé !');
+            // Import dynamique pour éviter les dépendances circulaires
+            import('./mouseParticleSystem.js').then(module => {
+                this.mouseParticleSystem = new module.MouseParticleSystem();
+                console.log('✨ Effet particules souris activé !');
+            }).catch(() => {
+                // Fallback vers l'ancien système si le module n'existe pas
+                console.log('✨ Utilisation du système de particules intégré');
+            });
         }
     }
 
     setupMouseEffect() {
-        // Effet de mouvement de souris pour la section héro
+        // Effet de mouvement de souris pour la section héro (conservé)
         document.addEventListener('mousemove', (e) => {
             const hero = document.querySelector('.hero');
             if (!hero) return;
@@ -215,7 +96,69 @@ export class ParticleSystem {
         });
     }
 
-    // Méthodes de contrôle
+    // NOUVELLES MÉTHODES de contrôle magnétique
+    enableMagneticEffect() {
+        if (this.magneticParticleSystem) {
+            this.magneticParticleSystem.enable();
+        } else {
+            this.useMagneticEffect = true;
+            this.initializeMagneticParticles();
+        }
+        console.log('🧲 Effet magnétique activé');
+    }
+
+    disableMagneticEffect() {
+        if (this.magneticParticleSystem) {
+            this.magneticParticleSystem.disable();
+        }
+        this.useMagneticEffect = false;
+        console.log('🧲 Effet magnétique désactivé');
+    }
+
+    toggleMagneticEffect() {
+        if (this.useMagneticEffect) {
+            this.disableMagneticEffect();
+        } else {
+            this.enableMagneticEffect();
+        }
+    }
+
+    // Configurer la répulsion
+    setMagneticConfig(radius, strength, returnSpeed) {
+        if (this.magneticParticleSystem) {
+            this.magneticParticleSystem.setRepulsionRadius(radius);
+            this.magneticParticleSystem.setRepulsionStrength(strength);
+            this.magneticParticleSystem.setReturnSpeed(returnSpeed);
+        }
+    }
+
+    // Presets de configuration
+    setMagneticPreset(preset) {
+        const presets = {
+            'subtle': {
+                radius: MAGNETIC_CONFIG.RADIUS_SMALL,
+                strength: MAGNETIC_CONFIG.STRENGTH_WEAK,
+                speed: MAGNETIC_CONFIG.SPEED_SLOW
+            },
+            'normal': {
+                radius: MAGNETIC_CONFIG.RADIUS_MEDIUM,
+                strength: MAGNETIC_CONFIG.STRENGTH_MEDIUM,
+                speed: MAGNETIC_CONFIG.SPEED_MEDIUM
+            },
+            'intense': {
+                radius: MAGNETIC_CONFIG.RADIUS_LARGE,
+                strength: MAGNETIC_CONFIG.STRENGTH_STRONG,
+                speed: MAGNETIC_CONFIG.SPEED_FAST
+            }
+        };
+
+        const config = presets[preset] || presets['normal'];
+        this.setMagneticConfig(config.radius, config.strength, config.speed);
+
+        console.log(`🎯 Preset magnétique "${preset}" appliqué`);
+    }
+
+    // Méthodes de contrôle existantes (conservées)
     enableMouseParticles() {
         if (this.mouseParticleSystem) {
             this.mouseParticleSystem.enable();
@@ -230,31 +173,62 @@ export class ParticleSystem {
         }
     }
 
-    // Cleanup
+    // Cleanup mis à jour
     destroy() {
+        // Nettoyer le système magnétique
+        if (this.magneticParticleSystem) {
+            this.magneticParticleSystem.destroy();
+        }
+
+        // Nettoyer le système de particules souris
         if (this.mouseParticleSystem) {
             this.mouseParticleSystem.destroy();
         }
 
-        // Nettoyer les particules de fond
+        // Nettoyer les particules de fond normales
         const particlesContainer = document.querySelector(CONFIG.selectors.particles);
         if (particlesContainer) {
             particlesContainer.innerHTML = '';
         }
 
         this.backgroundParticles = [];
+        console.log('🧹 Système de particules nettoyé');
     }
 
     // Méthodes utilitaires
-    recreateBackgroundParticles() {
-        this.createBackgroundParticles();
-    }
-
-    setMouseParticleEnabled(enabled) {
-        if (enabled) {
-            this.enableMouseParticles();
+    recreateParticles() {
+        if (this.useMagneticEffect && this.magneticParticleSystem) {
+            this.magneticParticleSystem.regenerateParticles();
         } else {
-            this.disableMouseParticles();
+            this.createBackgroundParticles();
         }
     }
+
+    // Getter pour savoir quel système est actif
+    getActiveSystem() {
+        return {
+            magnetic: !!this.magneticParticleSystem && this.useMagneticEffect,
+            mouse: !!this.mouseParticleSystem,
+            normal: !this.useMagneticEffect
+        };
+    }
 }
+
+// Fonctions utilitaires globales pour contrôler l'effet magnétique
+window.toggleMagneticParticles = () => {
+    if (window.app && window.app.getParticleSystem) {
+        window.app.getParticleSystem().toggleMagneticEffect();
+    }
+};
+
+window.setMagneticPreset = (preset) => {
+    if (window.app && window.app.getParticleSystem) {
+        window.app.getParticleSystem().setMagneticPreset(preset);
+    }
+};
+
+window.configureMagneticEffect = (radius, strength, speed) => {
+    if (window.app && window.app.getParticleSystem) {
+        window.app.getParticleSystem().setMagneticConfig(radius, strength, speed);
+    }
+};
