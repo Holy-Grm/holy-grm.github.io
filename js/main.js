@@ -1,4 +1,4 @@
-// main.js - Version corrigée de l'initialisation
+// main.js - Version mise à jour avec le gestionnaire de cartes
 import { CONFIG } from './config.js';
 import { Router } from './router.js';
 import { LanguageManager } from './languageManager.js';
@@ -8,9 +8,10 @@ import { ParticleSystem } from './particleSystem.js';
 import { TimelineManager } from './timelineManager.js';
 import { LoadingScreenManager } from './loadingScreenManager.js';
 import { LanguagePopup } from './languagePopup.js';
+import { CardExpansionManager } from './cardExpansionManager.js'; // NOUVEAU
 
 /**
- * Classe principale de l'application - Version corrigée
+ * Classe principale de l'application - Version avec gestionnaire de cartes
  */
 class Application {
     constructor() {
@@ -18,6 +19,7 @@ class Application {
         this.isInitialized = false;
         this.loadingScreenManager = null;
         this.languagePopup = null;
+        this.cardExpansionManager = null; // NOUVEAU
     }
 
     async initialize() {
@@ -38,34 +40,32 @@ class Application {
             await this.initializeEffects();
             await this.loadContent();
 
-            // 3. Finaliser l'initialisation
+            // 3. Initialiser le gestionnaire de cartes APRÈS le contenu
+            this.initializeCardExpansion();
+
+            // 4. Finaliser l'initialisation
             this.isInitialized = true;
             console.log('✅ Application initialisée avec succès');
 
-            // 4. Gérer la persistance de langue AVANT de masquer le loading screen
+            // 5. Gérer la persistance de langue AVANT de masquer le loading screen
             this.initializeLanguagePersistence();
 
-            // 5. Vérifier si le popup doit être affiché et l'initialiser si nécessaire
+            // 6. Vérifier si le popup doit être affiché et l'initialiser si nécessaire
             const shouldShowPopup = this.shouldShowLanguagePopup();
 
             if (shouldShowPopup) {
                 console.log('🌍 Popup requis - activation du mode popup et préparation');
-                // Activer le mode popup pour un temps de loading plus long
                 this.loadingScreenManager.enablePopupMode();
-                // Initialiser le popup AVANT de masquer le loading screen
                 this.initializeLanguagePopup();
-                // Attendre que le popup soit prêt, puis masquer le loading screen
                 await this.waitForPopupReady();
                 await this.loadingScreenManager.hide();
             } else {
                 console.log('🌍 Popup non requis - masquage immédiat du loading screen');
-                // Masquer directement le loading screen
                 await this.loadingScreenManager.hide();
             }
 
         } catch (error) {
             console.error('❌ Erreur lors de l\'initialisation:', error);
-            // En cas d'erreur, masquer quand même le loading screen
             if (this.loadingScreenManager) {
                 await this.loadingScreenManager.hide();
             }
@@ -124,6 +124,17 @@ class Application {
         this.initializeApplicationState();
     }
 
+    // NOUVELLE MÉTHODE pour initialiser le gestionnaire de cartes
+    initializeCardExpansion() {
+        console.log('🃏 Initialisation du gestionnaire de cartes...');
+
+        const router = this.modules.get('router');
+        this.cardExpansionManager = new CardExpansionManager(router);
+        this.modules.set('cardExpansionManager', this.cardExpansionManager);
+
+        console.log('✅ Gestionnaire de cartes initialisé');
+    }
+
     initializeApplicationState() {
         const router = this.modules.get('router');
         const languageManager = this.modules.get('languageManager');
@@ -138,7 +149,7 @@ class Application {
         console.log(`📍 État initial: ${router.getCurrentLang()}/${router.getCurrentPage()}`);
     }
 
-    // Fonction pour vérifier si le popup doit être affiché
+    // [Autres méthodes inchangées...]
     shouldShowLanguagePopup() {
         let hasSelected = false;
         try {
@@ -146,14 +157,11 @@ class Application {
                 hasSelected = localStorage.getItem('language-selected') === 'true';
             }
         } catch (e) {
-            // localStorage non disponible, on considère que l'utilisateur n'a pas encore choisi
             hasSelected = false;
         }
-
         return !hasSelected;
     }
 
-    // Fonction pour attendre que le popup soit prêt
     async waitForPopupReady() {
         return new Promise((resolve) => {
             if (!this.languagePopup) {
@@ -161,21 +169,16 @@ class Application {
                 return;
             }
 
-            // Attendre que le popup soit complètement initialisé et visible
             const checkReady = () => {
                 if (this.languagePopup.popup && this.languagePopup.isVisible) {
                     console.log('🌍 Popup prêt et visible');
-                    // Attendre encore un peu pour que l'animation soit terminée
                     setTimeout(resolve, 300);
                 } else {
                     setTimeout(checkReady, 100);
                 }
             };
 
-            // Commencer la vérification après un délai initial
             setTimeout(checkReady, 200);
-
-            // Timeout de sécurité au cas où quelque chose se passe mal
             setTimeout(() => {
                 console.warn('⚠️ Timeout atteint pour l\'attente du popup');
                 resolve();
@@ -183,11 +186,9 @@ class Application {
         });
     }
 
-    // Fonction pour initialiser la persistance de la langue
     initializeLanguagePersistence() {
         const router = this.modules.get('router');
 
-        // Essayer de récupérer la langue sauvegardée
         let savedLang = null;
         try {
             if (typeof localStorage !== 'undefined') {
@@ -197,13 +198,11 @@ class Application {
             console.log('📝 localStorage non disponible pour la persistance');
         }
 
-        // Si l'utilisateur a déjà choisi une langue, l'appliquer
         if (savedLang && savedLang !== router.getCurrentLang()) {
-            router.changeLanguage(savedLang, false); // false = ne pas mettre à jour l'URL
+            router.changeLanguage(savedLang, false);
             console.log(`🔄 Langue restaurée: ${savedLang}`);
         }
 
-        // Écouter les changements de langue pour les sauvegarder
         router.addObserver((type, data) => {
             if (type === 'languageChange') {
                 try {
@@ -220,114 +219,86 @@ class Application {
         console.log('🔐 Persistance de langue initialisée');
     }
 
-    // Fonction pour initialiser le popup de langue - VERSION SIMPLIFIÉE
     initializeLanguagePopup() {
-        // Créer le popup (la vérification a déjà été faite dans shouldShowLanguagePopup)
         this.languagePopup = new LanguagePopup();
         this.modules.set('languagePopup', this.languagePopup);
-
-        // Exposer globalement pour le debug
         window.languagePopupInstance = this.languagePopup;
-
         console.log('🌍 Popup de langue créé et prêt');
     }
 
-    // === MÉTHODES PUBLIQUES DE L'APPLICATION ===
+    // === MÉTHODES PUBLIQUES MISES À JOUR ===
 
-    // Méthodes utilitaires pour accéder aux modules
-    getModule(name) {
-        return this.modules.get(name);
-    }
+    // Getters pour tous les modules
+    getModule(name) { return this.modules.get(name); }
+    getRouter() { return this.modules.get('router'); }
+    getLanguageManager() { return this.modules.get('languageManager'); }
+    getNavigationUI() { return this.modules.get('navigationUI'); }
+    getPageLoader() { return this.modules.get('pageLoader'); }
+    getParticleSystem() { return this.modules.get('particleSystem'); }
+    getTimelineManager() { return this.modules.get('timelineManager'); }
+    getLoadingScreenManager() { return this.loadingScreenManager; }
+    getLanguagePopup() { return this.languagePopup; }
 
-    getRouter() {
-        return this.modules.get('router');
-    }
-
-    getLanguageManager() {
-        return this.modules.get('languageManager');
-    }
-
-    getNavigationUI() {
-        return this.modules.get('navigationUI');
-    }
-
-    getPageLoader() {
-        return this.modules.get('pageLoader');
-    }
-
-    getParticleSystem() {
-        return this.modules.get('particleSystem');
-    }
-
-    getTimelineManager() {
-        return this.modules.get('timelineManager');
-    }
-
-    getLoadingScreenManager() {
-        return this.loadingScreenManager;
-    }
-
-    getLanguagePopup() {
-        return this.languagePopup;
-    }
+    // NOUVEAU getter pour le gestionnaire de cartes
+    getCardExpansionManager() { return this.cardExpansionManager; }
 
     // Méthodes de contrôle de l'application
     enableParticles() {
         const particleSystem = this.modules.get('particleSystem');
-        if (particleSystem) {
-            particleSystem.enableMouseParticles();
-        }
+        if (particleSystem) particleSystem.enableMouseParticles();
     }
 
     disableParticles() {
         const particleSystem = this.modules.get('particleSystem');
-        if (particleSystem) {
-            particleSystem.disableMouseParticles();
-        }
+        if (particleSystem) particleSystem.disableMouseParticles();
     }
 
-    // Navigation programmatique
     navigateTo(page) {
         const router = this.modules.get('router');
-        if (router) {
-            router.navigateTo(page);
-        }
+        if (router) router.navigateTo(page);
     }
 
     changeLanguage(lang) {
         const router = this.modules.get('router');
-        if (router) {
-            router.changeLanguage(lang);
-        }
+        if (router) router.changeLanguage(lang);
     }
 
-    // Rechargement d'une page spécifique
     async reloadPage(pageName) {
         const pageLoader = this.modules.get('pageLoader');
-        if (pageLoader) {
-            await pageLoader.reloadPage(pageName);
+        if (pageLoader) await pageLoader.reloadPage(pageName);
+    }
+
+    // NOUVELLES MÉTHODES pour contrôler les cartes
+    expandCard(selector) {
+        if (this.cardExpansionManager) {
+            this.cardExpansionManager.expandCardBySelector(selector);
         }
     }
 
-    // Méthodes de contrôle du loading screen
-    showLoadingScreen() {
-        if (this.loadingScreenManager) {
-            this.loadingScreenManager.show();
+    collapseAllCards() {
+        if (this.cardExpansionManager) {
+            this.cardExpansionManager.collapseAllCards();
         }
+    }
+
+    getCurrentExpandedCard() {
+        return this.cardExpansionManager ?
+            this.cardExpansionManager.getCurrentExpandedCard() : null;
+    }
+
+    // Méthodes de contrôle des autres systèmes...
+    showLoadingScreen() {
+        if (this.loadingScreenManager) this.loadingScreenManager.show();
     }
 
     hideLoadingScreen() {
-        if (this.loadingScreenManager) {
-            this.loadingScreenManager.hide();
-        }
+        if (this.loadingScreenManager) this.loadingScreenManager.hide();
     }
 
-    // Méthodes de contrôle du popup de langue
     showLanguagePopup() {
         if (this.languagePopup) {
             this.languagePopup.forceShow();
         } else {
-            // Créer le popup s'il n'existe pas encore
             this.languagePopup = new LanguagePopup();
             this.modules.set('languagePopup', this.languagePopup);
             window.languagePopupInstance = this.languagePopup;
@@ -335,9 +306,15 @@ class Application {
         }
     }
 
-    // Cleanup pour tests ou changements majeurs
+    // Cleanup mis à jour
     destroy() {
         console.log('🧹 Nettoyage de l\'application...');
+
+        // Nettoyer le gestionnaire de cartes
+        if (this.cardExpansionManager) {
+            this.cardExpansionManager.destroy();
+            this.cardExpansionManager = null;
+        }
 
         // Nettoyer le popup de langue
         if (this.languagePopup) {
@@ -372,11 +349,10 @@ class Application {
         console.log('🧹 Nettoyage terminé');
     }
 
-    // Informations de debug
+    // Informations de debug mises à jour
     getStatus() {
         const router = this.modules.get('router');
 
-        // Vérifier localStorage de manière sécurisée
         let languageSelected = false;
         try {
             if (typeof localStorage !== 'undefined') {
@@ -395,13 +371,14 @@ class Application {
             loadingScreenHidden: this.loadingScreenManager?.isHidden,
             languageSelected: languageSelected,
             hasLanguagePopup: !!this.languagePopup,
+            hasCardExpansionManager: !!this.cardExpansionManager,
+            currentExpandedCard: this.getCurrentExpandedCard()?.className || 'none',
             localStorageAvailable: typeof localStorage !== 'undefined',
             popupVisible: this.languagePopup?.isVisible || false,
             shouldShowPopup: this.shouldShowLanguagePopup()
         };
     }
 
-    // Méthode pour ajouter des modules personnalisés
     addModule(name, module) {
         if (this.modules.has(name)) {
             console.warn(`⚠️ Module ${name} déjà existant, remplacement`);
@@ -413,19 +390,16 @@ class Application {
 
 // ============ INITIALISATION GLOBALE ============
 
-// Instance globale de l'application
 let app = null;
 
-// Fonction d'initialisation principale
 async function initializeApp() {
     try {
         app = new Application();
         await app.initialize();
 
-        // Exposer l'app globalement pour le debug (optionnel)
         if (typeof window !== 'undefined') {
             window.app = app;
-            window.APP_CONFIG = CONFIG; // Pour debug
+            window.APP_CONFIG = CONFIG;
         }
 
         console.log('🎉 Application complètement initialisée !');
@@ -433,7 +407,6 @@ async function initializeApp() {
     } catch (error) {
         console.error('💥 Erreur fatale lors de l\'initialisation:', error);
 
-        // En cas d'erreur fatale, forcer le masquage du loading screen
         const loadingScreen = document.getElementById('loadingScreen');
         if (loadingScreen) {
             loadingScreen.classList.add('hidden');
@@ -441,9 +414,7 @@ async function initializeApp() {
     }
 }
 
-// Initialisation au chargement du DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // Petit délai pour s'assurer que tout est prêt
     setTimeout(initializeApp, 100);
 });
 
@@ -456,47 +427,40 @@ window.addEventListener('unhandledrejection', (event) => {
     console.error('💥 Promise rejetée non gérée:', event.reason);
 });
 
-// Export pour utilisation en tant que module (optionnel)
 export { Application, CONFIG };
 
-// ============ FONCTIONS UTILITAIRES GLOBALES ============
+// ============ FONCTIONS UTILITAIRES GLOBALES MISES À JOUR ============
 
-// Fonctions de compatibilité pour l'ancien code
 window.navigateToPage = (page) => {
-    if (app) {
-        app.navigateTo(page);
-    }
+    if (app) app.navigateTo(page);
 };
 
 window.changeLanguage = (lang) => {
-    if (app) {
-        app.changeLanguage(lang);
-    }
+    if (app) app.changeLanguage(lang);
 };
 
-window.toggleParticles = () => {
-    if (app) {
-        const particleSystem = app.getParticleSystem();
-        // Implémenter la logique de toggle si nécessaire
-    }
+// NOUVELLES FONCTIONS pour contrôler les cartes
+window.expandCard = (selector) => {
+    if (app) app.expandCard(selector);
 };
 
-// Fonctions de contrôle du loading screen
+window.collapseAllCards = () => {
+    if (app) app.collapseAllCards();
+};
+
+window.getCurrentExpandedCard = () => {
+    return app ? app.getCurrentExpandedCard() : null;
+};
+
 window.showLoadingScreen = () => {
-    if (app) {
-        app.showLoadingScreen();
-    }
+    if (app) app.showLoadingScreen();
 };
 
 window.hideLoadingScreen = () => {
-    if (app) {
-        app.hideLoadingScreen();
-    }
+    if (app) app.hideLoadingScreen();
 };
 
-// Fonction pour afficher le popup de langue (VERSION CORRIGÉE)
 window.resetLanguageSelection = () => {
-    // Nettoyer localStorage si disponible
     try {
         if (typeof localStorage !== 'undefined') {
             localStorage.removeItem('language-selected');
@@ -506,13 +470,10 @@ window.resetLanguageSelection = () => {
         console.log('📝 Impossible de nettoyer localStorage');
     }
 
-    if (app) {
-        app.showLanguagePopup();
-    }
+    if (app) app.showLanguagePopup();
     console.log('🔄 Sélection de langue réinitialisée');
 };
 
-// Debug helpers
 window.debugApp = () => {
     if (app) {
         console.table(app.getStatus());
