@@ -207,13 +207,13 @@
 }
 
 @keyframes sparkle {
-    0%, 100% { 
-        opacity: 0; 
-        transform: scale(0) rotate(0deg); 
+    0%, 100% {
+        opacity: 0;
+        transform: scale(0) rotate(0deg);
     }
-    50% { 
-        opacity: 1; 
-        transform: scale(1) rotate(180deg); 
+    50% {
+        opacity: 1;
+        transform: scale(1) rotate(180deg);
     }
 }
 
@@ -442,13 +442,13 @@
     .particles {
        /* display: none; /* Désactiver les particules de fond sur mobile */
     }
-    
+
     .profile-placeholder {
         width: 250px;
         height: 250px;
         font-size: var(--font-size-5xl);
     }
-    
+
     .particle-container {
         width: 200px;
         height: 200px;
@@ -461,7 +461,7 @@
         height: 200px;
         font-size: var(--font-size-4xl);
     }
-    
+
     .particle-container {
         width: 150px;
         height: 150px;
@@ -484,11 +484,11 @@
     .profile-placeholder {
         animation: none;
     }
-    
+
     .profile-placeholder::before {
         animation: none;
     }
-    
+
     .profile-placeholder:hover {
         transform: none;
     }
@@ -499,11 +499,11 @@
     .particles {
         display: none;
     }
-    
+
     .loading-screen {
         background: var(--color-bg-primary);
     }
-    
+
     .loading-text {
         animation: none;
         opacity: 1;
