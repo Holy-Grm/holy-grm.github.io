@@ -4,18 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is a React-based portfolio website built with Vite and TypeScript, featuring a modern design system using Radix UI and Tailwind CSS. The project is transitioning from TypeScript to JavaScript for main components (JSX files in components/).
+This is a React-based portfolio website built with Vite, featuring a modern design system using Radix UI and Tailwind CSS. The project uses a mixed JavaScript/TypeScript approach with main components in JSX and UI components in TypeScript.
 
 ## Development Commands
 
 - **Start development server**: `npm run dev` (runs on port 3000, opens automatically)
-- **Build for production**: `npm run build` (outputs to `build/` directory)
+- **Build for production**: `npm run build` (outputs to `dist/` directory)
 - **Install dependencies**: `npm i`
 
 ## Architecture
 
 ### Component Structure
-- **Main App**: `src/App.tsx` - Main application component importing all sections
+- **Main App**: `src/App.jsx` - Main application component importing all sections
+- **Entry Point**: `src/main.tsx` - Application entry point with React 18 createRoot
 - **Page Sections**: Components are organized as single-page sections:
   - Header (navigation with smooth scrolling)
   - Hero (landing section)
@@ -28,33 +29,39 @@ This is a React-based portfolio website built with Vite and TypeScript, featurin
 ### UI System
 - **Design System**: Uses Radix UI primitives with shadcn/ui components
 - **Component Library**: Located in `src/components/ui/` with TypeScript definitions
-- **Styling**: Tailwind CSS with custom design tokens and dark mode support
+- **Styling**: Tailwind CSS v4.1.3 with custom design tokens
 - **Icons**: Lucide React for consistent iconography
+- **Special Components**: Timeline component in `src/components/ui/timeline.jsx`
 
 ### File Extensions
-- Main components: `.jsx` (transitioning from `.tsx`)
+- Main components: `.jsx` 
 - UI components: `.tsx` (TypeScript)
+- Entry point: `.tsx` (main.tsx)
 - Configuration: `.ts` for config files
 
 ### Key Dependencies
 - React 18.3.1 with React DOM
-- Vite 6.3.5 for build tooling
-- Radix UI components for accessible primitives
+- Vite 6.3.5 with SWC plugin for fast builds
+- Comprehensive Radix UI component suite (accordion, dialog, dropdown, etc.)
 - Tailwind utilities (clsx, tailwind-merge, class-variance-authority)
-- Recharts for data visualization
-- Next-themes for theme switching
+- Additional UI libraries: recharts, embla-carousel-react, react-hook-form
+- Theme support: next-themes
+- Asset handling: ImageWithFallback component for Figma images
 
 ## Development Notes
 
-- Uses Vite with SWC for fast builds and hot reload
+- Uses Vite with SWC (@vitejs/plugin-react-swc) for fast builds and hot reload
 - Path aliases configured with `@` pointing to `src/`
-- All Radix UI dependencies have version-specific aliases in vite.config.ts
-- Components use smooth scrolling navigation between sections
-- Mobile-responsive design with collapsible navigation
+- Extensive version-specific aliases in vite.config.ts for all dependencies
+- Components use smooth scrolling navigation between sections via scrollIntoView
+- Mobile-responsive design with collapsible Header navigation
+- Portfolio images stored in `src/img/` directory
 
 ## Build Configuration
 
 - Target: ESNext
-- Output directory: `build/`
+- Output directory: `dist/`
 - Development server: Port 3000 with auto-open
+- Base path: "/" (configured for holy-grm.github.io deployment)
 - Supports both TypeScript and JavaScript files
+- Version-specific dependency aliases prevent conflicts
