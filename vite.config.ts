@@ -12,6 +12,13 @@ export default defineConfig({
   },
   build: {
     outDir: 'dist',
+    rollupOptions: {
+      onwarn(warning, warn) {
+        // Suppress warnings about externalized modules
+        if (warning.code === 'UNRESOLVED_IMPORT') return;
+        warn(warning);
+      }
+    }
   },
   server: {
     port: 3000,
