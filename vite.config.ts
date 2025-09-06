@@ -4,7 +4,7 @@ import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
-  base: "/", // ✅ pour holy-grm.github.io (repo principal)
+  base: "/",
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
