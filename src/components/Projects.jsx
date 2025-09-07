@@ -72,7 +72,7 @@ export function Projects() {
     {
       title: "Solveur de Sudoku",
       description: "Algorithme de résolution de Sudoku développé comme projet universitaire.",
-      detailedDescription: "Implémentation d'un algorithme de résolution de Sudoku optimisé en C++. J'ai utilisé des techniques de backtracking avec optimisations heuristiques, capable de résoudre des grilles de difficulté variable en temps optimal. Projet développé dans le cadre de cours d'algorithmes avancés.",
+      detailedDescription: "Algorithme de résolution de Sudoku développé comme projet universitaire.",
       image: img_solveursudoku,
       technologies: ["C++", "Algorithmes", "Projet Universitaire"]
     },
@@ -85,8 +85,8 @@ export function Projects() {
     },
     {
       title: "Structures de données avancées",
-      description: "Implémentation complète de structures de données complexes from scratch incluant des optimisations de performance personnalisées.",
-      detailedDescription: "Implémentation from scratch de structures de données avancées en C++: deques double-ended, skip lists avec probabilités optimisées, arbres binaires de recherche équilibrés. Chaque structure inclut des tests de performance et des optimisations mémoire spécifiques.",
+      description: "Implémentation complète de structures de données complexes incluant des optimisations de performance personnalisées.",
+      detailedDescription: "Implémentation de structures de données avancées en C++: deques double-ended, skip lists avec probabilités optimisées, arbres binaires de recherche équilibrés. Chaque structure inclut des optimisations mémoire spécifiques.",
       image: img_structuresdonnees,
       technologies: ["C++", "Algorithmes", "Performance"]
     }

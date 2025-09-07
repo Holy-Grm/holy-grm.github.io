@@ -1,7 +1,7 @@
 import { Button } from "./ui/button"
 import { ImageWithFallback } from "./figma/ImageWithFallback"
 import { ArrowDown, Github, Linkedin, Mail } from "lucide-react"
-import photo from '../img/blancblanc.jpg';
+import photo from '../img/blancblanc.png';
 
 export function Hero() {
   const scrollToSection = (sectionId) => {
