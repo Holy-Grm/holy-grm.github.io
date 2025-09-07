@@ -10,7 +10,7 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
 
 - **Start development server**: `npm run dev` (runs on port 3000, opens automatically)
 - **Build for production**: `npm run build` (outputs to `dist/` directory)
-- **Install dependencies**: `npm i`
+- **Install dependencies**: `npm install`
 
 ## Architecture
 
@@ -29,7 +29,7 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
 ### UI System
 - **Design System**: Uses Radix UI primitives with shadcn/ui components
 - **Component Library**: Located in `src/components/ui/` with TypeScript definitions
-- **Styling**: Tailwind CSS v4.1.3 with custom design tokens
+- **Styling**: Tailwind CSS with custom design tokens
 - **Icons**: Lucide React for consistent iconography
 - **Special Components**: Timeline component in `src/components/ui/timeline.jsx`
 
@@ -52,7 +52,6 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
 
 - Uses Vite with SWC (@vitejs/plugin-react-swc) for fast builds and hot reload
 - Path aliases configured with `@` pointing to `src/`
-- Extensive version-specific aliases in vite.config.ts for all dependencies
 - Components use smooth scrolling navigation between sections via scrollIntoView
 - Mobile-responsive design with collapsible Header navigation
 - Portfolio images stored in `src/img/` directory
@@ -64,4 +63,3 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
 - Development server: Port 3000 with auto-open
 - Base path: "/" (configured for holy-grm.github.io deployment)
 - Supports both TypeScript and JavaScript files
-- Version-specific dependency aliases prevent conflicts
