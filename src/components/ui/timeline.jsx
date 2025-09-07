@@ -42,10 +42,15 @@ export function Timeline({ items, className }) {
     }
   }, [])
 
-  // Drag to scroll functionality
+  // Simple drag to scroll for desktop only
   useEffect(() => {
     const container = containerRef.current
     if (!container) return
+
+    // Only enable drag-to-scroll on desktop (devices with mouse)
+    const isDesktop = window.matchMedia('(pointer: fine)').matches
+
+    if (!isDesktop) return
 
     let isMouseDragging = false
     let startX = 0
@@ -76,86 +81,17 @@ export function Timeline({ items, className }) {
       container.style.cursor = 'grab'
     }
 
-    // Touch events for mobile with better handling
-    let isTouchDragging = false
-    let touchStartX = 0
-    let touchStartScrollLeft = 0
-    let lastTouchX = 0
-    let velocity = 0
-    let lastTouchTime = 0
-
-    const handleTouchStart = (e) => {
-      // Don't interfere with native scrolling unless it's a horizontal swipe
-      isTouchDragging = false
-      touchStartX = e.touches[0].pageX
-      lastTouchX = touchStartX
-      touchStartScrollLeft = container.scrollLeft
-      lastTouchTime = Date.now()
-      velocity = 0
-    }
-
-    const handleTouchMove = (e) => {
-      const currentTouchX = e.touches[0].pageX
-      const currentTime = Date.now()
-      const deltaX = Math.abs(currentTouchX - touchStartX)
-      const deltaY = Math.abs(e.touches[0].pageY - (e.touches[0].pageY || touchStartX))
-      
-      // Only start dragging if horizontal movement is greater than vertical
-      if (deltaX > deltaY && deltaX > 10 && !isTouchDragging) {
-        isTouchDragging = true
-        e.preventDefault()
-      }
-      
-      if (isTouchDragging) {
-        e.preventDefault()
-        const walk = (currentTouchX - touchStartX) * 1.2
-        container.scrollLeft = touchStartScrollLeft - walk
-        
-        // Calculate velocity for momentum
-        if (currentTime - lastTouchTime > 0) {
-          velocity = (currentTouchX - lastTouchX) / (currentTime - lastTouchTime)
-        }
-        lastTouchX = currentTouchX
-        lastTouchTime = currentTime
-      }
-    }
-
-    const handleTouchEnd = (e) => {
-      if (isTouchDragging) {
-        e.preventDefault()
-        // Add momentum scrolling
-        if (Math.abs(velocity) > 0.1) {
-          const momentum = velocity * 200
-          container.scrollBy({
-            left: -momentum,
-            behavior: 'smooth'
-          })
-        }
-      }
-      isTouchDragging = false
-    }
-
-    // Desktop events
     container.style.cursor = 'grab'
-    container.addEventListener('mousedown', handleMouseDown, { passive: false })
-    document.addEventListener('mousemove', handleMouseMove, { passive: false })
-    document.addEventListener('mouseup', handleMouseUp, { passive: true })
-    container.addEventListener('mouseleave', handleMouseLeave, { passive: true })
-    
-    // Mobile events with passive: false only when needed
-    container.addEventListener('touchstart', handleTouchStart, { passive: true })
-    container.addEventListener('touchmove', handleTouchMove, { passive: false })
-    container.addEventListener('touchend', handleTouchEnd, { passive: false })
+    container.addEventListener('mousedown', handleMouseDown)
+    document.addEventListener('mousemove', handleMouseMove)
+    document.addEventListener('mouseup', handleMouseUp)
+    container.addEventListener('mouseleave', handleMouseLeave)
 
     return () => {
       container.removeEventListener('mousedown', handleMouseDown)
       document.removeEventListener('mousemove', handleMouseMove)
       document.removeEventListener('mouseup', handleMouseUp)
       container.removeEventListener('mouseleave', handleMouseLeave)
-      
-      container.removeEventListener('touchstart', handleTouchStart)
-      container.removeEventListener('touchmove', handleTouchMove)
-      container.removeEventListener('touchend', handleTouchEnd)
     }
   }, [])
 
@@ -177,17 +113,6 @@ export function Timeline({ items, className }) {
 
     return () => observer.disconnect()
   }, [])
-
-  // Scroll to the right (most recent events) on mount
-  useEffect(() => {
-    const container = containerRef.current
-    if (container) {
-      // Small delay to ensure content is rendered
-      setTimeout(() => {
-        container.scrollLeft = container.scrollWidth - container.clientWidth
-      }, 100)
-    }
-  }, []) // Empty dependency array - only runs once on mount
 
   // Navigation functions
   const scrollLeft = () => {
@@ -236,10 +161,10 @@ export function Timeline({ items, className }) {
 
 
 
-        {/* Horizontal timeline container - WITH drag-to-scroll */}
+        {/* Horizontal timeline container - Native scroll on mobile, drag on desktop */}
         <div 
           ref={containerRef}
-          className="flex-1 overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pb-4 select-none"
+          className="flex-1 overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pb-4"
           style={{
             scrollbarWidth: 'thin',
             scrollbarColor: 'hsl(var(--primary) / 0.1) transparent'
