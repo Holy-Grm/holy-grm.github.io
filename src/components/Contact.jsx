@@ -40,7 +40,7 @@ export function Contact() {
             Travaillons ensemble
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Vous avez un projet en tête ou simplement envie de discuter ? N'hésitez pas à me contacter !
+            Vous avez un projet en tête ou simplement envie de discuter? N'hésitez pas à me contacter!
           </p>
         </div>
 
@@ -49,7 +49,7 @@ export function Contact() {
             <div>
               <h3 className="mb-6">Contact</h3>
               <p className="text-muted-foreground mb-8">
-                Je suis toujours intéressé à discuter d'oppotunité de collaboration. Peu importe le sujet que vous avez en tête écrivez-moi.
+                Je suis toujours intéressé à discuter d'oppotunités de collaboration. Peu importe le sujet que vous avez en tête, écrivez-moi.
               </p>
             </div>
 

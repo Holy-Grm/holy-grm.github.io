@@ -99,7 +99,7 @@ export function About() {
             <div className="space-y-4 text-muted-foreground">
               <p>
                 Ma passion pour la technologie a débutée dès mon jeune âge, par plaisir 
-                d'automatiser tout ce qui m'entoure. À commencer par les jeux vidéos, puis la 
+                d'automatiser tout ce qui m'entoure; à commencer par les jeux vidéos, puis la 
                 domotique et finalement des tâches complexes au travail.
               </p>
               <p>

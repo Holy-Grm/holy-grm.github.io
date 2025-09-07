@@ -26,7 +26,7 @@ export function Hero() {
 
               </h1>
               <h2 className="text-muted-foreground">
-                  Bonjour, je m'appelle Olivier !
+                  Bonjour, je m'appelle Olivier!
 
               </h2>
               <p className="text-muted-foreground mb-8 max-w-lg">
