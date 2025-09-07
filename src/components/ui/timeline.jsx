@@ -5,8 +5,8 @@ import { useEffect, useRef, useState } from "react"
 export function Timeline({ items, className }) {
   const containerRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [isDragging, setIsDragging] = useState(false)
-  const [dragStart, setDragStart] = useState({ x: 0, scrollLeft: 0 })
+  const [canScrollLeft, setCanScrollLeft] = useState(false)
+  const [canScrollRight, setCanScrollRight] = useState(true)
 
   // Sort items by year for proper timeline order (oldest first for left-to-right)
   const sortedItems = [...items].sort((a, b) => {
@@ -15,7 +15,7 @@ export function Timeline({ items, className }) {
     return yearA - yearB
   })
 
-  // Update scroll progress when scrolling
+  // Update scroll progress and button visibility when scrolling
   useEffect(() => {
     const handleScroll = () => {
       const container = containerRef.current
@@ -23,12 +23,20 @@ export function Timeline({ items, className }) {
         const maxScrollLeft = container.scrollWidth - container.clientWidth
         const currentScroll = container.scrollLeft
         const progress = maxScrollLeft > 0 ? currentScroll / maxScrollLeft : 0
+        
         setScrollProgress(progress)
+        
+        // Update button visibility with small threshold to avoid flickering
+        const threshold = 5
+        setCanScrollLeft(currentScroll > threshold)
+        setCanScrollRight(currentScroll < maxScrollLeft - threshold)
       }
     }
 
     const container = containerRef.current
     if (container) {
+      // Initial check
+      handleScroll()
       container.addEventListener('scroll', handleScroll, { passive: true })
       return () => container.removeEventListener('scroll', handleScroll)
     }
@@ -39,62 +47,105 @@ export function Timeline({ items, className }) {
     const container = containerRef.current
     if (!container) return
 
+    let isMouseDragging = false
+    let startX = 0
+    let startScrollLeft = 0
+
     const handleMouseDown = (e) => {
-      setIsDragging(true)
+      isMouseDragging = true
       container.style.cursor = 'grabbing'
-      setDragStart({
-        x: e.pageX - container.offsetLeft,
-        scrollLeft: container.scrollLeft,
-      })
+      startX = e.pageX - container.offsetLeft
+      startScrollLeft = container.scrollLeft
     }
 
     const handleMouseMove = (e) => {
-      if (!isDragging) return
+      if (!isMouseDragging) return
       e.preventDefault()
       const x = e.pageX - container.offsetLeft
-      const walk = (x - dragStart.x) * 2 // Multiply by 2 for faster scrolling
-      container.scrollLeft = dragStart.scrollLeft - walk
+      const walk = (x - startX) * 1.5
+      container.scrollLeft = startScrollLeft - walk
     }
 
     const handleMouseUp = () => {
-      setIsDragging(false)
+      isMouseDragging = false
       container.style.cursor = 'grab'
     }
 
     const handleMouseLeave = () => {
-      setIsDragging(false)
+      isMouseDragging = false
       container.style.cursor = 'grab'
     }
 
-    // Touch events for mobile
+    // Touch events for mobile with better handling
+    let isTouchDragging = false
+    let touchStartX = 0
+    let touchStartScrollLeft = 0
+    let lastTouchX = 0
+    let velocity = 0
+    let lastTouchTime = 0
+
     const handleTouchStart = (e) => {
-      setIsDragging(true)
-      setDragStart({
-        x: e.touches[0].pageX - container.offsetLeft,
-        scrollLeft: container.scrollLeft,
-      })
+      // Don't interfere with native scrolling unless it's a horizontal swipe
+      isTouchDragging = false
+      touchStartX = e.touches[0].pageX
+      lastTouchX = touchStartX
+      touchStartScrollLeft = container.scrollLeft
+      lastTouchTime = Date.now()
+      velocity = 0
     }
 
     const handleTouchMove = (e) => {
-      if (!isDragging) return
-      const x = e.touches[0].pageX - container.offsetLeft
-      const walk = (x - dragStart.x) * 2
-      container.scrollLeft = dragStart.scrollLeft - walk
+      const currentTouchX = e.touches[0].pageX
+      const currentTime = Date.now()
+      const deltaX = Math.abs(currentTouchX - touchStartX)
+      const deltaY = Math.abs(e.touches[0].pageY - (e.touches[0].pageY || touchStartX))
+      
+      // Only start dragging if horizontal movement is greater than vertical
+      if (deltaX > deltaY && deltaX > 10 && !isTouchDragging) {
+        isTouchDragging = true
+        e.preventDefault()
+      }
+      
+      if (isTouchDragging) {
+        e.preventDefault()
+        const walk = (currentTouchX - touchStartX) * 1.2
+        container.scrollLeft = touchStartScrollLeft - walk
+        
+        // Calculate velocity for momentum
+        if (currentTime - lastTouchTime > 0) {
+          velocity = (currentTouchX - lastTouchX) / (currentTime - lastTouchTime)
+        }
+        lastTouchX = currentTouchX
+        lastTouchTime = currentTime
+      }
     }
 
-    const handleTouchEnd = () => {
-      setIsDragging(false)
+    const handleTouchEnd = (e) => {
+      if (isTouchDragging) {
+        e.preventDefault()
+        // Add momentum scrolling
+        if (Math.abs(velocity) > 0.1) {
+          const momentum = velocity * 200
+          container.scrollBy({
+            left: -momentum,
+            behavior: 'smooth'
+          })
+        }
+      }
+      isTouchDragging = false
     }
 
+    // Desktop events
     container.style.cursor = 'grab'
-    container.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-    container.addEventListener('mouseleave', handleMouseLeave)
+    container.addEventListener('mousedown', handleMouseDown, { passive: false })
+    document.addEventListener('mousemove', handleMouseMove, { passive: false })
+    document.addEventListener('mouseup', handleMouseUp, { passive: true })
+    container.addEventListener('mouseleave', handleMouseLeave, { passive: true })
     
-    container.addEventListener('touchstart', handleTouchStart)
-    container.addEventListener('touchmove', handleTouchMove)
-    container.addEventListener('touchend', handleTouchEnd)
+    // Mobile events with passive: false only when needed
+    container.addEventListener('touchstart', handleTouchStart, { passive: true })
+    container.addEventListener('touchmove', handleTouchMove, { passive: false })
+    container.addEventListener('touchend', handleTouchEnd, { passive: false })
 
     return () => {
       container.removeEventListener('mousedown', handleMouseDown)
@@ -106,7 +157,7 @@ export function Timeline({ items, className }) {
       container.removeEventListener('touchmove', handleTouchMove)
       container.removeEventListener('touchend', handleTouchEnd)
     }
-  }, [isDragging, dragStart])
+  }, [])
 
   // Auto-scroll to reveal items on mount
   useEffect(() => {
@@ -156,27 +207,31 @@ export function Timeline({ items, className }) {
       {/* Timeline container with drag-to-scroll */}
       <div className="h-full flex flex-col">
         {/* Navigation buttons */}
-        <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
-          <button
-            onClick={scrollLeft}
-            className="p-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg hover:bg-background transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-        </div>
+        {canScrollLeft && (
+          <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
+            <button
+              onClick={scrollLeft}
+              className="p-2 rounded-full bg-background/90 backdrop-blur-sm border border-border/50 shadow-lg hover:bg-background hover:shadow-xl transition-all duration-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+          </div>
+        )}
         
-        <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30">
-          <button
-            onClick={scrollRight}
-            className="p-2 rounded-full bg-background/80 backdrop-blur-sm border border-border/50 shadow-lg hover:bg-background transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </div>
+        {canScrollRight && (
+          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30">
+            <button
+              onClick={scrollRight}
+              className="p-2 rounded-full bg-background/90 backdrop-blur-sm border border-border/50 shadow-lg hover:bg-background hover:shadow-xl transition-all duration-200"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+        )}
 
 
 
