@@ -98,11 +98,11 @@ export function Projects() {
         <div className="text-center mb-16">
           <Badge variant="outline" className="mb-4">Mes réalisations</Badge>
           <h2 className="mb-6">
-            Projets dont je suis fier
+            Projets sélectionnés
           </h2>
           <p className="text-muted-foreground max-w-2xl mx-auto">
-            Voici quelques-uns de mes projets récents qui démontrent mes compétences en développement, 
-            en analyse de données et en résolution de problèmes.
+            Voici quelques-uns de mes projets récents qui démontrent mes compétences en 
+            développement, en analyse de données et en résolution de problèmes.
           </p>
         </div>
 
