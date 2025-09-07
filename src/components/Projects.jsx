@@ -19,26 +19,54 @@ export function Projects() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [api, setApi] = useState()
   const [current, setCurrent] = useState(0)
+  const [autoScrollTimer, setAutoScrollTimer] = useState(null)
 
-  // Auto-scroll effect
-  useEffect(() => {
-    if (!api) return
-
-    const intervalId = setInterval(() => {
-      api.scrollNext()
+  // Function to start/restart auto-scroll timer
+  const startAutoScroll = () => {
+    // Clear existing timer
+    if (autoScrollTimer) {
+      clearInterval(autoScrollTimer)
+    }
+    
+    // Start new timer
+    const newTimer = setInterval(() => {
+      if (api) {
+        api.scrollNext()
+      }
     }, 5000) // 5 seconds
+    
+    setAutoScrollTimer(newTimer)
+  }
 
-    return () => clearInterval(intervalId)
-  }, [api])
-
-  // Track current slide
+  // Auto-scroll effect - starts when API is available
   useEffect(() => {
     if (!api) return
 
-    api.on("select", () => {
-      setCurrent(api.selectedScrollSnap())
-    })
+    startAutoScroll()
+
+    return () => {
+      if (autoScrollTimer) {
+        clearInterval(autoScrollTimer)
+      }
+    }
   }, [api])
+
+  // Track current slide and restart timer on manual interaction
+  useEffect(() => {
+    if (!api) return
+
+    const handleSelect = () => {
+      setCurrent(api.selectedScrollSnap())
+      // Restart auto-scroll timer when user manually changes slide
+      startAutoScroll()
+    }
+
+    api.on("select", handleSelect)
+    
+    return () => {
+      api.off("select", handleSelect)
+    }
+  }, [api, autoScrollTimer])
 
   const projects = [
     {
@@ -208,7 +236,10 @@ export function Projects() {
             {projects.map((_, index) => (
               <button
                 key={index}
-                onClick={() => api?.scrollTo(index)}
+                onClick={() => {
+                  api?.scrollTo(index)
+                  // Timer will restart automatically via the select event
+                }}
                 className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   current === index ? 'bg-primary w-8' : 'bg-primary/30 hover:bg-primary/50'
                 }`}
