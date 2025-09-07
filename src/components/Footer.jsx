@@ -28,11 +28,33 @@ export function Footer() {
               Étudiant B.Sc. Informatique de gestion
             </p>
             <div className="flex gap-3">
-              <Button variant="ghost" size="icon" className="hover:text-primary">
-                <Linkedin className="h-5 w-5" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hover:text-primary"
+                asChild
+              >
+                <a 
+                  href="https://www.linkedin.com/in/oligermain"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin className="h-5 w-5" />
+                </a>
               </Button>
-              <Button variant="ghost" size="icon" className="hover:text-primary">
-                <Mail className="h-5 w-5" />
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="hover:text-primary"
+                asChild
+              >
+                <a 
+                  href="mailto:oligermain15@gmail.com"
+                  aria-label="Email"
+                >
+                  <Mail className="h-5 w-5" />
+                </a>
               </Button>
             </div>
           </div>
