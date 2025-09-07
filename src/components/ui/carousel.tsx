@@ -179,25 +179,23 @@ function CarouselPrevious({
 }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
+  if (!canScrollPrev) return null;
+
   return (
-    <Button
+    <button
       data-slot="carousel-previous"
-      variant={variant}
-      size={size}
       className={cn(
-        "absolute size-8 rounded-full",
-        orientation === "horizontal"
-          ? "top-1/2 -left-12 -translate-y-1/2"
-          : "-top-12 left-1/2 -translate-x-1/2 rotate-90",
+        "absolute left-4 top-1/2 transform -translate-y-1/2 z-50 p-3 rounded-full bg-background/95 backdrop-blur-md border border-border shadow-xl hover:bg-background hover:shadow-2xl transition-all duration-200 hover:scale-110",
         className,
       )}
-      disabled={!canScrollPrev}
       onClick={scrollPrev}
       {...props}
     >
-      <ArrowLeft />
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+      </svg>
       <span className="sr-only">Previous slide</span>
-    </Button>
+    </button>
   );
 }
 
@@ -209,25 +207,23 @@ function CarouselNext({
 }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
+  if (!canScrollNext) return null;
+
   return (
-    <Button
+    <button
       data-slot="carousel-next"
-      variant={variant}
-      size={size}
       className={cn(
-        "absolute size-8 rounded-full",
-        orientation === "horizontal"
-          ? "top-1/2 -right-12 -translate-y-1/2"
-          : "-bottom-12 left-1/2 -translate-x-1/2 rotate-90",
+        "absolute right-4 top-1/2 transform -translate-y-1/2 z-50 p-3 rounded-full bg-background/95 backdrop-blur-md border border-border shadow-xl hover:bg-background hover:shadow-2xl transition-all duration-200 hover:scale-110",
         className,
       )}
-      disabled={!canScrollNext}
       onClick={scrollNext}
       {...props}
     >
-      <ArrowRight />
+      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+      </svg>
       <span className="sr-only">Next slide</span>
-    </Button>
+    </button>
   );
 }
 
