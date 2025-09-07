@@ -133,10 +133,10 @@ export function Timeline({ items, className }) {
       <div className="h-full flex flex-col">
         {/* Navigation buttons */}
         {canScrollLeft && (
-          <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-30">
+          <div className="absolute left-4 top-1/2 transform -translate-y-1/2 z-50">
             <button
               onClick={scrollLeft}
-              className="p-2 rounded-full bg-background/90 backdrop-blur-sm border border-border/50 shadow-lg hover:bg-background hover:shadow-xl transition-all duration-200"
+              className="p-3 rounded-full bg-background/95 backdrop-blur-md border border-border shadow-xl hover:bg-background hover:shadow-2xl transition-all duration-200 hover:scale-110"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -146,10 +146,10 @@ export function Timeline({ items, className }) {
         )}
         
         {canScrollRight && (
-          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-30">
+          <div className="absolute right-4 top-1/2 transform -translate-y-1/2 z-50">
             <button
               onClick={scrollRight}
-              className="p-2 rounded-full bg-background/90 backdrop-blur-sm border border-border/50 shadow-lg hover:bg-background hover:shadow-xl transition-all duration-200"
+              className="p-3 rounded-full bg-background/95 backdrop-blur-md border border-border shadow-xl hover:bg-background hover:shadow-2xl transition-all duration-200 hover:scale-110"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
