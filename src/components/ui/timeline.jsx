@@ -188,10 +188,10 @@ export function Timeline({ items, className }) {
         {/* Horizontal timeline container - Native scroll on mobile, drag on desktop */}
         <div 
           ref={containerRef}
-          className="flex-1 overflow-x-auto scrollbar-thin scrollbar-thumb-primary/20 scrollbar-track-transparent pb-4"
+          className="flex-1 overflow-x-auto pb-4 [&::-webkit-scrollbar]:hidden"
           style={{
-            scrollbarWidth: 'thin',
-            scrollbarColor: 'hsl(var(--primary) / 0.1) transparent'
+            scrollbarWidth: 'none', /* Firefox */
+            msOverflowStyle: 'none', /* IE and Edge */
           }}
         >
           <div className="flex items-start h-full min-w-max px-8 gap-6">
