@@ -29,53 +29,67 @@ export function About() {
 
   const timelineItems = [
       {
+      order: 7,
       date: "Hiver 2026",
       title: "À la recherche d'un stage",
       subtitle: "",
       description: "Dates suggérées : du 5 janvier au 17 avril",
-      type: "travail"
+      type: "travail",
+      present: false
     },
     {
+      order: 6,
       date: "2024 - 2027",
       title: "Université de Sherbrooke",
       subtitle: "Baccalauréat en sciences - Informatique de gestion",
       description: "Programme coopératif",
-      type: "education"
+      type: "education",
+      present: true
     },
     {
+      order: 5,
       date: "Été 2025",
       title: "BRP",
       subtitle: "Stagiaire aux processus et technologies d'exécution",
       description: "Développement de solutions d'analyse de données pour l'optimisation manufacturière.",
-      type: "travail"
+      type: "travail",
+      present: false
     },
     {
+      order: 4,
       date: "2022 - Aujourd'hui",
       title: "Ville de Sherbrooke",
       subtitle: "Répartiteur 911",
       description: "Répartition d'urgence 911, police et incendie.",
-      type: "travail"
+      type: "travail",
+      present: false
     },
     {
+      order: 3,
       date: "2018 - 2022",
       title: "Gouvernement du Québec - Sûreté du Québec",
       subtitle: "Répartiteur d'appels d'urgence",
       description: "Répartition d'appels policiers d'urgence.",
-      type: "travail"
+      type: "travail",
+      present: false
     },
     {
+      order: 2,
       date: "2015 - 2018",
       title: "CÉGEP de Saint-Laurent",
       subtitle: "DEC en musique classique",
       description: "Interprétation classique",
-      type: "education"
+      type: "education",
+      present: false
     },
     {
+      order: 1,
       date: "2012 - 2018",
       title: "Service en restauration",
       subtitle: "Emploi étudiant de service en restauration",
       description: "Service à la clientèle",
-      type: "travail"
+      type: "travail",
+      present: false
     }
   ]
 

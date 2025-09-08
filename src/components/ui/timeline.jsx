@@ -8,12 +8,13 @@ export function Timeline({ items, className }) {
   const [canScrollLeft, setCanScrollLeft] = useState(false)
   const [canScrollRight, setCanScrollRight] = useState(true)
 
-  // Sort items by year for proper timeline order (oldest first for left-to-right)
+  // Sort items by custom order field
   const sortedItems = [...items].sort((a, b) => {
-    const yearA = parseInt(a.date.match(/\d{4}/)?.[0] || "0")
-    const yearB = parseInt(b.date.match(/\d{4}/)?.[0] || "0")
-    return yearA - yearB
+    return (a.order || 0) - (b.order || 0)
   })
+
+  // Find the index of the first present item for auto-centering
+  const presentItemIndex = sortedItems.findIndex(item => item.present === true)
 
   // Update scroll progress and button visibility when scrolling
   useEffect(() => {
@@ -114,6 +115,29 @@ export function Timeline({ items, className }) {
     return () => observer.disconnect()
   }, [])
 
+  // Auto-center on present item when component mounts
+  useEffect(() => {
+    if (presentItemIndex >= 0 && containerRef.current) {
+      // Wait for component to be fully rendered
+      const timer = setTimeout(() => {
+        const container = containerRef.current
+        if (container) {
+          // Calculate scroll position to center the present item
+          const cardWidth = 320 + 24 // card width + gap
+          const containerWidth = container.clientWidth
+          const scrollPosition = Math.max(0, (presentItemIndex * cardWidth) - (containerWidth / 2) + (cardWidth / 2))
+          
+          container.scrollTo({
+            left: scrollPosition,
+            behavior: 'smooth'
+          })
+        }
+      }, 500) // Small delay to ensure timeline is rendered
+
+      return () => clearTimeout(timer)
+    }
+  }, [presentItemIndex])
+
   // Navigation functions
   const scrollLeft = () => {
     if (containerRef.current) {
@@ -179,6 +203,7 @@ export function Timeline({ items, className }) {
                 key={index}
                 item={item} 
                 index={index}
+                isPresent={item.present}
               />
             ))}
           </div>
@@ -188,7 +213,7 @@ export function Timeline({ items, className }) {
   )
 }
 
-function TimelineCard({ item, index }) {
+function TimelineCard({ item, index, isPresent = false }) {
   const { date, title, subtitle, description, type } = item
   
   return (
@@ -197,7 +222,7 @@ function TimelineCard({ item, index }) {
       <div className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 w-3 h-3 bg-primary rounded-full border-2 border-background shadow-sm z-10" />
       
       {/* Card */}
-      <Card className="w-80 border-0 bg-background/60 backdrop-blur-sm hover:bg-background/80 transition-all duration-200 group hover:shadow-lg">
+      <Card className="w-80 bg-white shadow-lg hover:shadow-xl transition-all duration-200 group border border-border/50">
         <CardContent className="p-6">
           {/* Date badge */}
           <div className="flex items-center justify-between mb-4">
