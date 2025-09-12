@@ -5,6 +5,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { ImageWithFallback } from "./figma/ImageWithFallback"
 import { ExternalLink, Github } from "lucide-react"
 import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
 
 // Import des images locales
 import img_masterexcel from '../img/img_masterexcel.jpg'
@@ -213,10 +214,19 @@ export function Projects() {
                         </div>
                         
                         <div className="flex gap-3 pt-4">
-                          <Button className="flex-1">
-                            <ExternalLink className="h-4 w-4 mr-2" />
-                            Voir le projet
-                          </Button>
+                          {project.title === "Automatisation visuelle" ? (
+                            <Button className="flex-1" asChild>
+                              <Link to="/autovisu">
+                                <ExternalLink className="h-4 w-4 mr-2" />
+                                Voir le projet
+                              </Link>
+                            </Button>
+                          ) : (
+                            <Button className="flex-1">
+                              <ExternalLink className="h-4 w-4 mr-2" />
+                              Voir le projet
+                            </Button>
+                          )}
                           <Button variant="outline">
                             <Github className="h-4 w-4" />
                           </Button>

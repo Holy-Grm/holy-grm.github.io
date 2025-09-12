@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Portfolio - Olivier</title>
+  <script>
+    // Redirection pour GitHub Pages - gère les routes côté client
+    const path = window.location.pathname.slice(1);
+    if (path) {
+      window.history.replaceState(null, null, '/' + path);
+      window.location.replace('/' + (path.startsWith('holy-grm.github.io2') ? path.slice(20) : ''));
+    }
+  </script>
+</head>
+<body>
+  <div id="root">Chargement...</div>
+</body>
+</html>
