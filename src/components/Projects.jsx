@@ -213,24 +213,16 @@ export function Projects() {
                           </div>
                         </div>
                         
-                        <div className="flex gap-3 pt-4">
-                          {project.title === "Automatisation visuelle" ? (
+                        {project.title === "Automatisation visuelle" && (
+                          <div className="flex gap-3 pt-4">
                             <Button className="flex-1" asChild>
                               <Link to="/autovisu">
                                 <ExternalLink className="h-4 w-4 mr-2" />
                                 Voir le projet
                               </Link>
                             </Button>
-                          ) : (
-                            <Button className="flex-1">
-                              <ExternalLink className="h-4 w-4 mr-2" />
-                              Voir le projet
-                            </Button>
-                          )}
-                          <Button variant="outline">
-                            <Github className="h-4 w-4" />
-                          </Button>
-                        </div>
+                          </div>
+                        )}
                       </div>
                     </DialogContent>
                   </Dialog>
