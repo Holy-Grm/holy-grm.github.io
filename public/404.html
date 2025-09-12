@@ -6,9 +6,8 @@
   <script>
     // Redirection pour GitHub Pages - gère les routes côté client
     const path = window.location.pathname;
-    if (path !== '/holy-grm.github.io/') {
-      const redirect = path.replace('/holy-grm.github.io', '');
-      window.location.replace('/holy-grm.github.io/#' + redirect);
+    if (path !== '/') {
+      window.location.replace('/#' + path);
     }
   </script>
 </head>
