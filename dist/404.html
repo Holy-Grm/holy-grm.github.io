@@ -5,10 +5,10 @@
   <title>Portfolio - Olivier</title>
   <script>
     // Redirection pour GitHub Pages - gère les routes côté client
-    const path = window.location.pathname.slice(1);
-    if (path) {
-      window.history.replaceState(null, null, '/' + path);
-      window.location.replace('/' + (path.startsWith('holy-grm.github.io2') ? path.slice(20) : ''));
+    const path = window.location.pathname;
+    if (path !== '/holy-grm.github.io/') {
+      const redirect = path.replace('/holy-grm.github.io', '');
+      window.location.replace('/holy-grm.github.io/#' + redirect);
     }
   </script>
 </head>
