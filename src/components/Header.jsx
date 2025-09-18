@@ -21,32 +21,44 @@ export function Header() {
         </div>
         
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center space-x-8">
+        <nav className="hidden md:flex items-center space-x-12">
           <button 
             onClick={() => scrollToSection('about')}
-            className="hover:text-primary transition-colors"
+            className="hover:text-primary transition-colors whitespace-nowrap px-3 py-2"
           >
             À propos
           </button>
           <button 
             onClick={() => scrollToSection('skills')}
-            className="hover:text-primary transition-colors"
+            className="hover:text-primary transition-colors whitespace-nowrap px-3 py-2"
           >
             Compétences
           </button>
           <button 
             onClick={() => scrollToSection('projects')}
-            className="hover:text-primary transition-colors"
+            className="hover:text-primary transition-colors whitespace-nowrap px-3 py-2"
           >
             Projets
           </button>
           <button 
+            onClick={() => scrollToSection('awards')}
+            className="hover:text-primary transition-colors whitespace-nowrap px-3 py-2"
+          >
+            Prix
+          </button>
+          <button 
+            onClick={() => scrollToSection('hobbies')}
+            className="hover:text-primary transition-colors whitespace-nowrap px-3 py-2"
+          >
+            Loisirs
+          </button>
+          <button 
             onClick={() => scrollToSection('contact')}
-            className="hover:text-primary transition-colors"
+            className="hover:text-primary transition-colors whitespace-nowrap px-3 py-2"
           >
             Contact
           </button>
-          <Button onClick={() => scrollToSection('contact')}>
+          <Button onClick={() => scrollToSection('contact')} className="whitespace-nowrap">
             Offrir un stage
           </Button>
         </nav>
@@ -83,6 +95,18 @@ export function Header() {
               className="text-left hover:text-primary transition-colors"
             >
               Projets
+            </button>
+            <button 
+              onClick={() => scrollToSection('awards')}
+              className="text-left hover:text-primary transition-colors"
+            >
+              Prix
+            </button>
+            <button 
+              onClick={() => scrollToSection('hobbies')}
+              className="text-left hover:text-primary transition-colors"
+            >
+              Loisirs
             </button>
             <button 
               onClick={() => scrollToSection('contact')}

@@ -3,6 +3,8 @@ import { Hero } from "./components/Hero"
 import { About } from "./components/About"
 import { Skills } from "./components/Skills"
 import { Projects } from "./components/Projects"
+import { Awards } from "./components/Awards"
+import { Hobbies } from "./components/Hobbies"
 import { Contact } from "./components/Contact"
 import { Footer } from "./components/Footer"
 
@@ -15,6 +17,8 @@ export default function App() {
         <About />
         <Skills />
         <Projects />
+        <Awards />
+        <Hobbies />
         <Contact />
       </main>
       <Footer />
