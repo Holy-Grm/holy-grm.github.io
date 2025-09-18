@@ -1,5 +1,5 @@
 import { Badge } from "./ui/badge"
-import { Mail, MapPin, Linkedin } from "lucide-react"
+import { Mail, MapPin, Linkedin, Download } from "lucide-react"
 
 export function Contact() {
 
@@ -19,6 +19,15 @@ export function Contact() {
       content: "www.linkedin.com/in/oligermain",
       description: "Connectons-nous",
       link: "https://www.linkedin.com/in/oligermain",
+      isClickable: true
+    },
+
+    {
+      icon: Download,
+      title: "CV",
+      content: "Télécharger mon CV",
+      description: "Version PDF disponible",
+      link: "/assets/CV_Olivier_Germain.pdf",
       isClickable: true
     },
 
@@ -64,6 +73,7 @@ export function Contact() {
                       href={info.link}
                       target={info.title === "Linkedin" ? "_blank" : "_self"}
                       rel={info.title === "Linkedin" ? "noopener noreferrer" : undefined}
+                      download={info.title === "CV" ? "CV_Olivier_Germain.pdf" : undefined}
                       className="flex items-start gap-4 hover:shadow-xl hover:scale-[1.02] transition-all duration-300 cursor-pointer"
                     >
                       <div className="bg-primary/10 p-3 rounded-lg">
