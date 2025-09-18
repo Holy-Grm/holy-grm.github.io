@@ -6,12 +6,10 @@ export function Hobbies() {
   const hobbies = [
     {
       title: "Musique",
-      description: "Première trompette pour l'Orchestre Philharmonique de l'Université de Sherbrooke depuis 2018",
+      description: "Orchestre Philharmonique de l'Université de Sherbrooke",
       icon: Music,
       details: [
-        "Première trompette",
-        "Orchestre Philharmonique UdeS",
-        "Depuis 2018"
+        "Première trompette depuis 2018"
       ]
     }
   ]
