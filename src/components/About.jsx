@@ -28,15 +28,7 @@ export function About() {
   ]
 
   const timelineItems = [
-      {
-      order: 7,
-      date: "Hiver 2026",
-      title: "À la recherche d'un stage",
-      subtitle: "",
-      description: "Dates suggérées : du 5 janvier au 17 avril",
-      type: "travail",
-      present: false
-    },
+
     {
       order: 6,
       date: "2024 - 2027",
