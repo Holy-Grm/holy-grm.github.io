@@ -3,7 +3,7 @@ import { useEffect } from "react";
 export function PdfMergePage() {
   useEffect(() => {
     // Redirection vers la page HTML complète
-    window.location.href = "/pdf-merger.html";
+    window.location.href = "/pdf-merger";
   }, []);
 
   return (
