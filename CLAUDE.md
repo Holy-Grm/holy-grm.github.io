@@ -28,6 +28,8 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
   - About (about section)
   - Skills (skills showcase)
   - Projects (project portfolio)
+  - Awards (awards/achievements section)
+  - Hobbies (hobbies section)
   - Contact (contact form/info)
   - Footer (footer section)
 
@@ -36,7 +38,9 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
 - **Component Library**: Located in `src/components/ui/` with TypeScript definitions
 - **Styling**: Tailwind CSS with custom design tokens
 - **Icons**: Lucide React for consistent iconography
-- **Special Components**: Timeline component in `src/components/ui/timeline.jsx`
+- **Special Components**:
+  - Timeline component in `src/components/ui/timeline.jsx`
+  - ImageWithFallback in `src/components/figma/ImageWithFallback.tsx` for graceful image loading
 
 ### File Extensions
 - Main components: `.jsx` 
@@ -61,6 +65,7 @@ This is a React-based portfolio website built with Vite, featuring a modern desi
 - Components use smooth scrolling navigation between sections via scrollIntoView
 - Mobile-responsive design with collapsible Header navigation
 - Portfolio images stored in `src/img/` directory
+- **Language**: Portfolio content is in French (navigation, buttons, section titles)
 
 ## Build Configuration
 
