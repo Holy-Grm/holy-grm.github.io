@@ -4,11 +4,11 @@ import { Utensils, Calendar, Sparkles } from "lucide-react";
 export const PotluckPage = () => {
     // MODIFIER ICI : Ajoutez les plats entre les guillemets pour chaque personne
     const participants = [
-        { name: "Audrey", dish: "" },
-        { name: "Oli", dish: "" },
-        { name: "Fred", dish: "" },
-        { name: "Chlochlo", dish: "" },
-        { name: "Zach", dish: "" },
+        { name: "Audrey", dish: "Saumon et concombre" },
+        { name: "Oli", dish: "Goberge et nori" },
+        { name: "Fred", dish: "Caviar et philly" },
+        { name: "Chlochlo", dish: "Crevettes et mangue" },
+        { name: "Zach", dish: "Riz de haute qualité" },
         { name: "Marie-Garance", dish: "" },
     ];
 
