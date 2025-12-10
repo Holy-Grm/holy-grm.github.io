@@ -1,38 +1,16 @@
-import React, { useState, useEffect } from "react";
-import { Utensils, Calendar, Gift, Sparkles } from "lucide-react";
+import React from "react";
+import { Utensils, Calendar, Sparkles } from "lucide-react";
 
 export const PotluckPage = () => {
-    const participantsList = [
-        "Audrey",
-        "Oli",
-        "Fred",
-        "Chlochlo",
-        "Zach",
-        "Marie-Garance",
+    // MODIFIER ICI : Ajoutez les plats entre les guillemets pour chaque personne
+    const participants = [
+        { name: "Audrey", dish: "" },
+        { name: "Oli", dish: "" },
+        { name: "Fred", dish: "" },
+        { name: "Chlochlo", dish: "" },
+        { name: "Zach", dish: "" },
+        { name: "Marie-Garance", dish: "" },
     ];
-
-    // Initialize state from local storage or default
-    const [contributions, setContributions] = useState(() => {
-        const saved = localStorage.getItem("sushi-noel-2025");
-        if (saved) {
-            return JSON.parse(saved);
-        }
-        const initial = {};
-        participantsList.forEach((p) => (initial[p] = ""));
-        return initial;
-    });
-
-    // Save to local storage whenever contributions change
-    useEffect(() => {
-        localStorage.setItem("sushi-noel-2025", JSON.stringify(contributions));
-    }, [contributions]);
-
-    const handleChange = (participant, value) => {
-        setContributions((prev) => ({
-            ...prev,
-            [participant]: value,
-        }));
-    };
 
     return (
         <div className="min-h-screen w-full bg-slate-950 relative overflow-hidden flex items-center justify-center p-4">
@@ -43,7 +21,7 @@ export const PotluckPage = () => {
                 <div className="absolute -bottom-[20%] left-[20%] w-[50vw] h-[50vw] bg-emerald-500/10 rounded-full blur-[100px] animate-pulse delay-2000" />
             </div>
 
-            <div className="relative z-10 w-full max-w-4xl">
+            <div className="relative z-10 w-full max-w-3xl">
                 {/* Header Card */}
                 <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-8 mb-8 shadow-2xl text-center relative overflow-hidden group">
                     <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 via-purple-500/10 to-indigo-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
@@ -75,34 +53,22 @@ export const PotluckPage = () => {
                         <table className="w-full border-collapse">
                             <thead>
                                 <tr className="border-b border-white/10 text-left">
-                                    <th className="py-4 px-4 text-slate-400 font-medium tracking-wider uppercase text-sm">Participant</th>
-                                    <th className="py-4 px-4 text-slate-400 font-medium tracking-wider uppercase text-sm w-2/3">Contribution</th>
+                                    <th className="py-4 px-4 text-slate-400 font-medium tracking-wider uppercase text-sm w-1/3">Participant</th>
+                                    <th className="py-4 px-4 text-slate-400 font-medium tracking-wider uppercase text-sm w-2/3">Qu'est-ce qu'on mange ?</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-white/5">
-                                {participantsList.map((participant) => (
-                                    <tr key={participant} className="group hover:bg-white/5 transition-colors">
+                                {participants.map((participant) => (
+                                    <tr key={participant.name} className="group hover:bg-white/5 transition-colors">
                                         <td className="py-4 px-4">
-                                            <div className="flex items-center gap-3">
-                                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center text-slate-200 font-bold shadow-inner border border-white/10 group-hover:scale-110 transition-transform">
-                                                    {participant[0]}
-                                                </div>
-                                                <span className="font-semibold text-slate-200 text-lg">{participant}</span>
-                                            </div>
+                                            <span className="font-semibold text-slate-200 text-lg">{participant.name}</span>
                                         </td>
                                         <td className="py-4 px-4">
-                                            <div className="relative">
-                                                <input
-                                                    type="text"
-                                                    value={contributions[participant]}
-                                                    onChange={(e) => handleChange(participant, e.target.value)}
-                                                    placeholder="Qu'est-ce qu'on mange ?"
-                                                    className="w-full bg-slate-900/50 border border-white/10 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-600 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/50 focus:bg-slate-900/80 transition-all shadow-inner"
-                                                />
-                                                {contributions[participant] && (
-                                                    <Gift className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-emerald-400" />
-                                                )}
-                                            </div>
+                                            {participant.dish ? (
+                                                <span className="text-indigo-200 font-medium text-lg">{participant.dish}</span>
+                                            ) : (
+                                                <span className="text-slate-600 italic">À déterminer...</span>
+                                            )}
                                         </td>
                                     </tr>
                                 ))}
