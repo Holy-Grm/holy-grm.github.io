@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Master</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- HEADER -->
+        <header>
+            <h1>Quiz Master</h1>
+        </header>
+
+        <!-- STEP 1: UPLOAD -->
+        <div id="upload-section" class="card active">
+            <h2>Importer un Quiz</h2>
+            <p><strong>JSON</strong> ou <strong>CSV</strong></p>
+
+            <div class="file-drop-area" id="drop-area">
+                <span class="fake-btn">Choisir un fichier</span>
+                <span class="file-msg">ou glisser-déposer ici</span>
+                <input class="file-input" type="file" id="fileInput" accept=".json, .csv">
+            </div>
+
+            <div class="divider">ou</div>
+
+            <button id="btn-load-sample" class="secondary-btn">Apprendre les capitales</button>
+        </div>
+
+        <!-- STEP 2: QUIZ -->
+        <div id="quiz-section" class="card hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+
+            <div class="question-header">
+                <span id="question-count">Question 1/10</span>
+                <span id="score-display">Score: 0</span>
+            </div>
+
+            <h3 id="question-text">Quelle est la capitale de la France ?</h3>
+
+            <div class="choices-grid" id="choices-container">
+                <!-- Buttons will be injected here via JS -->
+            </div>
+        </div>
+
+        <!-- STEP 2.5: CHECKPOINT -->
+        <div id="checkpoint-section" class="card hidden">
+            <h2>Pause Café ☕</h2>
+            <p>Déjà 10 questions ! On continue ?</p>
+            <div class="score-circle small">
+                <span id="checkpoint-score">8/10</span>
+            </div>
+
+            <button id="btn-continue" class="primary-btn">Continuer</button>
+            <button id="btn-stop" class="secondary-btn">Arrêter ici</button>
+        </div>
+
+        <!-- STEP 3: RESULTS -->
+        <div id="result-section" class="card hidden">
+            <h2>Terminé ! 🎉</h2>
+            <div class="score-circle">
+                <span id="final-score">8/10</span>
+            </div>
+            <p id="feedback-msg">Excellent travail !</p>
+
+            <button id="btn-restart" class="primary-btn">Recommencer</button>
+            <button id="btn-new-file" class="secondary-btn">Choisir un autre fichier</button>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
