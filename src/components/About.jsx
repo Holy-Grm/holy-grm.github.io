@@ -30,13 +30,22 @@ export function About() {
   const timelineItems = [
 
     {
+      order: 7,
+      date: "Hiver 2026",
+      title: "BRP",
+      subtitle: "Stagiaire - Analyste ServiceNow",
+      description: "Développement de workflow et d'automatisation de processus.",
+      type: "travail",
+      present: true
+    },
+    {
       order: 6,
       date: "2024 - 2027",
       title: "Université de Sherbrooke",
       subtitle: "Baccalauréat en sciences - Informatique de gestion",
       description: "Programme coopératif",
       type: "education",
-      present: true
+      present: false
     },
     {
       order: 5,
@@ -104,13 +113,13 @@ export function About() {
             <h3 className="mb-6">Mon parcours</h3>
             <div className="space-y-4 text-muted-foreground">
               <p>
-                Ma passion pour la technologie a débutée dès mon jeune âge, par plaisir 
-                d'automatiser tout ce qui m'entoure; à commencer par les jeux vidéos, puis la 
+                Ma passion pour la technologie a débutée dès mon jeune âge, par plaisir
+                d'automatiser tout ce qui m'entoure; à commencer par les jeux vidéos, puis la
                 domotique et finalement des tâches complexes au travail.
               </p>
               <p>
-                J'approfondis présentement mes connaissances à l'Université de Sherbrooke, 
-                réputée pour son programme coopératif. Ceci me permet d'acquérir une 
+                J'approfondis présentement mes connaissances à l'Université de Sherbrooke,
+                réputée pour son programme coopératif. Ceci me permet d'acquérir une
                 expérience précieuse en travaillant sur des projets réels dans divers secteurs.
               </p>
             </div>
