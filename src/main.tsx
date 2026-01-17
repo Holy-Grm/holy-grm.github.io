@@ -5,7 +5,7 @@ import App from "./App";
 import { AutoVisuPage } from "./components/AutoVisuPage";
 import { PdfMergePage } from "./components/PdfMergePage";
 import { PdfTrimPage } from "./components/PdfTrimPage";
-import { PotluckPage } from "./components/PotluckPage";
+import { ToolsPage } from "./components/ToolsPage";
 import { NotFoundPage } from "./components/NotFoundPage";
 import "./index.css";
 
@@ -16,7 +16,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/autovisu" element={<AutoVisuPage />} />
       <Route path="/pdfmerge" element={<PdfMergePage />} />
       <Route path="/pdfTrim" element={<PdfTrimPage />} />
-      <Route path="/potluck" element={<PotluckPage />} />
+      <Route path="/t" element={<ToolsPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   </HashRouter>
