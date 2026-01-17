@@ -1,10 +1,7 @@
-import { Button } from "./ui/button"
 import { Badge } from "./ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { Spline, Scissors, Home, ArrowLeft } from "lucide-react"
+import { Spline, Scissors } from "lucide-react"
 import { Link } from "react-router-dom"
-import img_pdf_merge from "../img/preview_pdf_merge.png"
-import img_pdf_trim from "../img/preview_pdf_trim.png"
 
 export function ToolsPage() {
     const tools = [
@@ -13,16 +10,14 @@ export function ToolsPage() {
             description: "Fusionner plusieurs fichiers PDF en un seul document.",
             icon: <Spline className="h-6 w-6" />,
             link: "/pdfmerge",
-            color: "bg-blue-500/10 text-blue-500",
-            image: img_pdf_merge
+            color: "bg-blue-500/10 text-blue-500"
         },
         {
             title: "PDF Trim",
             description: "Découper et extraire des pages de vos fichiers PDF.",
             icon: <Scissors className="h-6 w-6" />,
             link: "/pdfTrim",
-            color: "bg-red-500/10 text-red-500",
-            image: img_pdf_trim
+            color: "bg-red-500/10 text-red-500"
         }
     ]
 
@@ -41,20 +36,14 @@ export function ToolsPage() {
                 <div className="grid md:grid-cols-2 gap-6 mb-12">
                     {tools.map((tool, index) => (
                         <Link key={index} to={tool.link}>
-                            <Card className="h-full hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border-muted relative overflow-hidden group">
-                                {/* Background Image on Hover */}
-                                <div
-                                    className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-300 bg-cover bg-center"
-                                    style={{ backgroundImage: `url(${tool.image})` }}
-                                />
-
-                                <CardHeader className="relative z-10">
-                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${tool.color} bg-background/80 backdrop-blur-sm`}>
+                            <Card className="h-full hover:shadow-lg transition-all duration-300 hover:scale-[1.02] cursor-pointer border-muted">
+                                <CardHeader>
+                                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center mb-4 ${tool.color}`}>
                                         {tool.icon}
                                     </div>
                                     <CardTitle>{tool.title}</CardTitle>
                                 </CardHeader>
-                                <CardContent className="relative z-10">
+                                <CardContent>
                                     <CardDescription>
                                         {tool.description}
                                     </CardDescription>
@@ -62,15 +51,6 @@ export function ToolsPage() {
                             </Card>
                         </Link>
                     ))}
-                </div>
-
-                <div className="flex justify-center gap-4">
-                    <Link to="/">
-                        <Button variant="outline">
-                            <Home className="h-4 w-4 mr-2" />
-                            Retour à l'accueil
-                        </Button>
-                    </Link>
                 </div>
             </div>
         </div>

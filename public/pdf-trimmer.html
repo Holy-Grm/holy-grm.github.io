@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -477,8 +478,15 @@
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
         }
 
         .loading {
@@ -521,7 +529,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         .loading-text {
@@ -530,7 +540,14 @@
         }
     </style>
 </head>
+
 <body>
+    <div style="position: absolute; top: 10px; left: 10px; z-index: 1000;">
+        <a href="/#/t"
+            style="text-decoration: none; color: #666; font-family: sans-serif; font-size: 14px; padding: 8px 12px; background: #f5f5f5; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            ← Retour aux outils
+        </a>
+    </div>
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-spinner">
             <div class="spinner"></div>
@@ -546,7 +563,9 @@
 
         <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileInput').click()">
             <div class="drop-zone-icon">
-                <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z" />
+                </svg>
             </div>
             <p class="drop-zone-title">Glissez votre PDF ici</p>
             <p class="drop-zone-subtitle">ou cliquez pour sélectionner un fichier</p>
@@ -556,7 +575,10 @@
         <div class="file-header" id="fileHeader">
             <div class="file-info-section">
                 <div class="file-icon">
-                    <svg viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z"/></svg>
+                    <svg viewBox="0 0 24 24">
+                        <path
+                            d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zM6 20V4h7v5h5v11H6z" />
+                    </svg>
                 </div>
                 <div class="file-details">
                     <div class="file-name" id="fileName"></div>
@@ -581,7 +603,10 @@
 
         <div class="action-section" id="actionSection">
             <button class="extract-btn" id="extractBtn" onclick="extractPages()" disabled>
-                <svg viewBox="0 0 24 24"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg>
+                <svg viewBox="0 0 24 24">
+                    <path
+                        d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                </svg>
                 Télécharger le PDF allégé
             </button>
             <div class="progress-bar" id="progressBar">
@@ -606,7 +631,7 @@
 
         // Setup drag and drop
         const dropZone = document.getElementById('dropZone');
-        
+
         dropZone.addEventListener('dragover', (e) => {
             e.preventDefault();
             dropZone.classList.add('active');
@@ -619,7 +644,7 @@
         dropZone.addEventListener('drop', (e) => {
             e.preventDefault();
             dropZone.classList.remove('active');
-            
+
             const files = e.dataTransfer.files;
             if (files.length > 0 && files[0].type === 'application/pdf') {
                 loadPDF(files[0]);
@@ -692,7 +717,7 @@
 
             for (let i = 1; i <= pdfDoc.numPages; i++) {
                 const page = await pdfDoc.getPage(i);
-                
+
                 const pageItem = document.createElement('div');
                 pageItem.className = 'page-item';
                 pageItem.dataset.page = i;
@@ -741,16 +766,16 @@
                 // Déterminer la plage
                 const start = Math.min(lastClickedPage, pageNum);
                 const end = Math.max(lastClickedPage, pageNum);
-                
+
                 // Déterminer l'action : sélectionner ou désélectionner
                 // On base l'action sur l'état de la page de destination
                 const targetPage = document.querySelector(`[data-page="${pageNum}"]`);
                 const shouldSelect = !selectedPages.has(pageNum);
-                
+
                 // Appliquer l'action à toute la plage
                 for (let i = start; i <= end; i++) {
                     const pageItem = document.querySelector(`[data-page="${i}"]`);
-                    
+
                     if (shouldSelect) {
                         selectedPages.add(i);
                         pageItem.classList.add('selected');
@@ -762,7 +787,7 @@
             } else {
                 // Comportement normal : toggle une seule page
                 const pageItem = document.querySelector(`[data-page="${pageNum}"]`);
-                
+
                 if (selectedPages.has(pageNum)) {
                     selectedPages.delete(pageNum);
                     pageItem.classList.remove('selected');
@@ -771,10 +796,10 @@
                     pageItem.classList.add('selected');
                 }
             }
-            
+
             // Mémoriser la dernière page cliquée
             lastClickedPage = pageNum;
-            
+
             updateSelectionCount();
         }
 
@@ -859,7 +884,7 @@
                     const pageNum = sortedPages[i];
                     const [copiedPage] = await newPdf.copyPages(pdfLibDoc, [pageNum - 1]);
                     newPdf.addPage(copiedPage);
-                    
+
                     const progress = 40 + (i / sortedPages.length) * 50;
                     setProgress(progress);
                 }
@@ -876,10 +901,10 @@
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                
+
                 const originalName = pdfFile.name.replace('.pdf', '');
                 link.download = `${originalName}_trimmed.pdf`;
-                
+
                 link.click();
                 URL.revokeObjectURL(url);
 
@@ -909,7 +934,7 @@
         function setProgress(percent) {
             const progressBar = document.getElementById('progressBar');
             const progressFill = document.getElementById('progressFill');
-            
+
             if (percent > 0) {
                 progressBar.classList.add('active');
                 progressFill.style.width = percent + '%';
@@ -929,4 +954,5 @@
         }
     </script>
 </body>
+
 </html>
