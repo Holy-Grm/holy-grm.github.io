@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duplicate Find</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --border: #d2d2d7;
+            --success: #34c759;
+            --danger: #ff3b30;
+            --warning: #ff9500;
+            --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+            --shadow-hover: 0 8px 32px rgba(0, 0, 0, 0.12);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Inter', 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, var(--text-primary) 0%, #424245 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 19px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Go Back Button */
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-family: sans-serif;
+            font-size: 14px;
+            padding: 8px 12px;
+            background: var(--bg-card);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+            z-index: 100;
+        }
+
+        .back-button:hover {
+            color: var(--text-primary);
+            background: white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+        }
+
+        /* Input Grid */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(0, 0, 0, 0.02);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 768px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            background: rgba(0, 113, 227, 0.1);
+            color: var(--accent);
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 9999px;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        textarea.data-input {
+            width: 100%;
+            height: 250px;
+            background: #f5f5f7;
+            border: 1px solid transparent;
+            border-radius: 12px;
+            padding: 16px;
+            color: var(--text-primary);
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            font-size: 13px;
+            resize: none;
+            transition: all 0.2s ease;
+            line-height: 1.5;
+        }
+
+        textarea.data-input:focus {
+            outline: none;
+            background: white;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.1);
+        }
+
+        textarea.data-input::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        /* Controls */
+        .controls {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 48px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            font-size: 17px;
+            font-weight: 500;
+            border-radius: 980px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0, 113, 227, 0.3);
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 113, 227, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        /* Results Section */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .results-grid.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        @media (max-width: 900px) {
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-card h3 {
+            margin: 0;
+            font-size: 17px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .count-badge {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-secondary);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        .result-list {
+            list-style: none;
+            height: 400px;
+            overflow-y: auto;
+            background: #f5f5f7;
+            /* Matching input bg */
+            border-radius: 12px;
+            border: 1px solid transparent;
+            margin-top: 16px;
+        }
+
+        .result-item {
+            padding: 10px 16px;
+            font-size: 13px;
+            font-family: 'SF Mono', 'Fira Code', monospace;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #86868b;
+        }
+
+
+        /* Status Colors */
+        .status-new {
+            color: var(--success);
+        }
+
+        .status-same {
+            color: var(--text-secondary);
+        }
+
+        .status-delete {
+            color: var(--danger);
+        }
+
+        .card-new {
+            border-top: 4px solid var(--success);
+        }
+
+        .card-same {
+            border-top: 4px solid var(--text-secondary);
+        }
+
+        .card-delete {
+            border-top: 4px solid var(--danger);
+        }
+
+        /* Copy Button */
+        .btn-icon {
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            color: var(--text-secondary);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-icon:hover {
+            background: rgba(0, 0, 0, 0.08);
+            color: var(--text-primary);
+        }
+
+        .btn-icon svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <a href="/#/t" class="back-button">
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18">
+            </path>
+        </svg>
+        Retour aux outils
+    </a>
+
+    <div class="container">
+        <header>
+            <h1>Duplicate Find</h1>
+            <p class="subtitle">Comparez facilement vos listes de données</p>
+        </header>
+
+        <main>
+            <!-- Input Section -->
+            <section class="input-grid">
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                            Liste Originale (Table 1)
+                        </span>
+                        <span class="badge" id="count-1">0 Lignes</span>
+                    </div>
+                    <textarea id="input1" class="data-input"
+                        placeholder="Collez votre première liste ici (Excel, CSV, Texte)..."></textarea>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                            Nouvelle Liste (Table 2)
+                        </span>
+                        <span class="badge" id="count-2">0 Lignes</span>
+                    </div>
+                    <textarea id="input2" class="data-input"
+                        placeholder="Collez votre deuxième liste ici...&#10;Note: Seule la première colonne sera comparée."></textarea>
+                </div>
+            </section>
+
+            <!-- Actions -->
+            <div class="controls">
+                <button id="compareBtn" class="btn-primary">
+                    <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2">
+                        </path>
+                    </svg>
+                    Comparer les Listes
+                </button>
+            </div>
+
+            <!-- Results Section -->
+            <section class="results-grid" id="resultsSection">
+                <!-- Deleted Items -->
+                <div class="card result-card card-delete">
+                    <div class="card-header">
+                        <h3 class="status-delete">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            Supprimés
+                            <span class="count-badge" id="count-delete">0</span>
+                        </h3>
+                        <button class="btn-icon tooltip" title="Copier" id="copy-delete">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul id="list-delete" class="result-list"></ul>
+                </div>
+
+                <!-- Same Items -->
+                <div class="card result-card card-same">
+                    <div class="card-header">
+                        <h3 class="status-same">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7">
+                                </path>
+                            </svg>
+                            Identiques
+                            <span class="count-badge" id="count-same">0</span>
+                        </h3>
+                        <button class="btn-icon tooltip" title="Copier" id="copy-same">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul id="list-same" class="result-list"></ul>
+                </div>
+
+                <!-- New Items -->
+                <div class="card result-card card-new">
+                    <div class="card-header">
+                        <h3 class="status-new">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 4v16m8-8H4">
+                                </path>
+                            </svg>
+                            Nouveaux
+                            <span class="count-badge" id="count-new">0</span>
+                        </h3>
+                        <button class="btn-icon tooltip" title="Copier" id="copy-new">
+                            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3">
+                                </path>
+                            </svg>
+                        </button>
+                    </div>
+                    <ul id="list-new" class="result-list"></ul>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Vos données sont traitées localement dans votre navigateur.</p>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const input1 = document.getElementById('input1');
+            const input2 = document.getElementById('input2');
+            const compareBtn = document.getElementById('compareBtn');
+            const resultsSection = document.getElementById('resultsSection');
+
+            // BADGES
+            const count1Badge = document.getElementById('count-1');
+            const count2Badge = document.getElementById('count-2');
+
+            // RESULT LISTS & COUNTS
+            const listNew = document.getElementById('list-new');
+            const listSame = document.getElementById('list-same');
+            const listDelete = document.getElementById('list-delete');
+
+            const countNew = document.getElementById('count-new');
+            const countSame = document.getElementById('count-same');
+            const countDelete = document.getElementById('count-delete');
+
+            // COPY BUTTONS
+            const btnCopyNew = document.getElementById('copy-new');
+            const btnCopySame = document.getElementById('copy-same');
+            const btnCopyDelete = document.getElementById('copy-delete');
+
+            let currentNewItems = [];
+            let currentSameItems = [];
+            let currentDeleteItems = [];
+
+            // Utility to parse input data
+            function parseData(text) {
+                if (!text) return [];
+                return text.split(/\r?\n/).map(line => {
+                    // Only omit if the line is completely empty (or whitespace)
+                    if (!line.trim()) return null;
+                    const parts = line.split('\t');
+                    return {
+                        key: parts[0].trim(),
+                        fullRow: line
+                    };
+                }).filter(item => item !== null);
+            }
+
+            // Live row count update
+            function updateCount(input, badge) {
+                const data = parseData(input.value);
+                badge.textContent = `${data.length} Ligne${data.length > 1 ? 's' : ''}`;
+            }
+
+            input1.addEventListener('input', () => updateCount(input1, count1Badge));
+            input2.addEventListener('input', () => updateCount(input2, count2Badge));
+
+            // MAIN COMPARISON LOGIC
+            compareBtn.addEventListener('click', () => {
+                const data1 = parseData(input1.value);
+                const data2 = parseData(input2.value);
+
+                // Sets for O(1) lookup
+                const set1 = new Set(data1.map(d => d.key));
+                const set2 = new Set(data2.map(d => d.key));
+
+                // 1. NEW: In List 2 but NOT in List 1
+                currentNewItems = data2.filter(item => !set1.has(item.key)).map(item => item.fullRow);
+
+                // 2. SAME: In Both
+                currentSameItems = data1.filter(item => set2.has(item.key)).map(item => item.fullRow);
+
+                // 3. DELETE: In List 1 but NOT in List 2
+                currentDeleteItems = data1.filter(item => !set2.has(item.key)).map(item => item.fullRow);
+
+                // RENDER
+                renderList(listNew, currentNewItems, countNew);
+                renderList(listSame, currentSameItems, countSame);
+                renderList(listDelete, currentDeleteItems, countDelete);
+
+                // Unlock visual state
+                resultsSection.classList.add('active');
+
+                // Scroll only if needed (on mobile/small screens) or smooth scroll to it
+                resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            function renderList(container, items, countBadge) {
+                container.innerHTML = '';
+                countBadge.textContent = items.length;
+
+                if (items.length === 0) {
+                    const li = document.createElement('li');
+                    li.className = 'result-item';
+                    li.style.color = 'var(--text-secondary)';
+                    li.style.fontStyle = 'italic';
+                    li.style.textAlign = 'center';
+                    li.textContent = 'Aucun résultat';
+                    container.appendChild(li);
+                    return;
+                }
+
+                items.forEach(item => {
+                    const li = document.createElement('li');
+                    li.className = 'result-item';
+                    // Display tabs as arrows for better UI value
+                    li.textContent = item.replace(/\t/g, ' ⟶ ');
+                    container.appendChild(li);
+                });
+            }
+
+            // COPY FUNCTIONALITY
+            async function copyToClipboard(items, btn) {
+                if (!items || items.length === 0) return;
+
+                const textToCopy = items.join('\n');
+
+                try {
+                    await navigator.clipboard.writeText(textToCopy);
+
+                    // Visual feedback
+                    const originalIcon = btn.innerHTML;
+                    btn.innerHTML = `<svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>`;
+                    btn.style.color = 'var(--success)';
+
+                    setTimeout(() => {
+                        btn.innerHTML = originalIcon;
+                        btn.style.color = '';
+                    }, 2000);
+
+                } catch (err) {
+                    console.error('Failed to copy!', err);
+                }
+            }
+
+            btnCopyNew.addEventListener('click', () => copyToClipboard(currentNewItems, btnCopyNew));
+            btnCopySame.addEventListener('click', () => copyToClipboard(currentSameItems, btnCopySame));
+            btnCopyDelete.addEventListener('click', () => copyToClipboard(currentDeleteItems, btnCopyDelete));
+        });
+    </script>
+</body>
+
+</html>

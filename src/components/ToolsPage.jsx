@@ -1,6 +1,6 @@
 import { Badge } from "./ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { Spline, Scissors } from "lucide-react"
+import { Spline, Scissors, Brain } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function ToolsPage() {
@@ -18,6 +18,20 @@ export function ToolsPage() {
             icon: <Scissors className="h-6 w-6" />,
             link: "/pdfTrim",
             color: "bg-red-500/10 text-red-500"
+        },
+        {
+            title: "Duplicate Find",
+            description: "Comparer deux listes pour trouver les doublons, ajouts et suppressions.",
+            icon: <Spline className="h-6 w-6" />,
+            link: "/duplicatefind",
+            color: "bg-green-500/10 text-green-500"
+        },
+        {
+            title: "Générateur de Quiz",
+            description: "Créez et jouez à des quiz interactifs.",
+            icon: <Brain className="h-6 w-6" />,
+            link: "/quizmaster",
+            color: "bg-purple-500/10 text-purple-500"
         }
     ]
 
