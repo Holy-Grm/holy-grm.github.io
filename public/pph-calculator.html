@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur de Commande PPH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --card-bg: #1e293b;
+            --gold: #f59e0b;
+            --gold-light: #fbbf24;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --accent: #3b82f6;
+            --glass: rgba(30, 41, 59, 0.7);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 0;
+            left: 0;
+            text-decoration: none;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+            padding: 0.5rem 1rem;
+            background: var(--card-bg);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.2s ease;
+        }
+
+        .back-button:hover {
+            color: var(--gold);
+            border-color: var(--gold);
+            transform: translateX(-2px);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 600;
+            letter-spacing: -0.025em;
+            margin-bottom: 0.5rem;
+        }
+
+        .highlight {
+            color: var(--gold);
+        }
+
+        .subtitle {
+            color: var(--text-dim);
+            font-weight: 300;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease;
+            text-align: center;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .summary-card h3 {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dim);
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-card p {
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .calculator-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--text-dim);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.5rem;
+            color: white;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            flex: 1;
+            min-width: 0;
+        }
+
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            appearance: none;
+            margin: 0;
+        }
+
+        input[type=number] {
+            -moz-appearance: textfield;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        .max-btn {
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            color: var(--gold);
+            padding: 0.4rem 0.6rem;
+            border-radius: 0.4rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .max-btn:hover {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        .seasonal-row {
+            background: rgba(245, 158, 11, 0.03);
+        }
+
+        .seasonal-label {
+            display: inline-block;
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--gold-light);
+            font-size: 0.7rem;
+            padding: 0.1rem 0.4rem;
+            border-radius: 1rem;
+            margin-left: 0.5rem;
+            font-weight: 600;
+            vertical-align: middle;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--gold);
+            background: rgba(0, 0, 0, 0.3);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.2);
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 4rem;
+            color: var(--text-dim);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .input-container {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.25rem;
+            }
+
+            .back-button {
+                position: static;
+                display: inline-block;
+                margin-bottom: 1rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <a href="/#/t" class="back-button">← Retour</a>
+            <h1>Calculateur de Commande <span class="highlight">PPH</span></h1>
+            <p class="subtitle">Optimisez vos stocks et visualisez vos coûts en temps réel.</p>
+        </header>
+
+        <div class="summary-grid">
+            <div class="summary-card gold">
+                <h3>Coût Total Annuel</h3>
+                <p id="total-cost">0,00 $</p>
+            </div>
+            <div class="summary-card silver">
+                <h3>Total PPH Reçus (Est.)</h3>
+                <p id="total-pph">0</p>
+            </div>
+            <div class="summary-card bronze">
+                <h3>Moyenne $/PPH</h3>
+                <p id="avg-price">0,00 $</p>
+            </div>
+        </div>
+
+        <div class="calculator-card">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mois</th>
+                            <th>Fournisseur A</th>
+                            <th>Fournisseur B</th>
+                            <th>Fournisseur C</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calculator-body">
+                        <!-- Rows populated by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Monte Carlo Prosim - Simulateur d'Approvisionnement</p>
+        </footer>
+    </div>
+
+    <script>
+        const CONFIG = {
+            suppliers: {
+                A: {
+                    order_cost: 1000,
+                    quality: 0.975,
+                    pricing: {
+                        normal: [
+                            { limit: 49999, price: 0.12 },
+                            { limit: 79999, price: 0.1 },
+                            { limit: 80000, price: 0.09 }
+                        ],
+                        seasonal: [
+                            { limit: 49999, price: 0.11 },
+                            { limit: 79999, price: 0.09 },
+                            { limit: 80000, price: 0.08 }
+                        ],
+                        seasonal_months: [5, 6, 7, 10, 11, 12]
+                    }
+                },
+                B: {
+                    order_cost: 1000,
+                    quality: 0.975,
+                    pricing: {
+                        normal: [
+                            { limit: 69999, price: 0.12 },
+                            { limit: 119999, price: 0.1 },
+                            { limit: 149999, price: 0.08 },
+                            { limit: 150000, price: 0.07 }
+                        ],
+                        seasonal: [
+                            { limit: 69999, price: 0.11 },
+                            { limit: 119999, price: 0.09 },
+                            { limit: 149999, price: 0.07 },
+                            { limit: 150000, price: 0.06 }
+                        ],
+                        seasonal_months: [5, 6, 7, 10, 11, 12]
+                    }
+                },
+                C: {
+                    order_cost: 800,
+                    quality: 1.0,
+                    pricing: {
+                        normal: [
+                            { limit: 49999, price: 0.18 },
+                            { limit: 99999, price: 0.15 },
+                            { limit: Infinity, price: 0.14 }
+                        ],
+                        seasonal: [
+                            { limit: 49999, price: 0.17 },
+                            { limit: 99999, price: 0.14 },
+                            { limit: Infinity, price: 0.13 }
+                        ],
+                        seasonal_months: [5, 6, 7, 10, 11, 12]
+                    }
+                }
+            }
+        };
+
+        const MONTHS = [
+            "Janvier", "Février", "Mars", "Avril", "Mai", "Juin",
+            "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"
+        ];
+
+        const body = document.getElementById('calculator-body');
+
+        function getPrice(supplierId, monthIndex, qty) {
+            const s = CONFIG.suppliers[supplierId];
+            const monthId = monthIndex + 1;
+            const pricingType = s.pricing.seasonal_months.includes(monthId) ? 'seasonal' : 'normal';
+            const tiers = s.pricing[pricingType];
+
+            let bestPrice = tiers[0].price;
+            for (const tier of tiers) {
+                if (qty >= tier.limit) {
+                    bestPrice = tier.price;
+                }
+            }
+            return bestPrice;
+        }
+
+        function calculate() {
+            let totalCost = 0;
+            let totalPPH = 0;
+
+            for (let m = 0; m < 12; m++) {
+                ['A', 'B', 'C'].forEach(sId => {
+                    const input = document.getElementById(`input-${sId}-${m}`);
+                    const qty = parseInt(input.value) || 0;
+
+                    if (qty > 0) {
+                        const s = CONFIG.suppliers[sId];
+                        const price = getPrice(sId, m, qty);
+                        totalCost += s.order_cost + (qty * price);
+                        totalPPH += (qty * s.quality);
+                    }
+                });
+            }
+
+            document.getElementById('total-cost').textContent = totalCost.toLocaleString('fr-FR', { style: 'currency', currency: 'USD' });
+            document.getElementById('total-pph').textContent = Math.round(totalPPH).toLocaleString('fr-FR');
+
+            const avg = totalPPH > 0 ? totalCost / totalPPH : 0;
+            document.getElementById('avg-price').textContent = avg.toLocaleString('fr-FR', { style: 'currency', currency: 'USD', minimumFractionDigits: 3 });
+        }
+
+        // Populate table
+        MONTHS.forEach((name, i) => {
+            const row = document.createElement('tr');
+            const monthId = i + 1;
+            const isSeasonal = CONFIG.suppliers.A.pricing.seasonal_months.includes(monthId);
+
+            if (isSeasonal) row.classList.add('seasonal-row');
+
+            row.innerHTML = `
+                <td>
+                    ${name}
+                    ${isSeasonal ? '<span class="seasonal-label">PROMO</span>' : ''}
+                </td>
+                <td>
+                    <div class="input-container">
+                        <input type="number" id="input-A-${i}" placeholder="0" min="0" data-max="80000" data-col="0" data-row="${i}">
+                        <button class="max-btn" onclick="setMax('A', ${i})" tabindex="-1">MAX</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-container">
+                        <input type="number" id="input-B-${i}" placeholder="0" min="0" data-max="150000" data-col="1" data-row="${i}">
+                        <button class="max-btn" onclick="setMax('B', ${i})" tabindex="-1">MAX</button>
+                    </div>
+                </td>
+                <td>
+                    <div class="input-container">
+                        <input type="number" id="input-C-${i}" placeholder="0" min="0" data-col="2" data-row="${i}">
+                    </div>
+                </td>
+            `;
+            body.appendChild(row);
+
+            // Add listeners
+            ['A', 'B', 'C'].forEach(sId => {
+                const input = document.getElementById(`input-${sId}-${i}`);
+
+                const applyShorthandAndCalculate = () => {
+                    let val = parseInt(input.value);
+                    if (!isNaN(val) && val > 0 && val < 1000) {
+                        input.value = val * 1000;
+                    }
+
+                    const max = parseInt(input.dataset.max);
+                    if (max && input.value > max) {
+                        input.value = max;
+                    }
+                    calculate();
+                };
+
+                input.addEventListener('input', calculate);
+                input.addEventListener('blur', applyShorthandAndCalculate);
+
+                input.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        applyShorthandAndCalculate();
+                        const nextRow = i + 1;
+                        if (nextRow < 12) {
+                            document.getElementById(`input-${sId}-${nextRow}`).focus();
+                        }
+                    }
+                });
+            });
+        });
+
+        window.setMax = function (supplierId, monthIndex) {
+            const input = document.getElementById(`input-${supplierId}-${monthIndex}`);
+            input.value = input.dataset.max;
+            calculate();
+        };
+
+        calculate();
+    </script>
+</body>
+
+</html>
