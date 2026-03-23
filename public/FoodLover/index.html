@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FoodLover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient-start: #1e1e2f;
+            --bg-gradient-end: #0f0f1a;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --card-border: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0b0;
+            --accent-accept: #4ade80;
+            --accent-reject: #f87171;
+            --btn-primary: #6366f1;
+            --btn-primary-hover: #4f46e5;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100dvh;
+            width: 100%;
+            margin: 0;
+            position: relative;
+            background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            z-index: 10;
+        }
+
+        .header-left,
+        .header-right {
+            width: 40px;
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            text-align: center;
+            background: -webkit-linear-gradient(#fff, #a0a0b0);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-area {
+            flex: 1;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            z-index: 5;
+            margin: 0;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .recipe-card {
+            position: absolute;
+            width: calc(100% - 40px);
+            max-width: 450px;
+            height: 95%;
+            background: var(--card-bg);
+            border: 0.5px solid var(--card-border);
+            border-radius: 32px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5);
+            will-change: transform;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+            transform-origin: 50% 100%;
+        }
+
+        .card-image-placeholder {
+            height: 40%;
+            background: linear-gradient(45deg, #2a2a40, #3f3f5a);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            color: rgba(255, 255, 255, 0.3);
+            transition: height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .recipe-card.is-expanded .card-image-placeholder {
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .card-content {
+            padding: 24px;
+            padding-bottom: 12px;
+            /* Space for floating buttons */
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            /* No scroll bar */
+        }
+
+        .card-content h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .ingredients-list {
+            list-style: none;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .ingredients-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 0.5px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .ingredients-list li:last-child {
+            border-bottom: none;
+        }
+
+        .ingredients-list.truncated li:nth-child(4) {
+            border-bottom: none;
+        }
+
+        .ingredients-list li span:last-child {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .card-badge {
+            position: absolute;
+            top: 40px;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        .card-badge.like {
+            right: 30px;
+            color: var(--accent-accept);
+            border: 5px solid var(--accent-accept);
+            transform: rotate(15deg);
+        }
+
+        .card-badge.nope {
+            left: 30px;
+            color: var(--accent-reject);
+            border: 5px solid var(--accent-reject);
+            transform: rotate(-15deg);
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            padding: 20px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .action-btn {
+            pointer-events: auto;
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .action-btn:active {
+            transform: scale(0.9);
+        }
+
+        .reject-btn {
+            color: var(--accent-reject);
+            border: 2px solid rgba(248, 113, 113, 0.5);
+            background: rgba(248, 113, 113, 0.1);
+        }
+
+        .accept-btn {
+            color: var(--accent-accept);
+            border: 2px solid rgba(74, 222, 128, 0.5);
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .share-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .share-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--btn-primary);
+            color: white;
+            font-size: 0.7rem;
+            min-width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            border: 2px solid #1a1a2e;
+        }
+
+
+
+        .primary-btn {
+            padding: 18px;
+            border-radius: 20px;
+            border: none;
+            background: var(--btn-primary);
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .primary-btn:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-2px);
+        }
+
+        .primary-btn:active {
+            transform: scale(0.98);
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            width: 92%;
+            max-width: 450px;
+            max-height: 85vh;
+            border-radius: 28px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 6px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: var(--btn-primary);
+            color: white;
+        }
+
+        .list-preview {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100vh;
+            background: #161625;
+            z-index: 200;
+            transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 10px 0 40px rgba(0, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            z-index: 150;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .portion-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-top: 0.5px solid rgba(255, 255, 255, 0.15);
+            margin-top: 0;
+        }
+
+        .portion-btns {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 25px;
+            padding: 6px;
+        }
+
+        .portion-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portion-val {
+            font-weight: 700;
+            min-width: 25px;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+
+        * {
+            scrollbar-width: none;
+        }
+
+        .expand-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            width: 100%;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: transform 0.3s;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .expand-btn svg {
+            transition: transform 0.3s;
+        }
+
+        .recipe-card.is-expanded .expand-btn svg {
+            transform: rotate(180deg);
+        }
+
+        .ingredients-list.truncated li:nth-child(n+5) {
+            display: none;
+        }
+
+        .recipe-card.is-expanded .ingredients-list.truncated li:nth-child(n+5) {
+            display: flex;
+        }
+
+        .recipe-card.is-expanded .card-content {
+            overflow-y: auto;
+            /* Allow scrolling ONLY when expanded if content is huge, but we hide scrollbar */
+        }
+
+        .portion-control {
+            margin-top: 0;
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            color: white;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--btn-primary);
+        }
+
+        .ingredient-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 8px;
+            align-items: center;
+        }
+
+        .ingredient-row input {
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            font-size: 0.85rem;
+            min-width: 0;
+            /* Allow shrinking */
+        }
+
+        .ingredient-row input.ing-name {
+            flex: 1;
+        }
+
+        .ingredient-row input.ing-qty {
+            width: 55px;
+            text-align: center;
+        }
+
+        .ingredient-row input.ing-unit {
+            width: 75px;
+        }
+
+        .btn-small {
+            padding: 8px 10px;
+            border-radius: 8px;
+            border: none;
+            font-size: 0.8rem;
+            cursor: pointer;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-remove-ing {
+            background: rgba(248, 113, 113, 0.1);
+            color: var(--accent-reject);
+            width: 30px;
+            height: 30px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-left">
+                <button id="btnMenuToggle" class="icon-btn"
+                    style="background:none; border:none; color:white; cursor:pointer;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <h1>FoodLover</h1>
+            <div class="header-right">
+                <button id="btnShare" class="share-btn">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                    </svg>
+                    <span id="listCountBadge" class="btn-badge">0</span>
+                </button>
+            </div>
+        </header>
+
+        <div id="sidebarMenu" class="sidebar">
+            <div
+                style="padding: 25px; border-bottom: 1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center;">
+                <h2 style="font-size: 1.5rem;">Menu</h2>
+                <button id="btnCloseMenu" style="background:none; border:none; color:white; cursor:pointer;">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div style="padding: 15px 0;">
+                <button id="btnAddRecipeModal"
+                    style="width:100%; text-align:left; padding: 18px 25px; background:none; border:none; color:white; font-size:1.1rem; cursor:pointer; display:flex; align-items:center; gap:15px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Nouvelle Recette
+                </button>
+                <button id="btnResetSession"
+                    style="width:100%; text-align:left; padding: 18px 25px; background:none; border:none; color:var(--accent-reject); font-size:1.1rem; cursor:pointer; display:flex; align-items:center; gap:15px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6L18 20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path>
+                    </svg>
+                    Vider la liste
+                </button>
+            </div>
+        </div>
+        <div id="sidebarOverlay" class="sidebar-overlay hidden"></div>
+
+        <main class="card-area" id="cardArea">
+            <div style="text-align:center; color:var(--text-secondary);">
+                <p>Chargement des recettes...</p>
+            </div>
+        </main>
+
+        <div class="controls">
+            <button id="btnReject" class="action-btn reject-btn">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <button id="btnAccept" class="action-btn accept-btn">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 6L9 17l-5-5"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Modals (Simplified for inline) -->
+    <div id="resultModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-tabs">
+                <button class="tab-btn active" data-tab="menu">Menu</button>
+                <button class="tab-btn" data-tab="grocery">Courses</button>
+            </div>
+            <div id="tabMenu" class="list-preview active">
+                <div id="weekMenuPreview"></div>
+            </div>
+            <div id="tabGrocery" class="list-preview hidden">
+                <div id="listPreview"></div>
+                <button id="btnDownloadCSV" class="primary-btn" style="margin: 20px 0 0 0; width:100%;">Exporter
+                    CSV</button>
+            </div>
+            <button id="btnCloseModal" class="primary-btn"
+                style="background:rgba(255,255,255,0.1); color:white; margin:15px 0 0 0; box-shadow:none;">Fermer</button>
+        </div>
+    </div>
+
+    <div id="addRecipeModal" class="modal hidden">
+
+        <div class="modal-content" style="max-height: 90vh;">
+            <h2 style="margin-bottom: 25px; font-size: 1.5rem;">🍳 Nouvelle Recette</h2>
+            <div style="overflow-y: auto; flex: 1; padding-right: 10px; margin-right: -10px;">
+                <div class="form-group">
+                    <label>Titre de la recette</label>
+                    <input type="text" id="recipeTitle" placeholder="Ex: Lasagnes à la bolognaise">
+                </div>
+                <div style="display: flex; gap: 15px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label>Icône (Emoji)</label>
+                        <input type="text" id="recipeIcon" placeholder="🥘" value="🍽️">
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label>Portions (pers.)</label>
+                        <input type="number" id="recipePortions" value="2" min="1">
+                    </div>
+                </div>
+
+                <div style="margin-top: 10px; margin-bottom: 12px;">
+                    <label
+                        style="font-size: 0.9rem; color: var(--text-secondary); display: block; margin-bottom: 10px;">Ingrédients</label>
+                    <div id="ingredientsContainer">
+                        <!-- Rows -->
+                    </div>
+                </div>
+
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 25px;">
+                <button id="btnCancelAdd" class="primary-btn"
+                    style="flex: 1; background: rgba(255,255,255,0.1); margin: 0; box-shadow: none;">Annuler</button>
+                <button id="btnSaveRecipe" class="primary-btn" style="flex: 1.5; margin: 0;">Enregistrer</button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Script Inline -->
+    <script>
+        let activeRecipes = [];
+        let acceptedRecipes = [];
+        let currentCard = null;
+        let isDragging = false;
+        let startX = 0, currentX = 0, startY = 0, currentY = 0;
+
+        const cardArea = document.getElementById('cardArea');
+        const listCount = document.getElementById('listCountBadge');
+        const btnReject = document.getElementById('btnReject');
+        const btnAccept = document.getElementById('btnAccept');
+        const btnShare = document.getElementById('btnShare');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const resultModal = document.getElementById('resultModal');
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        async function loadBaseRecipes() {
+            try {
+                const url = './recettes.json?v=' + Date.now();
+                console.log("Fetching:", url);
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("HTTP " + response.status);
+
+                const data = await response.json();
+                console.log("Loaded:", data.length, "recipes");
+
+                activeRecipes = shuffle([...data]);
+                renderCards();
+            } catch (err) {
+                console.error("Load Error:", err);
+                cardArea.innerHTML = `<div style="text-align:center; padding:20px;">
+                    <h2 style="font-size:3rem;">⚠️</h2>
+                    <p style="margin-top:10px;">Impossible de charger les recettes.</p>
+                    <p style="font-size:0.8rem; opacity:0.6; margin-top:5px;">${err.message}</p>
+                    <button onclick="loadBaseRecipes()" style="margin-top:15px; background:white; color:black; border:none; padding:8px 15px; border-radius:8px; cursor:pointer;">Réessayer</button>
+                </div>`;
+            }
+        }
+
+        function renderCards() {
+            cardArea.innerHTML = '';
+            if (activeRecipes.length === 0) {
+                cardArea.innerHTML = '<div style="text-align:center; opacity:0.5;"><h2 style="font-size:4rem;">🛒</h2><p>Plus de recettes !</p></div>';
+                return;
+            }
+
+            const cardsToRender = activeRecipes.slice(0, 3).reverse();
+            cardsToRender.forEach((recipe, index) => {
+                const card = document.createElement('div');
+                card.className = 'recipe-card';
+                const isTop = index === cardsToRender.length - 1;
+                const scale = 1 - (cardsToRender.length - 1 - index) * 0.05;
+                const translateY = (cardsToRender.length - 1 - index) * -15;
+
+                card.style.transform = `scale(${scale}) translateY(${translateY}px)`;
+                card.style.zIndex = index;
+                if (!recipe.portions) recipe.portions = 2;
+
+                const showExpand = recipe.ingredients.length > 4;
+                card.innerHTML = `
+                    <div class="card-badge like">OUI</div>
+                    <div class="card-badge nope">NON</div>
+                    <div class="card-image-placeholder">${recipe.icon || '🍽️'}</div>
+                    <div class="card-content">
+                        ${showExpand ? `
+                        <button class="expand-btn">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+                        </button>` : ''}
+                        <h2>${recipe.title}</h2>
+                        <ul class="ingredients-list ${showExpand ? 'truncated' : ''}">
+                            ${recipe.ingredients.map(ing => {
+                    const qty = Math.ceil(ing.qty * (recipe.portions / 2) * 10) / 10;
+                    return `<li><span>${ing.name}</span><span>${qty} ${ing.unit}</span></li>`;
+                }).join('')}
+                        </ul>
+                        <div class="portion-control" onmousedown="event.stopPropagation()" ontouchstart="event.stopPropagation()">
+                            <span style="font-size:0.9rem; opacity:0.7;">Portions</span>
+                            <div class="portion-btns">
+                                <button class="portion-btn minus-btn">-</button>
+                                <span class="portion-val">${recipe.portions}</span>
+                                <button class="portion-btn plus-btn">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (isTop) {
+                    initCardEvents(card, recipe);
+                    currentCard = card;
+                    const minusBtn = card.querySelector('.minus-btn');
+                    const plusBtn = card.querySelector('.plus-btn');
+                    const portVal = card.querySelector('.portion-val');
+                    const ingList = card.querySelector('.ingredients-list');
+                    const expandBtn = card.querySelector('.expand-btn');
+
+                    if (expandBtn) {
+                        expandBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            card.classList.toggle('is-expanded');
+                        });
+                    }
+
+                    const updateUI = () => {
+                        portVal.textContent = recipe.portions;
+                        ingList.innerHTML = recipe.ingredients.map(ing => {
+                            const qty = Math.ceil(ing.qty * (recipe.portions / 2) * 10) / 10;
+                            return `<li><span>${ing.name}</span><span>${qty} ${ing.unit}</span></li>`;
+                        }).join('');
+                    };
+
+                    minusBtn.addEventListener('click', (e) => { e.stopPropagation(); if (recipe.portions > 1) { recipe.portions--; updateUI(); } });
+                    plusBtn.addEventListener('click', (e) => { e.stopPropagation(); recipe.portions++; updateUI(); });
+                }
+                cardArea.appendChild(card);
+            });
+        }
+
+        function initCardEvents(card, recipe) {
+            card.recipeData = recipe;
+            card.addEventListener('mousedown', handleStart);
+            card.addEventListener('touchstart', handleStart, { passive: true });
+            document.addEventListener('mousemove', handleMove);
+            document.addEventListener('touchmove', handleMove, { passive: false });
+            document.addEventListener('mouseup', handleEnd);
+            document.addEventListener('touchend', handleEnd);
+        }
+
+        function handleStart(e) {
+            if (!currentCard) return;
+            isDragging = true;
+            startX = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+            startY = e.type.includes('mouse') ? e.pageY : e.touches[0].pageY;
+            currentCard.style.transition = 'none';
+        }
+
+        function handleMove(e) {
+            if (!isDragging || !currentCard) return;
+            if (e.type.includes('touch')) e.preventDefault();
+            const x = e.type.includes('mouse') ? e.pageX : e.touches[0].pageX;
+            const y = e.type.includes('mouse') ? e.pageY : e.touches[0].pageY;
+            currentX = x - startX;
+            currentY = y - startY;
+            const rotate = currentX * 0.05;
+            currentCard.style.transform = `translate(${currentX}px, ${currentY}px) rotate(${rotate}deg)`;
+
+            const likeBadge = currentCard.querySelector('.like');
+            const nopeBadge = currentCard.querySelector('.nope');
+            if (currentX > 0) { likeBadge.style.opacity = currentX / 100; nopeBadge.style.opacity = 0; }
+            else { nopeBadge.style.opacity = Math.abs(currentX) / 100; likeBadge.style.opacity = 0; }
+        }
+
+        function handleEnd() {
+            if (!isDragging || !currentCard) return;
+            isDragging = false;
+            currentCard.style.transition = 'all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            const threshold = window.innerWidth * 0.25;
+            if (currentX > threshold) swipeCard(1);
+            else if (currentX < -threshold) swipeCard(-1);
+            else {
+                currentCard.style.transform = `translate(0,0) rotate(0) scale(1)`;
+                currentCard.querySelector('.like').style.opacity = 0;
+                currentCard.querySelector('.nope').style.opacity = 0;
+            }
+            currentX = 0; currentY = 0;
+        }
+
+        function swipeCard(dir) {
+            if (!currentCard) return;
+            const x = dir * window.innerWidth * 1.5;
+            currentCard.style.transform = `translate(${x}px, ${currentY}px) rotate(${dir * 45}deg)`;
+            currentCard.style.opacity = 0;
+            if (dir === 1) { acceptedRecipes.push(currentCard.recipeData); updateListCount(); }
+            activeRecipes.shift();
+            currentCard = null;
+            setTimeout(renderCards, 300);
+        }
+
+        function updateListCount() {
+            if (listCount) listCount.textContent = acceptedRecipes.length;
+            if (acceptedRecipes.length > 0) {
+                listCount.style.display = 'flex';
+            } else {
+                listCount.style.display = 'none';
+            }
+        }
+
+        // Sidebar & Buttons
+        document.getElementById('btnMenuToggle').onclick = () => { sidebarMenu.classList.add('active'); sidebarOverlay.classList.remove('hidden'); };
+        document.getElementById('btnCloseMenu').onclick = () => { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.add('hidden'); };
+        sidebarOverlay.onclick = () => { sidebarMenu.classList.remove('active'); sidebarOverlay.classList.add('hidden'); };
+
+        btnReject.onclick = () => { if (currentCard) { currentCard.querySelector('.nope').style.opacity = 1; swipeCard(-1); } };
+        btnAccept.onclick = () => { if (currentCard) { currentCard.querySelector('.like').style.opacity = 1; swipeCard(1); } };
+
+        let finalListing = []; // Global scope for CSV export
+
+        btnShare.onclick = () => {
+            if (acceptedRecipes.length === 0) return alert("Choisis des recettes d'abord !");
+            const list = {};
+            acceptedRecipes.forEach(r => {
+                r.ingredients.forEach(i => {
+                    const key = i.name.toLowerCase() + '_' + i.unit;
+                    const qty = Math.ceil(i.qty * (r.portions / 2) * 10) / 10;
+                    if (list[key]) list[key].qty += qty;
+                    else list[key] = { name: i.name, qty, unit: i.unit };
+                });
+            });
+            finalListing = Object.values(list).sort((a, b) => a.name.localeCompare(b.name));
+
+            // 1. Menu Tab
+            document.getElementById('weekMenuPreview').innerHTML = acceptedRecipes.map(r => `
+                    <div style="padding:18px; background:rgba(255,255,255,0.04); border-radius:20px; margin-bottom:15px; border:1px solid rgba(255,255,255,0.06);">
+                        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid rgba(255,255,255,0.1); padding-bottom:10px;">
+                            <strong style="font-size:1.1rem; color:var(--text-primary); text-transform:capitalize;">${r.icon} ${r.title}</strong>
+                            <span style="font-size:0.8rem; background:rgba(255,255,255,0.1); padding:4px 12px; border-radius:12px; font-weight:600;">${r.portions} pers.</span>
+                        </div>
+                        <ul class="ingredients-list" style="padding-left:0;">
+                            ${r.ingredients.map(ing => {
+                const qty = Math.ceil(ing.qty * (r.portions / 2) * 10) / 10;
+                return `<li style="display:flex; justify-content:space-between; padding:5px 0; font-size:0.9rem; border-bottom:1px solid rgba(255,255,255,0.02);"><span>${ing.name}</span><span>${qty} ${ing.unit}</span></li>`;
+            }).join('')}
+                        </ul>
+                    </div>
+                `).join('');
+
+            // 2. Grocery Tab
+            document.getElementById('listPreview').innerHTML = finalListing.map(i => `
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
+                        <span>${i.name}</span><span>${Math.ceil(i.qty * 10) / 10} ${i.unit}</span>
+                    </div>
+                `).join('');
+
+            resultModal.classList.remove('hidden');
+        };
+
+        document.getElementById('btnDownloadCSV').onclick = () => {
+            if (!finalListing.length) return;
+            let csvContent = "\uFEFFIngrédient,Quantité,Unité\n";
+            finalListing.forEach(item => {
+                const safeName = item.name.includes(',') ? `"${item.name}"` : item.name;
+                csvContent += `${safeName},${item.qty},${item.unit}\n`;
+            });
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = "liste_epicerie.csv";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        };
+
+        document.getElementById('btnResetSession').onclick = () => {
+            if (confirm("Vider la liste actuelle ?")) {
+                acceptedRecipes = [];
+                updateListCount();
+                sidebarMenu.classList.remove('active');
+                sidebarOverlay.classList.add('hidden');
+                loadBaseRecipes();
+            }
+        };
+
+        const addRecipeModal = document.getElementById('addRecipeModal');
+        const ingredientsContainer = document.getElementById('ingredientsContainer');
+
+        function createIngredientRow() {
+            const row = document.createElement('div');
+            row.className = 'ingredient-row';
+            row.innerHTML = `
+                    <input type="text" placeholder="Nom" class="ing-name">
+                    <input type="number" placeholder="Qté" class="ing-qty" step="0.1">
+                    <input type="text" placeholder="Unité" class="ing-unit">
+                    <button class="btn-small btn-remove-ing">×</button>
+                `;
+
+            // Auto-add next row
+            const inputs = row.querySelectorAll('input');
+            inputs.forEach(input => {
+                input.oninput = () => {
+                    // If this is the last row and we're typing something, add a new row
+                    if (row === ingredientsContainer.lastElementChild) {
+                        if (inputs[0].value.trim() !== "" || inputs[1].value !== "" || inputs[2].value.trim() !== "") {
+                            createIngredientRow();
+                        }
+                    }
+                };
+            });
+
+            row.querySelector('.btn-remove-ing').onclick = () => {
+                // Don't remove if it's the only one left and it's empty
+                if (ingredientsContainer.children.length > 1) {
+                    row.remove();
+                } else {
+                    inputs.forEach(i => i.value = '');
+                }
+            };
+            ingredientsContainer.appendChild(row);
+        }
+
+        // Remove this listener as we use auto-add now
+        // document.getElementById('btnAddIngredientRow').onclick = createIngredientRow;
+
+
+        document.getElementById('btnAddRecipeModal').onclick = () => {
+            addRecipeModal.classList.remove('hidden');
+            sidebarMenu.classList.remove('active');
+            sidebarOverlay.classList.add('hidden');
+            if (ingredientsContainer.children.length === 0) createIngredientRow();
+        };
+
+        document.getElementById('btnCancelAdd').onclick = () => {
+            addRecipeModal.classList.add('hidden');
+        };
+
+        document.getElementById('btnSaveRecipe').onclick = () => {
+            const title = document.getElementById('recipeTitle').value.trim();
+            const icon = document.getElementById('recipeIcon').value.trim();
+            const portions = parseInt(document.getElementById('recipePortions').value);
+
+            if (!title) return alert("Veuillez entrer un titre !");
+
+            const ingredients = [];
+            const rows = ingredientsContainer.querySelectorAll('.ingredient-row');
+            rows.forEach(r => {
+                const inputs = r.querySelectorAll('input');
+                const name = inputs[0].value.trim();
+                const qty = parseFloat(inputs[1].value);
+                const unit = inputs[2].value.trim();
+                if (name && !isNaN(qty)) {
+                    ingredients.push({ name, qty, unit });
+                }
+            });
+
+            if (ingredients.length === 0) return alert("Ajoutez au moins un ingrédient !");
+
+            const newRecipe = {
+                id: Date.now(),
+                title: title,
+                icon: icon || '🍽️',
+                portions: portions || 2,
+                ingredients: ingredients
+            };
+
+            // Add to start of deck
+            activeRecipes.unshift(newRecipe);
+            renderCards();
+
+            // Close and reset
+            addRecipeModal.classList.add('hidden');
+            document.getElementById('recipeTitle').value = '';
+            document.getElementById('recipeIcon').value = '🍽️';
+            document.getElementById('recipePortions').value = '2';
+            ingredientsContainer.innerHTML = '';
+
+            // Trigger Email
+            const jsonStr = JSON.stringify(newRecipe, null, 2);
+            const mailSubject = "FoodLover New Recipe";
+            const mailBody = `Voici une nouvelle recette :\n\n${jsonStr}`;
+            const mailTo = `mailto:oligermain15@gmail.com?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+            window.location.href = mailTo;
+        };
+
+        document.getElementById('btnCloseModal').onclick = () => resultModal.classList.add('hidden');
+
+
+
+        // Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.onclick = () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.list-preview').forEach(c => c.classList.add('hidden'));
+                btn.classList.add('active');
+                document.getElementById('tab' + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1)).classList.remove('hidden');
+            };
+        });
+
+        // Initialize
+        updateListCount();
+        if (document.readyState === 'loading') window.addEventListener('DOMContentLoaded', loadBaseRecipes);
+        else loadBaseRecipes();
+
+    </script>
+</body>
+
+</html>

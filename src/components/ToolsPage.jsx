@@ -1,6 +1,6 @@
 import { Badge } from "./ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card"
-import { Spline, Scissors, Brain } from "lucide-react"
+import { Spline, Scissors, Brain, Utensils } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export function ToolsPage() {
@@ -32,6 +32,13 @@ export function ToolsPage() {
             icon: <Brain className="h-6 w-6" />,
             link: "/quizmaster",
             color: "bg-purple-500/10 text-purple-500"
+        },
+        {
+            title: "FoodLover",
+            description: "Votre compagnon culinaire pour gérer vos recettes préférées.",
+            icon: <Utensils className="h-6 w-6" />,
+            link: "/foodlover",
+            color: "bg-orange-500/10 text-orange-500"
         }
     ]
 

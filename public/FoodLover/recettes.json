@@ -1,0 +1,76 @@
+[
+  {
+    "id": 1,
+    "title": "Spaghetti bolognaise",
+    "icon": "🍝",
+    "ingredients": [
+      {
+        "name": "Spaghetti",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Champignons",
+        "qty": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Courgette",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Aubergine",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Carotte",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Lait de coco",
+        "qty": 400,
+        "unit": "ml"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Végétarien méditerranéen(ne) maison",
+    "icon": "🥦",
+    "ingredients": [
+      {
+        "name": "Tofu",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Poivron",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Aubergine",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Carotte",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Tomate",
+        "qty": 3,
+        "unit": "unité"
+      },
+      {
+        "name": "Crème fraîche",
+        "qty": 200,
+        "unit": "ml"
+      }
+    ]
+  }
+]

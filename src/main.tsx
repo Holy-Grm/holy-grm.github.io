@@ -9,6 +9,7 @@ import { DuplicateFindPage } from "./components/DuplicateFindPage";
 import { QuizMasterPage } from "./components/QuizMasterPage";
 import { ToolsPage } from "./components/ToolsPage";
 import { PphCalculatorPage } from "./components/PphCalculatorPage";
+import { FoodLoverPage } from "./components/FoodLoverPage";
 import { NotFoundPage } from "./components/NotFoundPage";
 import "./index.css";
 
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
       <Route path="/duplicatefind" element={<DuplicateFindPage />} />
       <Route path="/quizmaster" element={<QuizMasterPage />} />
       <Route path="/pph" element={<PphCalculatorPage />} />
+      <Route path="/foodlover" element={<FoodLoverPage />} />
       <Route path="/t" element={<ToolsPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
