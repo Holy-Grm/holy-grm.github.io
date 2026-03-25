@@ -887,7 +887,6 @@
         "qty": 0.5,
         "unit": "càc"
       },
-      /* --- Salade --- */
       {
         "name": "Mélange de laitues",
         "qty": 100,
@@ -1257,7 +1256,6 @@
         "qty": 20,
         "unit": "g"
       },
-      /* --- Soupe tomate --- */
       {
         "name": "Tomates concassées",
         "qty": 400,
