@@ -1,75 +1,224 @@
 [
   {
     "id": 1,
-    "title": "Spaghetti bolognaise",
-    "icon": "🍝",
+    "title": "Poulet au beurre indien",
+    "icon": "🍛",
     "ingredients": [
       {
-        "name": "Spaghetti",
+        "name": "Poulet (morceaux)",
+        "qty": 600,
+        "unit": "g"
+      },
+      {
+        "name": "Beurre",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Tomates concassées",
         "qty": 400,
         "unit": "g"
-      },
-      {
-        "name": "Champignons",
-        "qty": 200,
-        "unit": "g"
-      },
-      {
-        "name": "Courgette",
-        "qty": 1,
-        "unit": "unité"
-      },
-      {
-        "name": "Aubergine",
-        "qty": 1,
-        "unit": "unité"
-      },
-      {
-        "name": "Carotte",
-        "qty": 2,
-        "unit": "unité"
-      },
-      {
-        "name": "Lait de coco",
-        "qty": 400,
-        "unit": "ml"
-      }
-    ]
-  },
-  {
-    "id": 2,
-    "title": "Végétarien méditerranéen(ne) maison",
-    "icon": "🥦",
-    "ingredients": [
-      {
-        "name": "Tofu",
-        "qty": 300,
-        "unit": "g"
-      },
-      {
-        "name": "Poivron",
-        "qty": 1,
-        "unit": "unité"
-      },
-      {
-        "name": "Aubergine",
-        "qty": 1,
-        "unit": "unité"
-      },
-      {
-        "name": "Carotte",
-        "qty": 2,
-        "unit": "unité"
-      },
-      {
-        "name": "Tomate",
-        "qty": 3,
-        "unit": "unité"
       },
       {
         "name": "Crème fraîche",
         "qty": 200,
         "unit": "ml"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 3,
+        "unit": "gousses"
+      },
+      {
+        "name": "Gingembre frais",
+        "qty": 20,
+        "unit": "g"
+      },
+      {
+        "name": "Garam masala",
+        "qty": 2,
+        "unit": "càc"
+      },
+      {
+        "name": "Cumin",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Paprika",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Curcuma",
+        "qty": 0.5,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Macaroni à la viande",
+    "icon": "🍲",
+    "ingredients": [
+      {
+        "name": "Macaroni",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Boeuf haché",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Tomates concassées",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Concentré de tomate",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Paprika",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Origan",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Fromage râpé",
+        "qty": 80,
+        "unit": "g"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Mac and Cheese",
+    "icon": "🧀",
+    "ingredients": [
+      {
+        "name": "Macaroni",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Beurre",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Farine",
+        "qty": 30,
+        "unit": "g"
+      },
+      {
+        "name": "Lait",
+        "qty": 400,
+        "unit": "ml"
+      },
+      {
+        "name": "Cheddar râpé",
+        "qty": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Moutarde (optionnel)",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "Soupe à l'oignon",
+    "icon": "🥣",
+    "ingredients": [
+      {
+        "name": "Oignons",
+        "qty": 500,
+        "unit": "g"
+      },
+      {
+        "name": "Beurre",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Bouillon de bœuf",
+        "qty": 1,
+        "unit": "L"
+      },
+      {
+        "name": "Farine",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Vin blanc (optionnel)",
+        "qty": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "Pain (tranches)",
+        "qty": 4,
+        "unit": "unité"
+      },
+      {
+        "name": "Fromage râpé (gruyère ou emmental)",
+        "qty": 100,
+        "unit": "g"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
       }
     ]
   }
