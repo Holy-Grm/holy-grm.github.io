@@ -221,5 +221,1656 @@
         "unit": "càc"
       }
     ]
+  },
+  {
+    "id": 5,
+    "title": "Pâté chinois",
+    "icon": "🥘",
+    "ingredients": [
+      {
+        "name": "Boeuf haché",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Maïs en crème",
+        "qty": 398,
+        "unit": "ml"
+      },
+      {
+        "name": "Maïs en grains",
+        "qty": 341,
+        "unit": "ml"
+      },
+      {
+        "name": "Pommes de terre",
+        "qty": 600,
+        "unit": "g"
+      },
+      {
+        "name": "Beurre",
+        "qty": 30,
+        "unit": "g"
+      },
+      {
+        "name": "Lait",
+        "qty": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "Beef Ragu Rigatoni",
+    "icon": "🍝",
+    "ingredients": [
+      {
+        "name": "Rigatoni",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Boeuf haché",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Carotte",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Céleri",
+        "qty": 1,
+        "unit": "branche"
+      },
+      {
+        "name": "Ail",
+        "qty": 3,
+        "unit": "gousses"
+      },
+      {
+        "name": "Tomates concassées",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Concentré de tomate",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Vin rouge",
+        "qty": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "Bouillon de boeuf",
+        "qty": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "Laurier",
+        "qty": 1,
+        "unit": "feuille"
+      },
+      {
+        "name": "Thym",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Parmesan râpé",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "Saucisse riz brocolis",
+    "icon": "🥦",
+    "ingredients": [
+      {
+        "name": "Saucisses (type fumées ou Toulouse)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Riz",
+        "qty": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Brocolis",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Bouillon de poulet",
+        "qty": 300,
+        "unit": "ml"
+      },
+      {
+        "name": "Huile",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "Caramelized Beef Ramen",
+    "icon": "🍜",
+    "ingredients": [
+      {
+        "name": "Boeuf haché",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Nouilles ramen",
+        "qty": 2,
+        "unit": "paquets"
+      },
+      {
+        "name": "Ail",
+        "qty": 3,
+        "unit": "gousses"
+      },
+      {
+        "name": "Gingembre frais",
+        "qty": 15,
+        "unit": "g"
+      },
+      {
+        "name": "Sauce soja",
+        "qty": 3,
+        "unit": "càs"
+      },
+      {
+        "name": "Sauce hoisin",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Cassonade",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Bouillon",
+        "qty": 400,
+        "unit": "ml"
+      },
+      {
+        "name": "Oignons verts",
+        "qty": 2,
+        "unit": "tiges"
+      },
+      {
+        "name": "Sésame",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Huile",
+        "qty": 1,
+        "unit": "càs"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "Salade César au poulet",
+    "icon": "🥗",
+    "ingredients": [
+      {
+        "name": "Poulet (poitrine)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Laitue romaine",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Croûtons",
+        "qty": 80,
+        "unit": "g"
+      },
+      {
+        "name": "Parmesan",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Ail",
+        "qty": 1,
+        "unit": "gousse"
+      },
+      {
+        "name": "Mayonnaise",
+        "qty": 3,
+        "unit": "càs"
+      },
+      {
+        "name": "Jus de citron",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sauce Worcestershire",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Moutarde de Dijon",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "title": "Salade sucrée au canard confit",
+    "icon": "🦆",
+    "ingredients": [
+      {
+        "name": "Canard confit (cuisses)",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Mélange de laitues",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Pommes",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Poire",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Noix de pécan",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Cranberries séchées",
+        "qty": 30,
+        "unit": "g"
+      },
+      {
+        "name": "Fromage de chèvre",
+        "qty": 60,
+        "unit": "g"
+      },
+      {
+        "name": "Miel",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Vinaigre balsamique",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "title": "Tartare de boeuf",
+    "icon": "🥩",
+    "ingredients": [
+      {
+        "name": "Boeuf (filet ou rumsteak, haché au couteau)",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Échalote",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Câpres",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Cornichons",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Jaune d'œuf",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Moutarde de Dijon",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sauce Worcestershire",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Tabasco",
+        "qty": 3,
+        "unit": "gouttes"
+      },
+      {
+        "name": "Persil frais",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "title": "Riz sauté au poulet",
+    "icon": "🍚",
+    "ingredients": [
+      {
+        "name": "Poulet (morceaux)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Riz cuit",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Carotte",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Petits pois",
+        "qty": 80,
+        "unit": "g"
+      },
+      {
+        "name": "Sauce soja",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Huile de sésame",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Huile",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Oignons verts",
+        "qty": 2,
+        "unit": "tiges"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "title": "Club sandwich",
+    "icon": "🥪",
+    "ingredients": [
+      {
+        "name": "Pain de mie",
+        "qty": 3,
+        "unit": "tranches"
+      },
+      {
+        "name": "Poulet cuit (ou dinde)",
+        "qty": 100,
+        "unit": "g"
+      },
+      {
+        "name": "Bacon",
+        "qty": 2,
+        "unit": "tranches"
+      },
+      {
+        "name": "Laitue",
+        "qty": 2,
+        "unit": "feuilles"
+      },
+      {
+        "name": "Tomate",
+        "qty": 2,
+        "unit": "tranches"
+      },
+      {
+        "name": "Mayonnaise",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "title": "Wrap au thon",
+    "icon": "🌯",
+    "ingredients": [
+      {
+        "name": "Tortillas",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Thon en conserve",
+        "qty": 160,
+        "unit": "g"
+      },
+      {
+        "name": "Mayonnaise",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Laitue",
+        "qty": 4,
+        "unit": "feuilles"
+      },
+      {
+        "name": "Tomate",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Oignon rouge",
+        "qty": 0.25,
+        "unit": "unité"
+      },
+      {
+        "name": "Jus de citron",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "title": "Burger maison + salade",
+    "icon": "🍔",
+    "ingredients": [
+      {
+        "name": "Boeuf haché",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Pains à burger",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Fromage (cheddar)",
+        "qty": 2,
+        "unit": "tranches"
+      },
+      {
+        "name": "Laitue",
+        "qty": 4,
+        "unit": "feuilles"
+      },
+      {
+        "name": "Tomate",
+        "qty": 4,
+        "unit": "tranches"
+      },
+      {
+        "name": "Oignon",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Cornichons",
+        "qty": 4,
+        "unit": "tranches"
+      },
+      {
+        "name": "Mayonnaise",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Ketchup",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      },
+      /* --- Salade --- */
+      {
+        "name": "Mélange de laitues",
+        "qty": 100,
+        "unit": "g"
+      },
+      {
+        "name": "Concombre",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Tomates cerises",
+        "qty": 8,
+        "unit": "unité"
+      },
+      {
+        "name": "Vinaigrette",
+        "qty": 2,
+        "unit": "càs"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "title": "Quesadillas au fromage et poulet",
+    "icon": "🫓",
+    "ingredients": [
+      {
+        "name": "Tortillas",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Poulet cuit (émietté)",
+        "qty": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Fromage râpé (cheddar ou mélange tex-mex)",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Poivron",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Oignon",
+        "qty": 0.25,
+        "unit": "unité"
+      },
+      {
+        "name": "Épices tex-mex",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Huile",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "title": "Chili con carne",
+    "icon": "🌶️",
+    "ingredients": [
+      {
+        "name": "Boeuf haché",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Haricots rouges",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Tomates concassées",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Poivron",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Maïs",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Pâte de tomate",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Cumin",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Paprika",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Chili en poudre",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Bouillon",
+        "qty": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "title": "Pâtes au pesto",
+    "icon": "🌿",
+    "ingredients": [
+      {
+        "name": "Pâtes (penne, fusilli ou spaghetti)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Pesto (basilic)",
+        "qty": 4,
+        "unit": "càs"
+      },
+      {
+        "name": "Parmesan râpé",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Pignons de pin (optionnel)",
+        "qty": 20,
+        "unit": "g"
+      },
+      {
+        "name": "Tomates cerises (optionnel)",
+        "qty": 8,
+        "unit": "unité"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "title": "Poisson au four + pommes de terre",
+    "icon": "🐟",
+    "ingredients": [
+      {
+        "name": "Filets de poisson (saumon, morue ou autre)",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Pommes de terre",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Citron",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Herbes (thym, romarin ou persil)",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "title": "Pizza sur pain naan",
+    "icon": "🍕",
+    "ingredients": [
+      {
+        "name": "Pains naan",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Sauce tomate",
+        "qty": 4,
+        "unit": "càs"
+      },
+      {
+        "name": "Fromage râpé (mozzarella)",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Pepperoni (ou autre garniture)",
+        "qty": 12,
+        "unit": "tranches"
+      },
+      {
+        "name": "Poivron (optionnel)",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Oignon rouge (optionnel)",
+        "qty": 0.25,
+        "unit": "unité"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Origan",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "title": "Wrap poulet césar",
+    "icon": "🌯",
+    "ingredients": [
+      {
+        "name": "Tortillas",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Poulet cuit (grillé ou rôti)",
+        "qty": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Laitue romaine",
+        "qty": 4,
+        "unit": "feuilles"
+      },
+      {
+        "name": "Parmesan",
+        "qty": 30,
+        "unit": "g"
+      },
+      {
+        "name": "Croûtons",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Sauce César",
+        "qty": 3,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "title": "Grilled cheese + soupe tomate",
+    "icon": "🧀",
+    "ingredients": [
+      {
+        "name": "Pain (tranches)",
+        "qty": 4,
+        "unit": "unité"
+      },
+      {
+        "name": "Fromage (cheddar ou autre fondant)",
+        "qty": 120,
+        "unit": "g"
+      },
+      {
+        "name": "Beurre",
+        "qty": 20,
+        "unit": "g"
+      },
+      /* --- Soupe tomate --- */
+      {
+        "name": "Tomates concassées",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Bouillon de légumes",
+        "qty": 250,
+        "unit": "ml"
+      },
+      {
+        "name": "Oignon",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 1,
+        "unit": "gousse"
+      },
+      {
+        "name": "Crème (optionnel)",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "title": "Bol burrito",
+    "icon": "🥙",
+    "ingredients": [
+      {
+        "name": "Riz cuit",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Poulet (ou boeuf, ou tofu)",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Haricots noirs",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Maïs",
+        "qty": 100,
+        "unit": "g"
+      },
+      {
+        "name": "Avocat",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Tomates cerises",
+        "qty": 8,
+        "unit": "unité"
+      },
+      {
+        "name": "Laitue",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Fromage râpé",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Crème sûre (ou yaourt)",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Salsa",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Épices tex-mex",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "title": "Spaghetti bolognaise",
+    "icon": "🍝",
+    "ingredients": [
+      {
+        "name": "Spaghetti",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Boeuf haché",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Carotte",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Céleri",
+        "qty": 1,
+        "unit": "branche"
+      },
+      {
+        "name": "Tomates concassées",
+        "qty": 400,
+        "unit": "g"
+      },
+      {
+        "name": "Concentré de tomate",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Bouillon",
+        "qty": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "Herbes (origan, basilic)",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "title": "Pâtes carbonara",
+    "icon": "🥓",
+    "ingredients": [
+      {
+        "name": "Spaghetti",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Guanciale (ou pancetta)",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Crème",
+        "qty": 250,
+        "unit": "ml"
+      },
+      {
+        "name": "Jaunes d'œufs",
+        "qty": 3,
+        "unit": "unité"
+      },
+      {
+        "name": "Pecorino romano râpé",
+        "qty": 60,
+        "unit": "g"
+      },
+      {
+        "name": "Poivre noir",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "title": "Pâtes aux crevettes",
+    "icon": "🍤",
+    "ingredients": [
+      {
+        "name": "Pâtes (linguine ou spaghetti)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Crevettes décortiquées",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Beurre",
+        "qty": 20,
+        "unit": "g"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Crème",
+        "qty": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "Parmesan",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Jus de citron",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Persil",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "title": "Risotto aux champignons",
+    "icon": "🍄",
+    "ingredients": [
+      {
+        "name": "Riz arborio",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Champignons (de Paris ou mélange forestier)",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 1,
+        "unit": "gousse"
+      },
+      {
+        "name": "Bouillon de légumes",
+        "qty": 900,
+        "unit": "ml"
+      },
+      {
+        "name": "Vin blanc",
+        "qty": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "Parmesan râpé",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Beurre",
+        "qty": 20,
+        "unit": "g"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Persil (optionnel)",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 28,
+    "title": "Poké bowl",
+    "icon": "🥗",
+    "ingredients": [
+      {
+        "name": "Riz (sushi ou jasmin)",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Saumon cru (qualité sushi) ou tofu",
+        "qty": 200,
+        "unit": "g"
+      },
+      {
+        "name": "Avocat",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Concombre",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Mangue (optionnel)",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Edamame",
+        "qty": 100,
+        "unit": "g"
+      },
+      {
+        "name": "Carotte râpée",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Sauce soja",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Mayonnaise épicée (ou sriracha mayo)",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Graines de sésame",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Oignons verts",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "title": "Pâtes aux crevettes sauce rosée",
+    "icon": "🍤",
+    "ingredients": [
+      {
+        "name": "Pâtes (penne ou linguine)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Crevettes décortiquées",
+        "qty": 250,
+        "unit": "g"
+      },
+      {
+        "name": "Ail",
+        "qty": 2,
+        "unit": "gousses"
+      },
+      {
+        "name": "Oignon",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Beurre",
+        "qty": 20,
+        "unit": "g"
+      },
+      {
+        "name": "Huile d'olive",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Crème",
+        "qty": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "Sauce tomate",
+        "qty": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "Parmesan",
+        "qty": 40,
+        "unit": "g"
+      },
+      {
+        "name": "Paprika (optionnel)",
+        "qty": 0.5,
+        "unit": "càc"
+      },
+      {
+        "name": "Jus de citron",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Poivre",
+        "qty": 0.5,
+        "unit": "càc"
+      }
+    ]
+  },
+  {
+    "id": 30,
+    "title": "Tacos mexicains",
+    "icon": "🌮",
+    "ingredients": [
+      {
+        "name": "Tortillas de maïs",
+        "qty": 6,
+        "unit": "unité"
+      },
+      {
+        "name": "Boeuf haché (ou poulet)",
+        "qty": 300,
+        "unit": "g"
+      },
+      {
+        "name": "Oignon",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Ail",
+        "qty": 1,
+        "unit": "gousse"
+      },
+      {
+        "name": "Épices tex-mex",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Tomates",
+        "qty": 1,
+        "unit": "unité"
+      },
+      {
+        "name": "Laitue",
+        "qty": 50,
+        "unit": "g"
+      },
+      {
+        "name": "Fromage râpé",
+        "qty": 60,
+        "unit": "g"
+      },
+      {
+        "name": "Crème sûre",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Salsa",
+        "qty": 2,
+        "unit": "càs"
+      },
+      {
+        "name": "Avocat (optionnel)",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
+  },
+  {
+    "id": 31,
+    "title": "Quesadillas",
+    "icon": "🫓",
+    "ingredients": [
+      {
+        "name": "Tortillas",
+        "qty": 2,
+        "unit": "unité"
+      },
+      {
+        "name": "Fromage râpé (cheddar, mozzarella ou mélange tex-mex)",
+        "qty": 150,
+        "unit": "g"
+      },
+      {
+        "name": "Poivron (optionnel)",
+        "qty": 0.5,
+        "unit": "unité"
+      },
+      {
+        "name": "Oignon (optionnel)",
+        "qty": 0.25,
+        "unit": "unité"
+      },
+      {
+        "name": "Épices tex-mex (optionnel)",
+        "qty": 1,
+        "unit": "càc"
+      },
+      {
+        "name": "Huile",
+        "qty": 1,
+        "unit": "càs"
+      },
+      {
+        "name": "Sel",
+        "qty": 1,
+        "unit": "pincée"
+      },
+      {
+        "name": "Poivre",
+        "qty": 1,
+        "unit": "pincée"
+      }
+    ]
   }
 ]
