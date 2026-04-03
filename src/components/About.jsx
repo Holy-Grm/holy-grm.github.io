@@ -35,16 +35,16 @@ export function About() {
       subtitle: "",
       description: "Dates suggérées : 8 septembre au 18 décembre 2026.",
       type: "travail",
-      present: true
+      present: false
     },
     {
       order: 7,
       date: "2024 - 2027",
       title: "Université de Sherbrooke",
       subtitle: "Baccalauréat en sciences - Informatique de gestion",
-      description: "Programme coopératif",
+      description: "Cheminement spécialisé en intelligence d'affaires. Programme coopératif",
       type: "education",
-      present: false
+      present: true
     },
     {
       order: 6,
