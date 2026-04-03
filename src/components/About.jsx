@@ -28,23 +28,31 @@ export function About() {
   ]
 
   const timelineItems = [
-
     {
-      order: 7,
-      date: "Hiver 2026",
-      title: "BRP",
-      subtitle: "Stagiaire - Analyste ServiceNow",
-      description: "Développement de workflow et d'automatisation de processus.",
+      order: 8,
+      date: "Automne 2026",
+      title: "À la recherche d'un stage",
+      subtitle: "",
+      description: "Dates suggérées : 8 septembre au 18 décembre 2026.",
       type: "travail",
       present: true
     },
     {
-      order: 6,
+      order: 7,
       date: "2024 - 2027",
       title: "Université de Sherbrooke",
       subtitle: "Baccalauréat en sciences - Informatique de gestion",
       description: "Programme coopératif",
       type: "education",
+      present: false
+    },
+    {
+      order: 6,
+      date: "Hiver 2026",
+      title: "BRP",
+      subtitle: "Stagiaire - Analyste ServiceNow",
+      description: "Développement de workflow et d'automatisation de processus.",
+      type: "travail",
       present: false
     },
     {
