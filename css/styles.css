@@ -503,6 +503,12 @@ header.scrolled {
   display: flex;
   transition: transform 0.5s ease;
   will-change: transform;
+  cursor: grab;
+  user-select: none;
+}
+
+.carousel-track:active {
+  cursor: grabbing;
 }
 
 .carousel-slide {

@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
+  let isSwiping = false;
+
   // --- 1. Header Scroll Effect ---
   const header = document.querySelector("header");
   window.addEventListener("scroll", () => {
@@ -147,6 +149,73 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     startAutoScroll();
+
+    // --- Drag & Swipe Logic ---
+    let isDragging = false;
+    let startPos = 0;
+    let currentTranslate = 0;
+    
+    const getPositionX = (event) => {
+      return event.type.includes('mouse') ? event.pageX : event.touches[0].clientX;
+    };
+
+    const touchStart = (event) => {
+      isDragging = true;
+      isSwiping = false;
+      startPos = getPositionX(event);
+      track.style.transition = 'none'; // Disable transition for instant feedback
+      clearInterval(autoScrollInterval); // Stop auto scroll
+    };
+
+    const touchMove = (event) => {
+      if (!isDragging) return;
+      const currentPosition = getPositionX(event);
+      const diff = currentPosition - startPos;
+      
+      // If moved more than 10px, count as swiping (prevents accidental clicks)
+      if (Math.abs(diff) > 10) {
+        isSwiping = true;
+      }
+      
+      const slideWidth = slides[0].getBoundingClientRect().width;
+      const baseTranslate = -(currentIndex * slideWidth);
+      track.style.transform = `translateX(${baseTranslate + diff}px)`;
+    };
+
+    const touchEnd = (event) => {
+      if (!isDragging) return;
+      isDragging = false;
+      track.style.transition = 'transform 0.5s ease';
+      
+      const endPos = event.type.includes('mouse') ? event.pageX : (event.changedTouches ? event.changedTouches[0].clientX : startPos);
+      const diff = endPos - startPos;
+
+      if (diff < -50) {
+        updateCarousel(currentIndex + 1); // Swiped left
+      } else if (diff > 50) {
+        updateCarousel(currentIndex - 1); // Swiped right
+      } else {
+        updateCarousel(currentIndex); // Snap back if not enough distance
+      }
+      
+      startAutoScroll();
+      
+      // Keep isSwiping true for a tiny bit so the click event can be blocked
+      setTimeout(() => {
+        isSwiping = false;
+      }, 50);
+    };
+
+    track.addEventListener('mousedown', touchStart);
+    track.addEventListener('touchstart', touchStart, {passive: true});
+    
+    track.addEventListener('mousemove', touchMove);
+    track.addEventListener('touchmove', touchMove, {passive: true});
+    
+    track.addEventListener('mouseup', touchEnd);
+    track.addEventListener('mouseleave', touchEnd);
+    track.addEventListener('touchend', touchEnd);
+
   }
 
   // --- 6. Modal Logic ---
@@ -162,7 +231,12 @@ document.addEventListener("DOMContentLoaded", () => {
   
   if (modalOverlay) {
     projectCards.forEach(card => {
-      card.addEventListener('click', () => {
+      card.addEventListener('click', (e) => {
+        if (isSwiping) {
+          e.preventDefault();
+          return;
+        }
+
         // Populate data
         mTitle.textContent = card.dataset.title;
         mImg.src = card.dataset.img;
