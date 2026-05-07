@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boîte à Outils | Olivier Germain</title>
+    
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS from Main Portfolio -->
+    <link rel="stylesheet" href="../css/styles.css">
+    
+    <style>
+        .tools-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--bg-muted);
+            padding: 4rem 1rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .tool-card {
+            background: var(--bg-color);
+            border-radius: var(--border-radius);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-speed);
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: var(--shadow-lg);
+            border-color: transparent;
+        }
+
+        .tool-icon-wrapper {
+            width: 3rem;
+            height: 3rem;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Colors for different tools mapping */
+        .color-blue { background: rgba(59, 130, 246, 0.1); color: rgb(59, 130, 246); }
+        .color-red { background: rgba(239, 68, 68, 0.1); color: rgb(239, 68, 68); }
+        .color-green { background: rgba(34, 197, 94, 0.1); color: rgb(34, 197, 94); }
+        .color-purple { background: rgba(168, 85, 247, 0.1); color: rgb(168, 85, 247); }
+        .color-orange { background: rgba(249, 115, 22, 0.1); color: rgb(249, 115, 22); }
+        .color-gray { background: rgba(107, 114, 128, 0.1); color: rgb(107, 114, 128); }
+
+        .tool-card h3 {
+            margin-bottom: 0.5rem;
+            font-size: 1.25rem;
+        }
+
+        .tool-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 2rem;
+            left: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            transition: color var(--transition-speed);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+<body>
+
+    <a href="../index.html" class="back-link">
+        <i data-lucide="arrow-left" style="width: 20px; height: 20px;"></i> Retour au portfolio
+    </a>
+
+    <div class="tools-page fade-up">
+        <div class="container" style="max-width: 900px;">
+            <div class="text-center">
+                <span class="section-badge">Utilitaires</span>
+                <h1 style="margin-bottom: 1rem;">Boîte à Outils</h1>
+                <p class="subtitle" style="margin-bottom: 0;">
+                    Une collection d'outils simples et efficaces pour vos tâches quotidiennes.<br>
+                    Accessible uniquement via lien direct.
+                </p>
+            </div>
+
+            <div class="tools-grid">
+                <!-- PDF Merge -->
+                <a href="./pdf-merger.html" class="tool-card fade-up" style="animation-delay: 0.1s;">
+                    <div class="tool-icon-wrapper color-blue">
+                        <i data-lucide="combine"></i>
+                    </div>
+                    <h3>PDF Merge</h3>
+                    <p>Fusionner plusieurs fichiers PDF en un seul document.</p>
+                </a>
+
+                <!-- PDF Trim -->
+                <a href="./pdf-trimmer.html" class="tool-card fade-up" style="animation-delay: 0.2s;">
+                    <div class="tool-icon-wrapper color-red">
+                        <i data-lucide="scissors"></i>
+                    </div>
+                    <h3>PDF Trim</h3>
+                    <p>Découper et extraire des pages de vos fichiers PDF.</p>
+                </a>
+
+                <!-- Duplicate Find -->
+                <a href="./duplicate-find.html" class="tool-card fade-up" style="animation-delay: 0.3s;">
+                    <div class="tool-icon-wrapper color-green">
+                        <i data-lucide="copy"></i> <!-- or split-square-horizontal -->
+                    </div>
+                    <h3>Duplicate Find</h3>
+                    <p>Comparer deux listes pour trouver les doublons, ajouts et suppressions.</p>
+                </a>
+
+                <!-- Générateur de Quiz -->
+                <a href="./quiz/index.html" class="tool-card fade-up" style="animation-delay: 0.4s;">
+                    <div class="tool-icon-wrapper color-purple">
+                        <i data-lucide="brain"></i>
+                    </div>
+                    <h3>Générateur de Quiz</h3>
+                    <p>Créez et jouez à des quiz interactifs.</p>
+                </a>
+
+                <!-- FoodLover -->
+                <a href="./FoodLover/index.html" class="tool-card fade-up" style="animation-delay: 0.5s;">
+                    <div class="tool-icon-wrapper color-orange">
+                        <i data-lucide="utensils"></i>
+                    </div>
+                    <h3>FoodLover</h3>
+                    <p>Votre compagnon culinaire pour gérer vos recettes préférées.</p>
+                </a>
+
+                <!-- PPH Calculator -->
+                <a href="./pph-calculator.html" class="tool-card fade-up" style="animation-delay: 0.6s;">
+                    <div class="tool-icon-wrapper color-gray">
+                        <i data-lucide="calculator"></i>
+                    </div>
+                    <h3>PPH Calculator</h3>
+                    <p>Calculateur d'efficacité et de rentabilité par heure.</p>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+      lucide.createIcons();
+      
+      // Simple fade-up manual activation (since main.js scrolling won't trigger immediately)
+      document.addEventListener("DOMContentLoaded", () => {
+          setTimeout(() => {
+              document.querySelectorAll('.fade-up').forEach(el => {
+                  el.style.opacity = '1';
+                  el.style.transform = 'translateY(0)';
+              });
+          }, 100);
+      });
+    </script>
+</body>
+</html>

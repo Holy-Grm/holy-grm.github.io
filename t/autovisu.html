@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graphviz Convert</title>
+<style>
+body {
+font-family: 'Arial', sans-serif;
+margin: 20px;
+background: linear-gradient(135deg, #333132 0%, #474546 100%);
+min-height: 100vh;
+color: #333;
+}
+
+.container {
+max-width: 1600px;
+margin: 0 auto;
+background: linear-gradient(135deg, #474546 0%, #5C5A5B 100%);
+border-radius: 20px;
+padding: 30px;
+box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+backdrop-filter: blur(10px);
+}
+
+h1 {
+text-align: center;
+color: #66CCFF;
+margin-bottom: 30px;
+font-size: 2.5em;
+text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.section {
+margin-bottom: 40px;
+padding: 25px;
+background: white;
+border-radius: 15px;
+box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+border: 2px solid #e2e8f0;
+transition: all 0.3s ease;
+}
+
+.section h2 {
+color: #333132;
+margin-bottom: 20px;
+font-size: 1.5em;
+border-bottom: 3px solid #474546;
+padding-bottom: 10px;
+}
+
+.table-container {
+overflow-x: auto;
+border-radius: 12px;
+border: 2px solid #e2e8f0;
+background: #f8fafc;
+max-height: 600px;
+overflow-y: auto;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+background: white;
+min-width: 1400px;
+}
+
+th {
+background: linear-gradient(135deg, #333132, #474546);
+color: white;
+padding: 12px 8px;
+text-align: left;
+font-weight: 600;
+border-right: 1px solid rgba(255, 255, 255, 0.2);
+font-size: 0.8em;
+position: sticky;
+top: 0;
+z-index: 10;
+}
+
+th:last-child {
+border-right: none;
+}
+
+td {
+padding: 8px 6px;
+border-bottom: 1px solid #e2e8f0;
+border-right: 1px solid #e2e8f0;
+min-width: 80px;
+}
+
+td:last-child {
+border-right: none;
+}
+
+tr:hover {
+background-color: #f7fafc;
+}
+
+input, select {
+width: 100%;
+padding: 6px;
+border: 2px solid #e2e8f0;
+border-radius: 4px;
+font-size: 12px;
+transition: all 0.3s ease;
+background: white;
+font-weight: bold;
+}
+
+input:focus, select:focus {
+outline: none;
+border-color: #66CCFF;
+box-shadow: 0 0 0 2px #66CCFF;
+}
+
+.data-cell {
+background: #f8fafc;
+}
+
+.code-output {
+background: #1a202c;
+color: #e2e8f0;
+padding: 25px;
+border-radius: 12px;
+font-family: 'Consolas', 'Monaco', monospace;
+font-size: 13px;
+line-height: 1.4;
+white-space: pre-wrap;
+min-height: 100px;
+border: 2px solid #4a5568;
+position: relative;
+overflow-x: auto;
+overflow-y: auto;
+}
+
+.controls {
+display: flex;
+gap: 15px;
+margin-bottom: 20px;
+flex-wrap: wrap;
+align-items: center;
+}
+
+.btn {
+background: linear-gradient(135deg, #333132, #474546);
+color: white;
+border: none;
+padding: 12px 24px;
+border-radius: 8px;
+cursor: pointer;
+font-weight: 600;
+transition: all 0.3s ease;
+font-size: 14px;
+}
+
+.btn:hover {
+transform: translateY(-2px);
+box-shadow: 0 6px 20px #66CCFF;
+}
+
+.btn:disabled {
+opacity: 0.6;
+cursor: not-allowed;
+transform: none;
+box-shadow: none;
+}
+
+.generate-image-btn {
+background: linear-gradient(135deg, #007bff, #0056b3);
+}
+
+.generate-image-btn:hover {
+box-shadow: 0 4px 12px #4dabf7;
+}
+
+.row-number {
+background: #f7fafc;
+text-align: center;
+font-weight: 600;
+color: #8A9199;
+width: 40px;
+min-width: 40px;
+}
+
+.instruction-box {
+background: linear-gradient(135deg, #E8E9EB, #cccccc);
+padding: 20px;
+border-radius: 12px;
+margin-bottom: 20px;
+border-left: 5px solid #474546;
+}
+
+.instruction-box h3 {
+color: #333132;
+margin-top: 0;
+}
+
+.instruction-box ul {
+list-style-type: disc;
+margin: 10px 0;
+padding-left: 20px;
+}
+
+.instruction-box li {
+margin: 5px 0;
+color: #000000;
+line-height:1.5;
+}
+
+.color-indicator {
+width: 20px;
+height: 20px;
+border-radius: 4px;
+display: inline-block;
+margin-right: 5px;
+border: 1px solid #ccc;
+}
+
+.group-title {
+font-weight: 600;
+background: #f8fafc;
+}
+
+.image-container {
+text-align: center;
+margin: 20px 0;
+}
+
+.generated-image {
+max-width: 100%;
+height: auto;
+border: 2px solid #e2e8f0;
+border-radius: 8px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.generated-image:hover {
+transform: translateY(-2px);
+box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+transition: all 0.3s ease;
+}
+
+.loading {
+display: none;
+color: #007bff;
+font-weight: bold;
+margin: 10px;
+}
+
+.error {
+display: none;
+color: #dc3545;
+font-weight: bold;
+margin: 10px;
+background: #f8d7da;
+border: 1px solid #f5c6cb;
+border-radius: 4px;
+padding: 10px;
+}
+
+.success {
+display: none;
+color: #155724;
+font-weight: bold;
+margin: 10px;
+background: #d4edda;
+border: 1px solid #c3e6cb;
+border-radius: 4px;
+padding: 10px;
+}
+
+span {
+  text-decoration: underline;
+}
+
+
+</style>
+</head>
+<body>
+<div class="container">
+<h1>Graphviz Convert</h1>
+
+<div class="section">
+  <h2>Instructions</h2>
+  <ul>
+    <li><strong>Fill the Data:</strong> Either import your CSV data or use the configuration table provided directly in the interface.</li>
+    <li><strong>Generate Image:</strong> Press the button to generate the diagram image.</li>
+    <li><strong>Save the Image:</strong> Right-click on the generated image to save it.</li>
+    <li><strong>Export the Data:</strong> You can save your current data as a CSV file using the export button.</li>
+    <li><strong>DOT Code:</strong> The raw Graphviz code is accessible below for reference.</li>
+  </ul>
+</div>
+
+<div class="section">
+<h2>Image Generated</h2>
+<div class="image-container">
+<img id="generatedImage" class="generated-image" style="display: none;" alt="Graphviz Generated">
+<p id="noImageMsg" style="color: #666; font-style: italic;">No Image Generated.</p>
+</div>
+</div>
+
+<div class="section">
+<h2>Configuration</h2>
+<div class="controls">
+<button class="btn" onclick="addRow()">+ Add line</button>
+<input type="file" id="csvInput" accept=".csv" style="display: none;" onchange="importCSV(event)">
+<button class="btn" onclick="document.getElementById('csvInput').click()">Import CSV</button>
+<button class="btn" onclick="exportToCSV()">Export CSV</button>
+<button class="btn generate-image-btn" onclick="generateImage()" id="generateBtn">Generate Image</button>
+</div>
+
+<div class="loading" id="loadingMsg">Generating image...</div>
+<div class="error" id="errorMsg"></div>
+<div class="success" id="successMsg"></div>
+
+<div class="table-container">
+<table id="dataTable">
+<thead>
+<tr>
+<th>#</th>
+<th>MA</th>
+<th>Name (Optional)</th>
+<th>Color (Line/Sub)</th>
+<th><p><s>Level (Unused)<p><s></th>
+<th><p><s>Unused<p><s></th>
+<th>Successor</th>
+<th>G</th><th>H</th><th>I</th><th>J</th><th>K</th><th>L</th><th>M</th><th>N</th><th>O</th><th>P</th>
+<th>Q</th><th>R</th><th>S</th><th>T</th><th>U</th><th>V</th><th>W</th><th>X</th><th>Y</th><th>Z</th>
+<th>AA</th><th>AB</th><th>AC</th><th>AD</th><th>AE</th><th>AF</th><th>AG</th><th>AH</th><th>AI</th><th>AJ</th>
+<th>AK</th><th>AL</th><th>AM</th><th>AN</th><th>AO</th><th>AP</th><th>AQ</th><th>AR</th><th>AS</th><th>AT</th>
+<th>AU</th><th>AV</th><th>AW</th><th>AX</th><th>AY</th><th>AZ</th><th>BA</th><th>BB</th><th>BC</th><th>BD</th>
+<th>BE</th><th>BF</th><th>BG</th><th>BH</th><th>BI</th><th>BJ</th><th>BK</th><th>BL</th><th>BM</th><th>BN</th>
+<th>BO</th><th>BP</th><th>BQ</th><th>BR</th><th>BS</th><th>BT</th><th>BU</th><th>BV</th><th>BW</th><th>BX</th>
+<th>BY</th><th>BZ</th><th>CA</th><th>CB</th><th>CC</th><th>CD</th><th>CE</th><th>CF</th><th>CG</th><th>CH</th>
+<th>CI</th><th>CJ</th><th>CK</th><th>CL</th><th>CM</th><th>CN</th><th>CO</th><th>CP</th><th>CQ</th><th>CR</th>
+<th>CS</th><th>CT</th><th>CU</th><th>CV</th><th>CW</th><th>CX</th><th>CY</th><th>CZ</th><th>DA</th><th>DB</th>
+<th>DC</th><th>DD</th><th>DE</th><th>DF</th><th>DG</th><th>DH</th><th>DI</th><th>DJ</th><th>DK</th><th>DL</th>
+</tr>
+</thead>
+<tbody id="tableBody">
+<!-- Rows will be added here -->
+</tbody>
+</table>
+</div>
+</div>
+
+<div class="section">
+<h2>Code .dot</h2>
+<div style="position: relative;">
+<div class="code-output" id="dotOutput">
+// Fill the table to generate Graphviz code
+digraph G {
+
+
+}
+</div>
+</div>
+</div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/viz.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viz.js/2.1.2/lite.render.js"></script>
+
+<script>
+let rowCount = 0;
+let viz;
+
+// Initialize Viz.js
+function initViz() {
+ viz = new Viz();
+}
+
+// Initialize Viz.js when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+ initViz();
+});
+
+function addRow(data = {}) {
+rowCount++;
+const tbody = document.getElementById('tableBody');
+const row = document.createElement('tr');
+
+// Create data cells for columns G to DL (100 columns)
+let dataCells = '';
+const dataColumns = ['G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT',
+'AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN',
+'BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH',
+'CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB',
+'DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL'];
+
+dataColumns.forEach((col, index) => {
+const value = data[`data${index}`] || '';
+dataCells += `<td class="data-cell"><input type="text" placeholder="${col}" value="${value}" onchange="generateDotCode()"></td>`;
+});
+
+row.innerHTML = `
+<td class="row-number">${rowCount}</td>
+<td class="group-title"><input type="text" placeholder="Titre du groupe" value="${data.title || ''}" onchange="generateDotCode()"></td>
+<td><input type="text" placeholder="B" value="${data.name || ''}" onchange="generateDotCode()"></td>
+<td>
+<select onchange="generateDotCode(); updateColorIndicator(this)">
+<option value="">-</option>
+<option value="S" ${data.color === 'S' ? 'selected' : ''}>S</option>
+<option value="L" ${data.color === 'L' ? 'selected' : ''}>L</option>
+</select>
+</td>
+<td><input type="text" placeholder="D" value="${data.colD || ''}" onchange="generateDotCode()"></td>
+<td><input type="text" placeholder="E" value="${data.colE || ''}" onchange="generateDotCode()"></td>
+<td><input type="text" placeholder="Successeur" value="${data.successor || ''}" onchange="generateDotCode()"></td>
+${dataCells}
+`;
+
+tbody.appendChild(row);
+generateDotCode();
+}
+
+
+function updateRowNumbers() {
+const rows = document.querySelectorAll('#tableBody tr');
+rows.forEach((row, index) => {
+row.querySelector('.row-number').textContent = index + 1;
+});
+rowCount = rows.length;
+}
+
+function updateColorIndicator(select) {
+// Visual feedback for color selection
+const color = select.value === 'S' ? '#C4C8CC' : select.value === 'L' ? '#66CCFF' : '#ffffff';
+select.style.backgroundColor = color;
+select.style.color = '#000000';
+}
+
+function generateDotCode() {
+const rows = document.querySelectorAll('#tableBody tr');
+let dotCode = 'digraph G {\n';
+dotCode += ' // General Configuration\n';
+dotCode += ' compound=true;\n';
+dotCode += ' node [fontname="Arial", style="filled", fontsize="10", fontcolor="black"];\n';
+dotCode += ' edge [fontname="Arial", color="#007BFF", penwidth="2"];\n';
+dotCode += ' rankdir=TB;\n\n';
+
+const subgraphs = [];
+const connections = [];
+let subgraphCounter = 0;
+
+rows.forEach((row, rowIndex) => {
+const inputs = row.querySelectorAll('input, select');
+const titleA = inputs[0].value.trim();
+const titleB = inputs[1].value.trim();
+const title = `${titleA}${titleB ? ' - ' + titleB : ''}`;
+const name = inputs[1].value.trim();
+const color = inputs[2].value;
+const colD = inputs[3].value.trim();
+const colE = inputs[4].value.trim();
+const successor = inputs[5].value.trim();
+
+// Collect data from columns G to AE
+const dataElements = [];
+for (let i = 6; i < inputs.length; i++) {
+const value = inputs[i].value.trim();
+if (value) {
+dataElements.push(value);
+}
+}
+
+if (title && dataElements.length > 0) {
+subgraphCounter++;
+const fillColor = color === 'S' ? '#C4C8CC' : color === 'L' ? '#66CCFF' : 'white';
+const subgraphName = `cluster_${subgraphCounter}`;
+
+let subgraph = ` subgraph ${subgraphName} {\n`;
+subgraph += ` label="${title}";\n`;
+subgraph += ` style="filled,rounded";\n`;
+subgraph += ` color="#333132";\n`;
+subgraph += ` fillcolor="#333132";\n`;
+subgraph += ` fontsize="12";\n`;
+subgraph += ` fontcolor="white";\n`;
+subgraph += ` labelfontcolor="white";\n`;
+subgraph += ` fontname="Arial Bold";\n\n`;
+
+// Add all data elements with same styling
+dataElements.forEach((element, index) => {
+subgraph += ` "${element}" [fillcolor="${fillColor}", shape="box", fontcolor="black", fontname="Arial Bold"];\n`;
+});
+
+// Create invisible connections within the subgraph to maintain order
+if (dataElements.length > 1) {
+subgraph += '\n //Intern Ordre (invisible)\n';
+for (let i = 0; i < dataElements.length - 1; i++) {
+subgraph += ` "${dataElements[i]}" -> "${dataElements[i + 1]}" [style="invis"];\n`;
+}
+subgraph += ` {rank=same; ${dataElements.map(e => `"${e}"`).join('; ')}};\n`;
+}
+
+subgraph += ' }\n';
+subgraphs.push(subgraph);
+
+// Add connection to successor if specified
+if (successor && dataElements.length > 0) {
+const lastElement = dataElements[dataElements.length - 1];
+connections.push(` "${lastElement}" -> "${successor}" [color="#007BFF", penwidth="2"];`);
+}
+}
+});
+
+// Add all subgraphs
+if (subgraphs.length > 0) {
+dotCode += ' // Group Definition\n';
+dotCode += subgraphs.join('\n') + '\n';
+}
+
+// Add connections between groups
+if (connections.length > 0) {
+dotCode += ' // Group Connexion\n';
+dotCode += connections.join('\n') + '\n';
+}
+
+dotCode += '}';
+
+document.getElementById('dotOutput').textContent = dotCode;
+}
+
+async function generateImage() {
+ const dotCode = document.getElementById('dotOutput').textContent;
+ const loadingMsg = document.getElementById('loadingMsg');
+ const errorMsg = document.getElementById('errorMsg');
+ const successMsg = document.getElementById('successMsg');
+ const generateBtn = document.getElementById('generateBtn');
+ const generatedImage = document.getElementById('generatedImage');
+ const noImageMsg = document.getElementById('noImageMsg');
+
+ // Reset messages
+ loadingMsg.style.display = 'none';
+ errorMsg.style.display = 'none';
+ successMsg.style.display = 'none';
+
+ // Validate that we have some content
+ if (!dotCode || dotCode.trim() === '' || !dotCode.includes('subgraph')) {
+ errorMsg.textContent = 'Fill the table before generate image.';
+ errorMsg.style.display = 'block';
+ return;
+ }
+
+ // Show loading state
+ loadingMsg.style.display = 'block';
+ generateBtn.disabled = true;
+ generateBtn.textContent = 'Generating...';
+
+ try {
+ // Initialize Viz.js if not already done
+ if (!viz) {
+ await initViz();
+ }
+
+ // Generate SVG first
+ const svg = await viz.renderSVGElement(dotCode);
+
+ // Convert SVG to PNG
+ const canvas = document.createElement('canvas');
+ const ctx = canvas.getContext('2d');
+
+ // Create a blob from SVG
+ const svgBlob = new Blob([svg.outerHTML], { type: 'image/svg+xml' });
+ const url = URL.createObjectURL(svgBlob);
+
+ // Create image from SVG
+ const img = new Image();
+ img.onload = function() {
+ canvas.width = img.width;
+ canvas.height = img.height;
+ ctx.drawImage(img, 0, 0);
+
+ // Convert to PNG
+ const pngDataUrl = canvas.toDataURL('image/png');
+
+ // Display the image
+ generatedImage.src = pngDataUrl;
+ generatedImage.style.display = 'block';
+ noImageMsg.style.display = 'none';
+
+ // Show success message
+ successMsg.textContent = 'Image Generated!';
+ successMsg.style.display = 'block';
+
+ // Clean up
+ URL.revokeObjectURL(url);
+
+ // Reset button
+ generateBtn.disabled = false;
+ generateBtn.textContent = 'Generate image';
+ loadingMsg.style.display = 'none';
+ };
+
+ img.onerror = function() {
+ throw new Error('Error while loading image SVG');
+ };
+
+ img.src = url;
+
+ } catch (error) {
+ console.error('Error while loading image:', error);
+ errorMsg.textContent = 'Error while loading image: ' + error.message;
+ errorMsg.style.display = 'block';
+
+ // Reset button
+ generateBtn.disabled = false;
+ generateBtn.textContent = 'Generate image';
+ loadingMsg.style.display = 'none';
+ }
+}
+
+function exportToCSV() {
+const rows = document.querySelectorAll('#tableBody tr');
+const headers = ['MA', 'Name (Optional)', 'Color (Line/Sub)', 'Level (Unused)', 'Unused', 'Successor'];
+const dataColumns = ['G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+'AA','AB','AC','AD','AE','AF','AG','AH','AI','AJ','AK','AL','AM','AN','AO','AP','AQ','AR','AS','AT',
+'AU','AV','AW','AX','AY','AZ','BA','BB','BC','BD','BE','BF','BG','BH','BI','BJ','BK','BL','BM','BN',
+'BO','BP','BQ','BR','BS','BT','BU','BV','BW','BX','BY','BZ','CA','CB','CC','CD','CE','CF','CG','CH',
+'CI','CJ','CK','CL','CM','CN','CO','CP','CQ','CR','CS','CT','CU','CV','CW','CX','CY','CZ','DA','DB',
+'DC','DD','DE','DF','DG','DH','DI','DJ','DK','DL'];
+headers.push(...dataColumns);
+
+let csv = headers.join(',') + '\n';
+
+rows.forEach(row => {
+const inputs = row.querySelectorAll('input, select');
+const rowData = Array.from(inputs).map(input => `"${input.value}"`).join(',');
+csv += rowData + '\n';
+});
+
+const blob = new Blob([csv], { type: 'text/csv' });
+const url = window.URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = 'graphviz_convert.csv';
+a.click();
+window.URL.revokeObjectURL(url);
+}
+
+function importCSV(event) {
+const file = event.target.files[0];
+if (!file) return;
+
+const reader = new FileReader();
+reader.onload = function(e) {
+const csv = e.target.result;
+const lines = csv.split('\n');
+
+// Clear existing rows
+document.getElementById('tableBody').innerHTML = '';
+rowCount = 0;
+
+// Skip header row
+for (let i = 1; i < lines.length; i++) {
+const line = lines[i].trim();
+if (line) {
+const values = line.split(',').map(val => val.replace(/"/g, ''));
+const dataObj = {
+title: values[0] || '',
+name: values[1] || '',
+color: values[2] || '',
+colD: values[3] || '',
+colE: values[4] || '',
+successor: values[5] || ''
+};
+
+// Add data columns
+for (let j = 6; j < values.length && j < 106; j++) {
+dataObj[`data${j-6}`] = values[j] || '';
+}
+
+addRow(dataObj);
+}
+}
+};
+reader.readAsText(file);
+}
+
+// Initialize with sample data
+addRow({
+title: '1',
+name: 'Refrigerator Painting',
+color: 'L',
+successor: 'Worker-11',
+data0: 'Worker-01',
+data1: 'Worker-02',
+data2: 'Worker-03',
+data3: 'Worker-04',
+data4: 'Worker-05',
+data5: 'Worker-06',
+data6: 'Worker-07',
+data7: 'Worker-08',
+data8: 'Worker-09',
+data9: 'Worker-10'
+});
+
+addRow({
+title: '2',
+name: 'Cooling System',
+color: 'S',
+successor: 'Worker-12',
+data0: 'Worker-001',
+data1: 'Worker-002',
+data3: 'Worker-003'
+});
+
+addRow({
+title: '3',
+name: 'Door Welding',
+color: 'S',
+successor: 'Worker-013',
+data0: 'Worker-018',
+data1: 'Worker-017'
+});
+
+addRow({
+title: '4',
+name: 'Door Painting',
+color: 'S',
+successor: 'Worker-006',
+data0: 'Worker-013',
+data1: 'Worker-014',
+data2: 'Worker-015'
+});
+
+addRow({
+title: '5',
+name: 'Door Shelves',
+color: 'S',
+successor: 'Worker-20',
+data0: 'Worker-004',
+data1: 'Worker-005',
+data2: 'Worker-006',
+data3: 'Worker-007',
+data4: 'Worker-008',
+data5: 'Worker-009',
+data6: 'Worker-010',
+data7: 'Worker-011',
+data8: 'Worker-012'
+});
+
+
+addRow({
+title: '6',
+name: 'Cooling system integration',
+color: 'L',
+successor: 'Worker-13',
+data0: 'Worker-11',
+data1: 'Worker-12'
+});
+
+addRow({
+title: '7',
+name: 'Refrigerator Shelves Integration',
+color: 'L',
+successor: 'FIN',
+data0: 'Worker-13',
+data1: 'Worker-14',
+data2: 'Worker-15',
+data3: 'Worker-16',
+data4: 'Worker-17',
+data5: 'Worker-18',
+data6: 'Worker-19',
+data7: 'Worker-20',
+data8: 'Worker-21',
+data9: 'Worker-22',
+data10: 'Worker-23',
+data11: 'Worker-24'
+});
+
+addRow();
+</script>
+
+</body>
+</html>

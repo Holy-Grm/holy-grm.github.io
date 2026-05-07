@@ -1,19 +1,596 @@
+<!DOCTYPE html>
+<html lang="fr">
 
-  <!DOCTYPE html>
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Portfolio Website</title>
-      <link rel="icon" type="image/x-icon" href="/favicon.ico">
-      <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-      <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-      <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portfolio d'Olivier Germain - B.Sc. Informatique de Gestion">
+    <title>Olivier Germain | Portfolio</title>
+    
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="shortcut icon" href="favicon.ico">
 
-    <body>
-      <div id="root"></div>
-      <script type="module" src="/src/main.tsx"></script>
-    </body>
-  </html>
-  
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <!-- HEADER / NAVIGATION -->
+    <header>
+        <div class="nav-container">
+            <div class="logo">Olivier Germain</div>
+            <nav class="nav-links">
+                <a href="#about">À propos</a>
+                <a href="#skills">Compétences</a>
+                <a href="#projects">Projets</a>
+                <a href="#awards">Prix</a>
+                <a href="#hobbies">Loisirs</a>
+                <a href="#benevolat">Bénévolat</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <button class="mobile-menu-btn" aria-label="Menu">
+                <i data-lucide="menu"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section id="hero" class="hero">
+            <div class="container hero-grid">
+                <div class="hero-content fade-up">
+                    <span class="hero-tag">Bienvenue sur mon portfolio</span>
+                    <h4>Science des données | Intelligence artificielle</h4>
+                    <br>
+                    <h2 class="text-muted hero-title">Bonjour, je
+                        m'appelle Olivier!</h2>
+                    <p class="text-muted hero-desc">
+                        Je suis étudiant au baccalauréat en sciences à l'Université de Sherbrooke en informatique de
+                        gestion, programme coopératif.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#projects" class="btn btn-primary">Mes projets</a>
+                        <a href="#contact" class="btn btn-outline">Contact</a>
+                    </div>
+
+                    <div class="hero-socials">
+                        <a href="https://www.linkedin.com/in/oligermain" target="_blank" rel="noopener noreferrer"
+                            aria-label="LinkedIn">
+                            <i data-lucide="linkedin"></i>
+                        </a>
+                        <a href="mailto:oligermain15@gmail.com" aria-label="Email">
+                            <i data-lucide="mail"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="hero-image-wrapper fade-up">
+                    <img src="assets/img/blancblanc.png" alt="Olivier Germain" class="hero-image"
+                        onerror="this.src='https://via.placeholder.com/400'">
+                </div>
+            </div>
+
+            <button class="scroll-indicator"
+                onclick="document.getElementById('about').scrollIntoView({behavior:'smooth'})">
+                <i data-lucide="arrow-down"></i>
+            </button>
+        </section>
+
+        <!-- ABOUT SECTION -->
+        <section id="about" class="bg-muted">
+            <div class="container">
+                <div class="text-center fade-up">
+                    <span class="section-badge">À propos</span>
+                    <h2>Passionné par le futur</h2>
+                    <p class="subtitle">« Le meilleur moyen de prédire l'avenir, c'est de l'inventer. » — Alan Kay</p>
+                </div>
+
+                <div class="about-grid fade-up">
+                    <div>
+                        <h3>Mon parcours</h3>
+                        <p class="text-muted" style="margin-bottom: 1rem;">
+                            Ma passion pour la technologie a débutée dès mon jeune âge, par plaisir
+                            d'automatiser tout ce qui m'entoure; à commencer par les jeux vidéos, puis la
+                            domotique et finalement des tâches complexes au travail.
+                        </p>
+                        <p class="text-muted">
+                            J'approfondis présentement mes connaissances à l'Université de Sherbrooke,
+                            réputée pour son programme coopératif. Ceci me permet d'acquérir une
+                            expérience précieuse en travaillant sur des projets réels dans divers secteurs.
+                        </p>
+                    </div>
+
+                    <div class="highlights-grid">
+                        <div class="highlight-card">
+                            <div class="highlight-icon"><i data-lucide="code"></i></div>
+                            <h4>Code</h4>
+                            <p class="text-muted" style="font-size: 0.875rem; margin-top: 0.5rem;">Programmation propre
+                                et maintenable</p>
+                        </div>
+                        <div class="highlight-card">
+                            <div class="highlight-icon"><i data-lucide="palette"></i></div>
+                            <h4>Design Créatif</h4>
+                            <p class="text-muted" style="font-size: 0.875rem; margin-top: 0.5rem;">Conception
+                                d'interfaces soignées et intuitives</p>
+                        </div>
+                        <div class="highlight-card">
+                            <div class="highlight-icon"><i data-lucide="zap"></i></div>
+                            <h4>Efficacité</h4>
+                            <p class="text-muted" style="font-size: 0.875rem; margin-top: 0.5rem;">Optimisation et
+                                rapidité du travail</p>
+                        </div>
+                        <div class="highlight-card">
+                            <div class="highlight-icon"><i data-lucide="users"></i></div>
+                            <h4>Travail d'équipe</h4>
+                            <p class="text-muted" style="font-size: 0.875rem; margin-top: 0.5rem;">Collaboration
+                                efficace avec des équipes multidisciplinaires</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIMELINE -->
+                <div class="timeline-section fade-up">
+                    <h3 class="text-center" style="margin-bottom: 3rem;">Mon expérience</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Automne 2026</div>
+                            <div class="timeline-title">À la recherche d'un stage</div>
+                            <div class="timeline-desc">Dates suggérées : 8 septembre au 18 décembre 2026.</div>
+                        </div>
+                        <div class="timeline-item active">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">2024 - 2027</div>
+                            <div class="timeline-title">Université de Sherbrooke</div>
+                            <div class="timeline-subtitle">Baccalauréat en sciences - Informatique de gestion</div>
+                            <div class="timeline-desc">Cheminement spécialisé en intelligence d'affaires.
+                                <br>Programme coopératif.
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Hiver 2026</div>
+                            <div class="timeline-title">BRP</div>
+                            <div class="timeline-subtitle">Stagiaire - Analyste ServiceNow</div>
+                            <div class="timeline-desc">Développement de workflow et d'automatisation de processus.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">Été 2025</div>
+                            <div class="timeline-title">BRP</div>
+                            <div class="timeline-subtitle">Stagiaire - Analyste informatique</div>
+                            <div class="timeline-desc">Développement de solutions d'analyse de données pour
+                                l'optimisation manufacturière.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">2022 - Aujourd'hui</div>
+                            <div class="timeline-title">Ville de Sherbrooke</div>
+                            <div class="timeline-subtitle">Répartiteur 911</div>
+                            <div class="timeline-desc">Répartition d'urgence 911, police et incendie.</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">2018 - 2022</div>
+                            <div class="timeline-title">Sûreté du Québec</div>
+                            <div class="timeline-subtitle">Répartiteur d'appels d'urgence</div>
+                            <div class="timeline-desc">Répartition d'appels policiers d'urgence.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS SECTION -->
+        <section id="skills">
+            <div class="container fade-up">
+                <div class="text-center">
+                    <span class="section-badge">Compétences</span>
+                    <h2>Technologies acquises</h2>
+                    <p class="subtitle">J'apprends en continue et j'améliore mes compétences sur des outils et
+                        technologies variés.</p>
+                </div>
+
+                <h3 class="text-center" style="margin-bottom: 2rem;">Technologies et outils</h3>
+                <div class="skills-container">
+                    <span class="skill-tag">C++</span>
+                    <span class="skill-tag">C#</span>
+                    <span class="skill-tag">Java</span>
+                    <span class="skill-tag">Python</span>
+                    <span class="skill-tag">Assembly</span>
+                    <span class="skill-tag">HTML</span>
+                    <span class="skill-tag">CSS</span>
+                    <span class="skill-tag">JavaScript</span>
+                    <span class="skill-tag">React</span>
+                    <span class="skill-tag">PostgreSQL</span>
+                    <span class="skill-tag">Figma</span>
+                    <span class="skill-tag">Github</span>
+                    <span class="skill-tag">Excel</span>
+                    <span class="skill-tag">VBA</span>
+                    <span class="skill-tag">SQL</span>
+                    <span class="skill-tag">Snowflake</span>
+                    <span class="skill-tag">SAP</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS SECTION -->
+        <section id="projects" class="bg-muted">
+            <div class="container fade-up">
+                <div class="text-center">
+                    <span class="section-badge">Mes réalisations</span>
+                    <h2>Projets sélectionnés</h2>
+                    <p class="subtitle">Voici quelques-uns de mes projets récents qui démontrent mes compétences en
+                        développement, en analyse de données et en résolution de problèmes.</p>
+                </div>
+
+                <div class="carousel-container">
+                    <div class="carousel-track">
+                        <!-- Project 1 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Master Excel"
+                                data-img="assets/img/img_masterexcel.jpg"
+                                data-desc="Ce projet consistait à consolider et analyser des données provenant de multiples sources Excel. J'ai créé des tableaux de bord interactifs avec des graphiques dynamiques, des tableaux croisés dynamiques avancés et des systèmes d'analyse automatisés pour optimiser les processus de reporting."
+                                data-tech="Tableaux croisés dynamiques, Dashboards, VBA">
+                                <div class="project-img-wrapper">
+                                    <img src="assets/img/img_masterexcel.jpg" alt="Master Excel" class="project-img"
+                                        onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Master Excel</h3>
+                                    <p class="project-desc">Développement de projets avancés impliquant la consolidation
+                                        de plus de 25 fichiers Excel avec tableaux de bord dynamiques et analyses
+                                        automatisées.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">Tableaux croisés dynamiques</span>
+                                        <span class="tech-badge">Dashboards</span>
+                                        <span class="tech-badge">VBA</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 2 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Automatisation visuelle"
+                                data-img="assets/img/img_automatisationvisuelle.jpg"
+                                data-desc="Application qui automatise la transformation de données de production en visualisations graphiques. J'ai utilisé Graphviz pour générer des diagrammes de flux de production en temps réel, permettant aux gestionnaires d'usine de visualiser instantanément le déroulement d'une chaîne de production."
+                                data-tech="HTML, CSS, Graphviz DOT, JavaScript">
+                                <div class="project-img-wrapper">
+                                    <img src="assets/img/img_automatisationvisuelle.jpg" alt="Automatisation visuelle"
+                                        class="project-img" onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Automatisation visuelle</h3>
+                                    <p class="project-desc">Transforme les données CSV/Excel en graphiques visuels pour
+                                        la chaîne de production d'usine avec génération automatique de diagrammes.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">HTML</span>
+                                        <span class="tech-badge">CSS</span>
+                                        <span class="tech-badge">Graphviz DOT</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 3 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="PixelBot"
+                                data-img="assets/img/img_pixelbot.jpg"
+                                data-desc="Bot d'automatisation avancé utilisant la reconnaissance d'images pour automatiser des tâches répétitives sur ordinateur. Système de configuration JSON flexible, détection d'images en temps réel, et intégration de raccourcis clavier personnalisés pour une utilisation optimale."
+                                data-tech="Python, Automatisation, JSON">
+                                <div class="project-img-wrapper">
+                                    <img src="assets/img/img_pixelbot.jpg" alt="PixelBot" class="project-img"
+                                        onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">PixelBot</h3>
+                                    <p class="project-desc">Automatise les tâches visuelles répétitives grâce à la
+                                        reconnaissance d'images en temps réel avec des raccourcis clavier personnalisés.
+                                    </p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">Python</span>
+                                        <span class="tech-badge">Automatisation</span>
+                                        <span class="tech-badge">JSON</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 4 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Solveur de Sudoku"
+                                data-img="assets/img/img_solveursudoku.jpg"
+                                data-desc="Algorithme de résolution de Sudoku développé comme projet universitaire."
+                                data-tech="C++, Algorithmes, Projet Universitaire">
+                                <div class="project-img-wrapper">
+                                    <img src="assets/img/img_solveursudoku.jpg" alt="Solveur de Sudoku"
+                                        class="project-img" onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Solveur de Sudoku</h3>
+                                    <p class="project-desc">Algorithme de résolution de Sudoku développé comme projet
+                                        universitaire.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">C++</span>
+                                        <span class="tech-badge">Algorithmes</span>
+                                        <span class="tech-badge">Projet Universitaire</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 5 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Base de données relationnelle"
+                                data-img="assets/img/img_basededonnees.jpg"
+                                data-desc="Projet complet de conception de base de données pour une chaîne de restaurants. Inclut la modélisation UML complète, l'implémentation PostgreSQL avec contraintes d'intégrité, les procédures stockées et l'optimisation des requêtes pour de gros volumes de données."
+                                data-tech="PostgreSQL, UML, SQL">
+                                <div class="project-img-wrapper">
+                                    <img src="assets/img/img_basededonnees.jpg" alt="DB" class="project-img"
+                                        onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Base de données relationnelle</h3>
+                                    <p class="project-desc">Conception et implémentation d'une base de données
+                                        relationnelle complète pour une chaîne de restaurants avec optimisations.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">PostgreSQL</span>
+                                        <span class="tech-badge">UML</span>
+                                        <span class="tech-badge">SQL</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 6 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Logiciel de réservation de bureaux"
+                                data-img="https://via.placeholder.com/400x300?text=Logiciel+de+reservation"
+                                data-desc="Développement complet d’un système de réservation de bureau pour la suite Google. Gestion de la concurrence pour plus 4000 employés et 23 bureaux."
+                                data-tech="HTML, APPS SCRIPT, BD RELATIONNELLE">
+                                <div class="project-img-wrapper">
+                                    <img src="https://via.placeholder.com/400x300?text=Logiciel+de+reservation"
+                                        alt="Logiciel de réservation de bureaux" class="project-img"
+                                        onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Logiciel de réservation de bureaux</h3>
+                                    <p class="project-desc">Développement complet d’un système de réservation de bureau
+                                        pour la suite Google. Gestion de la concurrence pour plus 4000 employés et 23
+                                        bureaux.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">HTML</span>
+                                        <span class="tech-badge">APPS SCRIPT</span>
+                                        <span class="tech-badge">BD RELATIONNELLE</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 7 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Analyse de données"
+                                data-img="https://via.placeholder.com/400x300?text=Analyse+de+donnees"
+                                data-desc="Analyse de données d’envergure de l’utilisation de bureau en mode hybride. Cette analyse suggère une économie de plus de 115 000$/an."
+                                data-tech="POWER BI">
+                                <div class="project-img-wrapper">
+                                    <img src="https://via.placeholder.com/400x300?text=Analyse+de+donnees"
+                                        alt="Analyse de données" class="project-img"
+                                        onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Analyse de données</h3>
+                                    <p class="project-desc">Analyse de données d’envergure de l’utilisation de bureau en
+                                        mode hybride. Économie potentielle de plus de 115 000$/an.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">POWER BI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 8 -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Vulgarisation scientifique"
+                                data-img="https://via.placeholder.com/400x300?text=Vulgarisation+scientifique"
+                                data-desc="Rédaction d’un article sur les réseaux de neuronnes et le deep learning."
+                                data-tech="REDACTION, RECHERCHE, DEEP LEARNING">
+                                <div class="project-img-wrapper">
+                                    <img src="https://via.placeholder.com/400x300?text=Vulgarisation+scientifique"
+                                        alt="Vulgarisation scientifique" class="project-img"
+                                        onerror="this.src='https://via.placeholder.com/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Vulgarisation scientifique</h3>
+                                    <p class="project-desc">Rédaction d’un article sur les réseaux de neuronnes et le
+                                        deep learning.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">VULGARISATION</span>
+                                        <span class="tech-badge">DEEP LEARNING</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-controls">
+                    <button class="carousel-arrow carousel-prev" aria-label="Précédent"><i
+                            data-lucide="chevron-left"></i></button>
+                    <div class="carousel-dots"></div>
+                    <button class="carousel-arrow carousel-next" aria-label="Suivant"><i
+                            data-lucide="chevron-right"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <!-- AWARDS SECTION -->
+        <section id="awards">
+            <div class="container fade-up">
+                <div class="text-center">
+                    <span class="section-badge">Reconnaissance</span>
+                    <h2>Prix</h2>
+                </div>
+
+                <div class="cards-grid two-cols">
+                    <div class="list-card">
+                        <div class="list-card-icon"><i data-lucide="award"></i></div>
+                        <div class="list-card-content">
+                            <h3>Expostage BRP 2025</h3>
+                            <p>Prix pour la présentation ayant obtenu la meilleure appréciation globale.</p>
+                            <div class="list-meta">
+                                <span><i data-lucide="calendar" style="width: 14px; height: 14px;"></i> Été 2025</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="list-card">
+                        <div class="list-card-icon"><i data-lucide="award"></i></div>
+                        <div class="list-card-content">
+                            <h3>Ville de Sherbrooke 2023</h3>
+                            <p>Bravogramme pour avoir développé un outil de travail efficace.</p>
+                            <div class="list-meta">
+                                <span><i data-lucide="calendar" style="width: 14px; height: 14px;"></i> Automne
+                                    2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOBBIES SECTION -->
+        <section id="hobbies" class="bg-muted">
+            <div class="container fade-up">
+                <div class="text-center">
+                    <span class="section-badge">Passions</span>
+                    <h2>Loisirs</h2>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="list-card" style="max-width: 600px; margin: 0 auto;">
+                        <div class="list-card-icon"><i data-lucide="music"></i></div>
+                        <div class="list-card-content">
+                            <h3>Musique</h3>
+                            <p>Orchestre Philharmonique de l'Université de Sherbrooke</p>
+                            <div class="list-meta">
+                                <span><i data-lucide="circle" style="width: 8px; height: 8px;" fill="currentColor"></i>
+                                    Première trompette depuis 2018</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- BENEVOLAT SECTION -->
+        <section id="benevolat">
+            <div class="container fade-up">
+                <div class="text-center">
+                    <span class="section-badge">Engagement</span>
+                    <h2>Bénévolat</h2>
+                </div>
+
+                <div class="cards-grid">
+                    <div class="list-card" style="max-width: 600px; margin: 0 auto;">
+                        <div class="list-card-icon"><i data-lucide="hand-heart"></i></div>
+                        <div class="list-card-content">
+                            <h3>Firme École</h3>
+                            <p>Analyste - Service conseil d’affaires</p>
+                            <div class="list-meta">
+                                <span><i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
+                                    2026-05-Présent</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT SECTION -->
+        <section id="contact" class="bg-muted">
+            <div class="container fade-up text-center">
+                <span class="section-badge">Contactez-moi</span>
+                <h2>Travaillons ensemble</h2>
+                <p class="subtitle" style="margin-bottom: 2rem;">Vous avez un projet en tête ou simplement envie de
+                    discuter? N'hésitez pas à me contacter!</p>
+
+                <div class="cards-grid">
+                    <a href="mailto:oligermain15@gmail.com" class="list-card">
+                        <div class="list-card-icon"><i data-lucide="mail"></i></div>
+                        <div class="list-card-content" style="text-align: left;">
+                            <h3>Courriel</h3>
+                            <p style="color: var(--text-primary); font-weight: 500;">oligermain15@gmail.com</p>
+                            <p class="text-muted" style="font-size: 0.85rem;">Écrivez-moi</p>
+                        </div>
+                    </a>
+
+                    <a href="https://www.linkedin.com/in/oligermain" target="_blank" rel="noopener noreferrer"
+                        class="list-card">
+                        <div class="list-card-icon"><i data-lucide="linkedin"></i></div>
+                        <div class="list-card-content" style="text-align: left;">
+                            <h3>LinkedIn</h3>
+                            <p style="color: var(--text-primary); font-weight: 500;">www.linkedin.com/in/oligermain</p>
+                            <p class="text-muted" style="font-size: 0.85rem;">Connectons-nous</p>
+                        </div>
+                    </a>
+
+                    <a href="assets/CV_Olivier_Germain.pdf" download class="list-card">
+                        <div class="list-card-icon"><i data-lucide="download"></i></div>
+                        <div class="list-card-content" style="text-align: left;">
+                            <h3>CV</h3>
+                            <p style="color: var(--text-primary); font-weight: 500;">Télécharger mon CV</p>
+                            <p class="text-muted" style="font-size: 0.85rem;">Version PDF disponible</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="footer-socials">
+                <a href="https://www.linkedin.com/in/oligermain" target="_blank" rel="noopener noreferrer"><i
+                        data-lucide="linkedin"></i></a>
+                <a href="mailto:oligermain15@gmail.com"><i data-lucide="mail"></i></a>
+            </div>
+            <p class="text-muted">&copy; 2026 Olivier Germain. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- MODAL FOR PROJECTS -->
+    <div class="modal-overlay">
+        <button class="modal-close"><i data-lucide="x"></i></button>
+        <div class="modal-content">
+            <div class="modal-body">
+                <img id="modal-img" src="" alt="" class="modal-img">
+                <h2 id="modal-title" style="margin-bottom: 1rem;"></h2>
+                <div id="modal-tech" class="project-tech" style="margin-bottom: 1.5rem;"></div>
+                <p id="modal-desc" class="text-muted"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
