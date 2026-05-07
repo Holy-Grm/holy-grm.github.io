@@ -242,6 +242,8 @@ header.scrolled {
   display: flex;
   align-items: center;
   padding-top: 5rem; /* Account for header */
+  padding-bottom: 6rem; /* Account for scroll indicator */
+  position: relative;
 }
 
 .hero-grid {
