@@ -20,17 +20,13 @@
 
     <style>
         :root {
-            --bg-color: #ffffff;
-            --bg-muted: #f8f9fa;
-            --text-primary: #111827;
-            --text-muted: #6b7280;
-            --accent-color: #000000;
-            --accent-light: rgba(0, 0, 0, 0.05);
-            --border-color: #e5e7eb;
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             --transition-speed: 0.3s;
-            --border-radius: 16px;
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --bg-dark: #0f0f11;
+            --border-color: rgba(255, 255, 255, 0.15);
+            --btn-bg: rgba(15, 15, 17, 0.75);
+            --btn-bg-hover: rgba(15, 15, 17, 0.95);
+            --shadow-btn: 0 4px 16px rgba(0, 0, 0, 0.35);
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
 
         * {
@@ -39,265 +35,225 @@
             box-sizing: border-box;
         }
 
-        body {
+        body, html {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
             font-family: var(--font-main);
-            background-color: var(--bg-muted);
-            color: var(--text-primary);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
             overflow: hidden;
-            -webkit-font-smoothing: antialiased;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* HEADER / NAVIGATION */
-        .cv-header {
-            height: 70px;
-            background-color: rgba(255, 255, 255, 0.85);
+        /* FULL SCREEN WRAPPER */
+        .cv-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            background-color: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+        }
+
+        /* ULTRA MINIMALIST FLOATING BUTTONS */
+        .floating-btn {
+            position: fixed;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--btn-bg);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-color);
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-        }
-
-        .cv-nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        .btn-back {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 999px;
             border: 1px solid var(--border-color);
-            background: #ffffff;
-            color: var(--text-primary);
+            color: #ffffff;
             text-decoration: none;
+            z-index: 9999;
             cursor: pointer;
             transition: all var(--transition-speed);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            box-shadow: var(--shadow-btn);
         }
 
-        .btn-back:hover {
-            background-color: var(--bg-muted);
-            transform: translateX(-2px);
+        .floating-btn:hover {
+            background-color: var(--btn-bg-hover);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.45);
         }
 
-        .cv-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
-            margin: 0;
-            text-align: center;
+        .floating-btn i {
+            width: 20px;
+            height: 20px;
+        }
+
+        .btn-close {
+            top: 1.5rem;
+            left: 1.5rem;
         }
 
         .btn-download {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.2rem;
-            font-size: 0.9rem;
-            font-weight: 500;
-            border-radius: 999px;
-            background-color: var(--accent-color);
-            color: #ffffff;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all var(--transition-speed);
+            top: 1.5rem;
+            right: 1.5rem;
         }
 
-        .btn-download:hover {
-            background-color: #333333;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.08);
-        }
-
-        /* MAIN PREVIEW CONTAINER */
-        .cv-container {
-            margin-top: 70px;
-            height: calc(100vh - 70px);
-            padding: 1.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-sizing: border-box;
-        }
-
-        .cv-card {
-            width: 100%;
-            max-width: 950px;
-            height: 100%;
-            background-color: #ffffff;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow-lg);
-            overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border-color);
-            display: flex;
-            flex-direction: column;
-        }
-
-        .pdf-embed {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* OPTIMISATION MOBILE PREVIEW BANNER */
-        .mobile-view-option {
+        /* MOBILE FLOATING OPTIMIZATION LINK */
+        .mobile-native-btn {
             display: none;
-            background: #ffffff;
-            padding: 0.85rem 1rem;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            z-index: 10;
-        }
-
-        .btn-mobile-open {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: 100%;
-            max-width: 320px;
-            padding: 0.65rem 1rem;
-            background-color: var(--bg-muted);
-            color: var(--text-primary);
+            position: fixed;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            background-color: var(--btn-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
+            color: #ffffff;
+            padding: 0.65rem 1.25rem;
             border-radius: 999px;
             font-size: 0.85rem;
             font-weight: 500;
             text-decoration: none;
+            box-shadow: var(--shadow-btn);
+            align-items: center;
+            gap: 0.5rem;
             transition: all var(--transition-speed);
         }
 
-        .btn-mobile-open:hover {
-            background-color: var(--accent-light);
+        .mobile-native-btn:hover {
+            background-color: var(--btn-bg-hover);
+            transform: translate(-50%, -2px);
         }
 
-        /* FALLBACK DESKTOP/MOBILE */
-        .pdf-fallback {
+        /* RESPONSIVE DESIGN */
+        @media (max-width: 768px) {
+            .floating-btn {
+                width: 42px;
+                height: 42px;
+            }
+
+            .floating-btn i {
+                width: 18px;
+                height: 18px;
+            }
+
+            .btn-close {
+                top: 1rem;
+                left: 1rem;
+            }
+
+            .btn-download {
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .mobile-native-btn {
+                display: inline-flex;
+            }
+        }
+
+        /* FALLBACK SCREEN */
+        .fallback-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 3rem 1.5rem;
+            padding: 2rem;
             text-align: center;
+            color: #ffffff;
+            background-color: var(--bg-dark);
             height: 100%;
-            color: var(--text-primary);
-            background: #ffffff;
+            width: 100%;
         }
 
         .fallback-icon {
             width: 48px;
             height: 48px;
-            color: var(--text-muted);
+            color: rgba(255, 255, 255, 0.4);
             margin-bottom: 1.5rem;
         }
 
-        .pdf-fallback h2 {
+        .fallback-container h2 {
             font-size: 1.35rem;
-            margin-bottom: 0.75rem;
             font-weight: 600;
+            margin-bottom: 0.75rem;
         }
 
-        .pdf-fallback p {
-            color: var(--text-muted);
-            max-width: 420px;
+        .fallback-container p {
+            color: rgba(255, 255, 255, 0.5);
+            max-width: 380px;
             margin-bottom: 1.5rem;
             font-size: 0.9rem;
             line-height: 1.5;
         }
 
-        /* RESPONSIVE LAYOUT */
-        @media (max-width: 768px) {
-            body {
-                overflow: auto; /* Allow scrolling if layout shifts */
-            }
+        .fallback-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.65rem 1.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border-radius: 999px;
+            background-color: #ffffff;
+            color: #000000;
+            text-decoration: none;
+            transition: all var(--transition-speed);
+        }
 
-            .cv-container {
-                padding: 0.75rem;
-                height: calc(100vh - 70px);
-            }
-
-            .cv-card {
-                border-radius: 12px;
-            }
-
-            .cv-title {
-                display: none; /* Hide centered title on smaller displays to avoid overlap */
-            }
-
-            .cv-nav-container {
-                padding: 0 1rem;
-            }
-
-            .mobile-view-option {
-                display: block;
-            }
+        .fallback-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
 
 <body>
 
-    <!-- NAV / HEADER -->
-    <header class="cv-header">
-        <div class="cv-nav-container">
-            <a href="../" class="btn-back" id="btn-back">
-                <i data-lucide="arrow-left"></i>
-                <span>Retour</span>
-            </a>
-            <h1 class="cv-title">Curriculum Vitae — Olivier Germain</h1>
-            <a href="../assets/CV_Olivier_Germain.pdf" download="CV_Olivier_Germain.pdf" class="btn-download" id="btn-download">
-                <i data-lucide="download"></i>
-                <span>Télécharger</span>
-            </a>
-        </div>
-    </header>
+    <!-- FLOATING ACTIONS -->
+    <a href="../" class="floating-btn btn-close" aria-label="Fermer" title="Retour au site">
+        <i data-lucide="x"></i>
+    </a>
+
+    <a href="../assets/CV_Olivier_Germain.pdf" download="CV_Olivier_Germain.pdf" class="floating-btn btn-download" aria-label="Télécharger le CV" title="Télécharger le CV">
+        <i data-lucide="download"></i>
+    </a>
+
+    <!-- MOBILE HELPER TO OPEN DIRECTLY IN NEW TAB FOR BEST NATIVE FEEL -->
+    <a href="../assets/CV_Olivier_Germain.pdf" target="_blank" class="mobile-native-btn">
+        <i data-lucide="external-link"></i>
+        <span>Plein écran</span>
+    </a>
 
     <!-- CV PREVIEW CONTAINER -->
-    <div class="cv-container">
-        <div class="cv-card">
-            <object data="../assets/CV_Olivier_Germain.pdf" type="application/pdf" class="pdf-embed">
-                <iframe src="../assets/CV_Olivier_Germain.pdf" class="pdf-embed">
-                    <div class="pdf-fallback">
-                        <i data-lucide="file-text" class="fallback-icon"></i>
-                        <h2>Aperçu non pris en charge</h2>
-                        <p>Votre navigateur ou appareil ne permet pas d'afficher directement les fichiers PDF intégrés.</p>
-                        <a href="../assets/CV_Olivier_Germain.pdf" download="CV_Olivier_Germain.pdf" class="btn-download">
-                            <i data-lucide="download"></i>
-                            <span>Télécharger le CV</span>
-                        </a>
-                    </div>
-                </iframe>
-            </object>
-
-            <!-- Mobile action to open in full screen (using native PDF reader of the mobile browser) -->
-            <div class="mobile-view-option">
-                <a href="../assets/CV_Olivier_Germain.pdf" target="_blank" class="btn-mobile-open">
-                    <i data-lucide="external-link"></i>
-                    <span>Ouvrir en plein écran</span>
-                </a>
-            </div>
-        </div>
+    <div class="cv-wrapper">
+        <object data="../assets/CV_Olivier_Germain.pdf" type="application/pdf" class="pdf-viewer">
+            <iframe src="../assets/CV_Olivier_Germain.pdf" class="pdf-viewer">
+                <div class="fallback-container">
+                    <i data-lucide="file-text" class="fallback-icon"></i>
+                    <h2>Aperçu non disponible</h2>
+                    <p>Votre appareil ne prend pas en charge l'affichage direct des fichiers PDF.</p>
+                    <a href="../assets/CV_Olivier_Germain.pdf" download="CV_Olivier_Germain.pdf" class="fallback-btn">
+                        <i data-lucide="download"></i>
+                        <span>Télécharger le PDF</span>
+                    </a>
+                </div>
+            </iframe>
+        </object>
     </div>
 
     <!-- Lucide Icons -->
