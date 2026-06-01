@@ -788,7 +788,7 @@
                     <div class="card-badge like">OUI</div>
                     <div class="card-badge nope">NON</div>
                     <div class="card-image-placeholder">
-                        <img src="images/${recipe.id}.jpg" alt="${recipe.title}" style="position:absolute; width:100%; height:100%; object-fit:cover; top:0; left:0; z-index:1; border-radius:32px 32px 0 0;" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+                        <img src="images/${recipe.id}.jpg" alt="${recipe.title}" style="position:absolute; width:100%; height:100%; object-fit:cover; top:0; left:0; z-index:1; border-radius:32px 32px 0 0;" onload="this.nextElementSibling.style.display='none'" onerror="if(this.src.endsWith('.jpg')){this.src='images/${recipe.id}.png';}else{this.style.display='none';}">
                         <span style="z-index:2; position:relative;">${recipe.icon || '🍽️'}</span>
                     </div>
                     <div class="card-content">
