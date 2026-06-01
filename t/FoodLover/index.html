@@ -787,7 +787,10 @@
                 card.innerHTML = `
                     <div class="card-badge like">OUI</div>
                     <div class="card-badge nope">NON</div>
-                    <div class="card-image-placeholder">${recipe.icon || '🍽️'}</div>
+                    <div class="card-image-placeholder">
+                        <img src="images/${recipe.id}.jpg" alt="${recipe.title}" style="position:absolute; width:100%; height:100%; object-fit:cover; top:0; left:0; z-index:1; border-radius:32px 32px 0 0;" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+                        <span style="z-index:2; position:relative;">${recipe.icon || '🍽️'}</span>
+                    </div>
                     <div class="card-content">
                         ${showExpand ? `
                         <button class="expand-btn">
@@ -926,13 +929,36 @@
             const list = {};
             acceptedRecipes.forEach(r => {
                 r.ingredients.forEach(i => {
-                    const key = i.name.toLowerCase() + '_' + i.unit;
+                    // Standardiser le nom pour grouper (ex: "Tomates" et "tomate" -> "tomate")
+                    let rawName = i.name.toLowerCase().trim();
+                    let key = rawName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const keepS = ['mais', 'pois', 'radis', 'jus', 'frais', 'souris', 'fois'];
+                    if (!keepS.includes(key) && (key.endsWith('s') || key.endsWith('x'))) {
+                        key = key.slice(0, -1);
+                    }
+
                     const qty = Math.ceil(i.qty * (r.portions / 2) * 10) / 10;
-                    if (list[key]) list[key].qty += qty;
-                    else list[key] = { name: i.name, qty, unit: i.unit };
+                    
+                    if (!list[key]) {
+                        list[key] = { 
+                            displayName: i.name.charAt(0).toUpperCase() + i.name.slice(1), 
+                            units: {} 
+                        };
+                    }
+                    
+                    let unitKey = i.unit ? i.unit.toLowerCase().trim() : "";
+                    // Unify some common units
+                    if (unitKey === "cas") unitKey = "càs";
+                    if (unitKey === "cac") unitKey = "càc";
+                    if (unitKey === "cuillère" || unitKey === "cuilliere") unitKey = "cuillère";
+                    
+                    if (!list[key].units[unitKey]) {
+                        list[key].units[unitKey] = 0;
+                    }
+                    list[key].units[unitKey] += qty;
                 });
             });
-            finalListing = Object.values(list).sort((a, b) => a.name.localeCompare(b.name));
+            finalListing = Object.values(list).sort((a, b) => a.displayName.localeCompare(b.displayName));
 
             // 1. Menu Tab
             document.getElementById('weekMenuPreview').innerHTML = acceptedRecipes.map(r => `
@@ -951,21 +977,30 @@
                 `).join('');
 
             // 2. Grocery Tab
-            document.getElementById('listPreview').innerHTML = finalListing.map(i => `
+            document.getElementById('listPreview').innerHTML = finalListing.map(item => {
+                let quantities = Object.entries(item.units).map(([unit, qty]) => {
+                    return `${Math.ceil(qty * 10) / 10} ${unit}`.trim();
+                }).join(' + ');
+                return `
                     <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid rgba(255,255,255,0.05);">
-                        <span>${i.name}</span><span>${Math.ceil(i.qty * 10) / 10} ${i.unit}</span>
+                        <span>${item.displayName}</span><span>${quantities}</span>
                     </div>
-                `).join('');
+                `;
+            }).join('');
 
             resultModal.classList.remove('hidden');
         };
 
         document.getElementById('btnDownloadCSV').onclick = () => {
             if (!finalListing.length) return;
-            let csvContent = "\uFEFFIngrédient,Quantité,Unité\n";
+            let csvContent = "\uFEFFIngrédient,Quantités\n";
             finalListing.forEach(item => {
-                const safeName = item.name.includes(',') ? `"${item.name}"` : item.name;
-                csvContent += `${safeName},${item.qty},${item.unit}\n`;
+                const safeName = item.displayName.includes(',') ? `"${item.displayName}"` : item.displayName;
+                let quantities = Object.entries(item.units).map(([unit, qty]) => {
+                    return `${Math.ceil(qty * 10) / 10} ${unit}`.trim();
+                }).join(' + ');
+                const safeQty = quantities.includes(',') ? `"${quantities}"` : quantities;
+                csvContent += `${safeName},${safeQty}\n`;
             });
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const url = URL.createObjectURL(blob);

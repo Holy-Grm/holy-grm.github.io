@@ -1826,48 +1826,34 @@ const gabaritRecettes = [
   },
   {
     "id": 31,
-    "title": "Quesadillas",
+    "title": "Wrap au poulet street corn",
     "icon": "🫓",
+    "portions": 2,
     "ingredients": [
       {
-        "name": "Tortillas",
+        "name": "Wrap protéiné",
         "qty": 2,
-        "unit": "unité"
+        "unit": "Unité"
       },
       {
-        "name": "Fromage râpé (cheddar, mozzarella ou mélange tex-mex)",
-        "qty": 150,
-        "unit": "g"
+        "name": "Morceaux poulet panné",
+        "qty": 10,
+        "unit": "Unité"
       },
       {
-        "name": "Poivron (optionnel)",
-        "qty": 0.5,
-        "unit": "unité"
-      },
-      {
-        "name": "Oignon (optionnel)",
-        "qty": 0.25,
-        "unit": "unité"
-      },
-      {
-        "name": "Épices tex-mex (optionnel)",
+        "name": "Laitue",
         "qty": 1,
-        "unit": "càc"
+        "unit": ""
       },
       {
-        "name": "Huile",
+        "name": "Mais en canne",
         "qty": 1,
-        "unit": "càs"
+        "unit": "Can"
       },
       {
-        "name": "Sel",
+        "name": "Avocat",
         "qty": 1,
-        "unit": "pincée"
-      },
-      {
-        "name": "Poivre",
-        "qty": 1,
-        "unit": "pincée"
+        "unit": ""
       }
     ]
   }
