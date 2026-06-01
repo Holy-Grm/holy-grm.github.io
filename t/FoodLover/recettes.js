@@ -5,7 +5,7 @@ const gabaritRecettes = [
     "icon": "🍛",
     "ingredients": [
       {
-        "name": "Poulet (morceaux)",
+        "name": "Poulet",
         "qty": 600,
         "unit": "g"
       },
@@ -154,7 +154,7 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Moutarde (optionnel)",
+        "name": "Moutarde",
         "qty": 1,
         "unit": "càc"
       },
@@ -196,17 +196,17 @@ const gabaritRecettes = [
         "unit": "càs"
       },
       {
-        "name": "Vin blanc (optionnel)",
+        "name": "Vin blanc",
         "qty": 100,
         "unit": "ml"
       },
       {
-        "name": "Pain (tranches)",
+        "name": "Pain",
         "qty": 4,
         "unit": "unité"
       },
       {
-        "name": "Fromage râpé (gruyère ou emmental)",
+        "name": "Fromage râpé",
         "qty": 100,
         "unit": "g"
       },
@@ -362,7 +362,7 @@ const gabaritRecettes = [
     "icon": "🥦",
     "ingredients": [
       {
-        "name": "Saucisses (type fumées ou Toulouse)",
+        "name": "Saucisses",
         "qty": 300,
         "unit": "g"
       },
@@ -476,7 +476,7 @@ const gabaritRecettes = [
     "icon": "🥗",
     "ingredients": [
       {
-        "name": "Poulet (poitrine)",
+        "name": "Poulet",
         "qty": 300,
         "unit": "g"
       },
@@ -538,7 +538,7 @@ const gabaritRecettes = [
     "icon": "🦆",
     "ingredients": [
       {
-        "name": "Canard confit (cuisses)",
+        "name": "Canard confit",
         "qty": 2,
         "unit": "unité"
       },
@@ -605,7 +605,7 @@ const gabaritRecettes = [
     "icon": "🥩",
     "ingredients": [
       {
-        "name": "Boeuf (filet ou rumsteak, haché au couteau)",
+        "name": "Boeuf",
         "qty": 250,
         "unit": "g"
       },
@@ -667,7 +667,7 @@ const gabaritRecettes = [
     "icon": "🍚",
     "ingredients": [
       {
-        "name": "Poulet (morceaux)",
+        "name": "Poulet",
         "qty": 300,
         "unit": "g"
       },
@@ -739,7 +739,7 @@ const gabaritRecettes = [
         "unit": "tranches"
       },
       {
-        "name": "Poulet cuit (ou dinde)",
+        "name": "Poulet cuit",
         "qty": 100,
         "unit": "g"
       },
@@ -843,7 +843,7 @@ const gabaritRecettes = [
         "unit": "unité"
       },
       {
-        "name": "Fromage (cheddar)",
+        "name": "Fromage",
         "qty": 2,
         "unit": "tranches"
       },
@@ -920,12 +920,12 @@ const gabaritRecettes = [
         "unit": "unité"
       },
       {
-        "name": "Poulet cuit (émietté)",
+        "name": "Poulet cuit",
         "qty": 200,
         "unit": "g"
       },
       {
-        "name": "Fromage râpé (cheddar ou mélange tex-mex)",
+        "name": "Fromage râpé",
         "qty": 150,
         "unit": "g"
       },
@@ -1044,12 +1044,12 @@ const gabaritRecettes = [
     "icon": "🌿",
     "ingredients": [
       {
-        "name": "Pâtes (penne, fusilli ou spaghetti)",
+        "name": "Pâtes",
         "qty": 300,
         "unit": "g"
       },
       {
-        "name": "Pesto (basilic)",
+        "name": "Pesto",
         "qty": 4,
         "unit": "càs"
       },
@@ -1059,12 +1059,12 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Pignons de pin (optionnel)",
+        "name": "Pignons de pin",
         "qty": 20,
         "unit": "g"
       },
       {
-        "name": "Tomates cerises (optionnel)",
+        "name": "Tomates cerises",
         "qty": 8,
         "unit": "unité"
       },
@@ -1091,7 +1091,7 @@ const gabaritRecettes = [
     "icon": "🐟",
     "ingredients": [
       {
-        "name": "Filets de poisson (saumon, morue ou autre)",
+        "name": "Filets de poisson",
         "qty": 2,
         "unit": "unité"
       },
@@ -1116,7 +1116,7 @@ const gabaritRecettes = [
         "unit": "càs"
       },
       {
-        "name": "Herbes (thym, romarin ou persil)",
+        "name": "Herbes",
         "qty": 1,
         "unit": "càs"
       },
@@ -1148,22 +1148,22 @@ const gabaritRecettes = [
         "unit": "càs"
       },
       {
-        "name": "Fromage râpé (mozzarella)",
+        "name": "Fromage râpé",
         "qty": 150,
         "unit": "g"
       },
       {
-        "name": "Pepperoni (ou autre garniture)",
+        "name": "Pepperoni",
         "qty": 12,
         "unit": "tranches"
       },
       {
-        "name": "Poivron (optionnel)",
+        "name": "Poivron",
         "qty": 0.5,
         "unit": "unité"
       },
       {
-        "name": "Oignon rouge (optionnel)",
+        "name": "Oignon rouge",
         "qty": 0.25,
         "unit": "unité"
       },
@@ -1200,7 +1200,7 @@ const gabaritRecettes = [
         "unit": "unité"
       },
       {
-        "name": "Poulet cuit (grillé ou rôti)",
+        "name": "Poulet cuit",
         "qty": 200,
         "unit": "g"
       },
@@ -1242,12 +1242,12 @@ const gabaritRecettes = [
     "icon": "🧀",
     "ingredients": [
       {
-        "name": "Pain (tranches)",
+        "name": "Pain",
         "qty": 4,
         "unit": "unité"
       },
       {
-        "name": "Fromage (cheddar ou autre fondant)",
+        "name": "Fromage",
         "qty": 120,
         "unit": "g"
       },
@@ -1277,7 +1277,7 @@ const gabaritRecettes = [
         "unit": "gousse"
       },
       {
-        "name": "Crème (optionnel)",
+        "name": "Crème",
         "qty": 2,
         "unit": "càs"
       },
@@ -1304,7 +1304,7 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Poulet (ou boeuf, ou tofu)",
+        "name": "Poulet",
         "qty": 250,
         "unit": "g"
       },
@@ -1339,7 +1339,7 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Crème sûre (ou yaourt)",
+        "name": "Crème sûre",
         "qty": 2,
         "unit": "càs"
       },
@@ -1416,7 +1416,7 @@ const gabaritRecettes = [
         "unit": "ml"
       },
       {
-        "name": "Herbes (origan, basilic)",
+        "name": "Herbes",
         "qty": 1,
         "unit": "càc"
       },
@@ -1448,7 +1448,7 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Guanciale (ou pancetta)",
+        "name": "Guanciale",
         "qty": 150,
         "unit": "g"
       },
@@ -1485,7 +1485,7 @@ const gabaritRecettes = [
     "icon": "🍤",
     "ingredients": [
       {
-        "name": "Pâtes (linguine ou spaghetti)",
+        "name": "Pâtes",
         "qty": 300,
         "unit": "g"
       },
@@ -1552,7 +1552,7 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Champignons (de Paris ou mélange forestier)",
+        "name": "Champignons",
         "qty": 250,
         "unit": "g"
       },
@@ -1592,7 +1592,7 @@ const gabaritRecettes = [
         "unit": "càs"
       },
       {
-        "name": "Persil (optionnel)",
+        "name": "Persil",
         "qty": 1,
         "unit": "càs"
       },
@@ -1614,12 +1614,12 @@ const gabaritRecettes = [
     "icon": "🥗",
     "ingredients": [
       {
-        "name": "Riz (sushi ou jasmin)",
+        "name": "Riz",
         "qty": 250,
         "unit": "g"
       },
       {
-        "name": "Saumon cru (qualité sushi) ou tofu",
+        "name": "Saumon cruou tofu",
         "qty": 200,
         "unit": "g"
       },
@@ -1634,7 +1634,7 @@ const gabaritRecettes = [
         "unit": "unité"
       },
       {
-        "name": "Mangue (optionnel)",
+        "name": "Mangue",
         "qty": 0.5,
         "unit": "unité"
       },
@@ -1654,7 +1654,7 @@ const gabaritRecettes = [
         "unit": "càs"
       },
       {
-        "name": "Mayonnaise épicée (ou sriracha mayo)",
+        "name": "Mayonnaise épicée",
         "qty": 1,
         "unit": "càs"
       },
@@ -1686,7 +1686,7 @@ const gabaritRecettes = [
     "icon": "🍤",
     "ingredients": [
       {
-        "name": "Pâtes (penne ou linguine)",
+        "name": "Pâtes",
         "qty": 300,
         "unit": "g"
       },
@@ -1731,7 +1731,7 @@ const gabaritRecettes = [
         "unit": "g"
       },
       {
-        "name": "Paprika (optionnel)",
+        "name": "Paprika",
         "qty": 0.5,
         "unit": "càc"
       },
@@ -1763,7 +1763,7 @@ const gabaritRecettes = [
         "unit": "unité"
       },
       {
-        "name": "Boeuf haché (ou poulet)",
+        "name": "Boeuf haché",
         "qty": 300,
         "unit": "g"
       },
@@ -1808,7 +1808,7 @@ const gabaritRecettes = [
         "unit": "càs"
       },
       {
-        "name": "Avocat (optionnel)",
+        "name": "Avocat",
         "qty": 0.5,
         "unit": "unité"
       },
