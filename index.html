@@ -34,7 +34,6 @@
                 <a href="#projects">Projets</a>
                 <a href="#awards">Prix</a>
                 <a href="#hobbies">Loisirs</a>
-                <a href="#benevolat">Bénévolat</a>
                 <a href="#contact">Contact</a>
             </nav>
             <button class="mobile-menu-btn" aria-label="Menu">
@@ -82,7 +81,7 @@
                 </div>
 
                 <div class="hero-image-wrapper fade-up">
-                    <img src="assets/img/blancblanc.png" alt="Olivier Germain" class="hero-image"
+                    <img src="assets/img/blancblanc.jpg" alt="Olivier Germain" class="hero-image"
                         onerror="this.src='https://placehold.co/400'">
                 </div>
             </div>
@@ -97,7 +96,6 @@
         <section id="about" class="bg-muted">
             <div class="container">
                 <div class="text-center fade-up">
-                    <span class="section-badge">À propos</span>
                     <h2>Passionné par le futur</h2>
                     <p class="subtitle">« Le meilleur moyen de prédire l'avenir, c'est de l'inventer. » — Alan Kay</p>
                 </div>
@@ -112,8 +110,7 @@
                         </p>
                         <p class="text-muted">
                             J'approfondis présentement mes connaissances à l'Université de Sherbrooke,
-                            réputée pour son programme coopératif. Ceci me permet d'acquérir une
-                            expérience précieuse en travaillant sur des projets réels dans divers secteurs.
+                            réputée pour son programme coopératif.
                         </p>
                     </div>
 
@@ -149,15 +146,15 @@
                 <div class="timeline-section fade-up">
                     <h3 class="text-center" style="margin-bottom: 3rem;">Mon expérience</h3>
                     <div class="timeline">
-                        <div class="timeline-item">
+                        <div class="timeline-item active"> <!-- Point noir sur la timeline -->
                             <div class="timeline-dot"></div>
                             <div class="timeline-date">Automne 2026</div>
                             <div class="timeline-title">Hydro-Québec</div>
-                            <div class="timeline-subtitle">Stagiaire - Data Scientist</div>
-                            <div class="timeline-desc">Développement d'outils d'analyse par IA/ML et création d'agents
-                                d'automatisation.</div>
+                            <div class="timeline-subtitle">Stagiaire - Intelligence Artificielle</div>
+                            <div class="timeline-desc">Développement d'outils automatisé d'analyse de données et
+                                intelligence artificielle agentique </div>
                         </div>
-                        <div class="timeline-item active">
+                        <div class="timeline-item active"><!-- Point noir sur la timeline -->
                             <div class="timeline-dot"></div>
                             <div class="timeline-date">2024 - 2027</div>
                             <div class="timeline-title">Université de Sherbrooke</div>
@@ -165,6 +162,14 @@
                             <div class="timeline-desc">Cheminement spécialisé en intelligence d'affaires.
                                 <br>Programme coopératif.
                             </div>
+                        </div>
+                        <div class="timeline-item active"><!-- Point noir sur la timeline -->
+                            <div class="timeline-dot"></div>
+                            <div class="timeline-date">2026-05 - Présent</div>
+                            <div class="timeline-title">Firme-École</div>
+                            <div class="timeline-subtitle">Directeur aux opérations</div>
+                            <div class="timeline-desc">Suivi des équipes de mandats de consultation en service-conseil
+                                des affaires</div>
                         </div>
                         <div class="timeline-item">
                             <div class="timeline-dot"></div>
@@ -204,7 +209,6 @@
         <section id="skills">
             <div class="container fade-up">
                 <div class="text-center">
-                    <span class="section-badge">Compétences</span>
                     <h2>Technologies acquises</h2>
                     <p class="subtitle">J'apprends en continue et j'améliore mes compétences sur des outils et
                         technologies variés.</p>
@@ -237,7 +241,6 @@
         <section id="projects" class="bg-muted">
             <div class="container fade-up">
                 <div class="text-center">
-                    <span class="section-badge">Mes réalisations</span>
                     <h2>Projets sélectionnés</h2>
                     <p class="subtitle">Voici quelques-uns de mes projets récents qui démontrent mes compétences en
                         développement, en analyse de données et en résolution de problèmes.</p>
@@ -308,6 +311,29 @@
                                         mode hybride. Économie potentielle de plus de 115 000$/an.</p>
                                     <div class="project-tech">
                                         <span class="tech-badge">POWER BI</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project F1 Pit Stop Prediction -->
+                        <div class="carousel-slide">
+                            <div class="project-card clickable" data-title="Prédiction d'arrêt aux puits (F1)"
+                                data-img="assets/img/img_f1prediction.jpg"
+                                data-desc="Modèle de Machine Learning développé à partir de données Kaggle pour prédire les arrêts aux puits (pit stops) en Formule 1. Utilisation d'un algorithme Random Forest atteignant une précision de 94 %."
+                                data-tech="Python, Machine Learning, Random Forest, Kaggle">
+                                <div class="project-img-wrapper">
+                                    <img src="assets/img/img_f1prediction.png" alt="Prédiction F1 Pit Stop"
+                                        class="project-img" onerror="this.src='https://placehold.co/400x300'">
+                                </div>
+                                <div class="project-content">
+                                    <h3 class="project-title">Prédiction F1 (Pit Stop)</h3>
+                                    <p class="project-desc">Modèle de Machine Learning (Random Forest) entraîné sur des
+                                        données Kaggle prédisant les arrêts aux puits en F1 avec 94 % de précision.</p>
+                                    <div class="project-tech">
+                                        <span class="tech-badge">Python</span>
+                                        <span class="tech-badge">Random Forest</span>
+                                        <span class="tech-badge">Machine Learning</span>
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +449,6 @@
         <section id="awards">
             <div class="container fade-up">
                 <div class="text-center">
-                    <span class="section-badge">Reconnaissance</span>
                     <h2>Prix</h2>
                 </div>
 
@@ -442,7 +467,7 @@
                         <div class="list-card-icon"><i data-lucide="award"></i></div>
                         <div class="list-card-content">
                             <h3>Ville de Sherbrooke 2023</h3>
-                            <p>Bravogramme pour avoir développé un outil de travail efficace.</p>
+                            <p>Prix pour avoir développé un outil de travail efficace.</p>
                             <div class="list-meta">
                                 <span><i data-lucide="calendar" style="width: 14px; height: 14px;"></i> Automne
                                     2023</span>
@@ -457,7 +482,6 @@
         <section id="hobbies" class="bg-muted">
             <div class="container fade-up">
                 <div class="text-center">
-                    <span class="section-badge">Passions</span>
                     <h2>Loisirs</h2>
                 </div>
 
@@ -477,35 +501,10 @@
             </div>
         </section>
 
-        <!-- BENEVOLAT SECTION -->
-        <section id="benevolat">
-            <div class="container fade-up">
-                <div class="text-center">
-                    <span class="section-badge">Engagement</span>
-                    <h2>Bénévolat</h2>
-                </div>
-
-                <div class="cards-grid">
-                    <div class="list-card" style="max-width: 600px; margin: 0 auto;">
-                        <div class="list-card-icon"><i data-lucide="hand-heart"></i></div>
-                        <div class="list-card-content">
-                            <h3>Firme École</h3>
-                            <p>Analyste - Service conseil d’affaires</p>
-                            <div class="list-meta">
-                                <span><i data-lucide="calendar" style="width: 14px; height: 14px;"></i>
-                                    2026-05-Présent</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- CONTACT SECTION -->
-        <section id="contact" class="bg-muted">
+        <section id="contact">
             <div class="container fade-up text-center">
-                <span class="section-badge">Contactez-moi</span>
-                <h2>Travaillons ensemble</h2>
+                <h2>Contactez-moi</h2>
                 <p class="subtitle" style="margin-bottom: 2rem;">Vous avez un projet en tête ou simplement envie de
                     discuter ? N'hésitez pas à me contacter !</p>
 
