@@ -571,6 +571,7 @@
                 opacity: 0;
                 transform: translateY(-4px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -1064,12 +1065,14 @@
             .ios-picker-backdrop {
                 align-items: center;
             }
+
             .ios-picker-card {
                 border-radius: 24px;
                 padding: 16px 24px 24px;
                 transform: scale(0.92);
                 transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
             }
+
             .ios-picker-backdrop.active .ios-picker-card {
                 transform: scale(1);
             }
@@ -1225,7 +1228,8 @@
                 <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Boîte à Outils
             </a>
             <div id="saveIndicator" class="save-indicator">
-                <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i> Données enregistrées
+                <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i> Données
+                enregistrées
             </div>
         </div>
 
@@ -1266,7 +1270,8 @@
                 <div class="summary-title">
                     <i data-lucide="bar-chart-3" style="width: 20px; height: 20px; color: var(--accent);"></i>
                     <span>Bilan de la semaine</span>
-                    <span id="shiftsCountBadge" class="quick-tag" style="font-size: 12px; margin-left: 6px;">0 shift</span>
+                    <span id="shiftsCountBadge" class="quick-tag" style="font-size: 12px; margin-left: 6px;">0
+                        shift</span>
                 </div>
                 <div class="summary-actions">
                     <button id="exportPhotoBtn" class="action-btn action-btn-primary">
@@ -1352,7 +1357,8 @@
                 </div>
                 <p class="modal-tip">
                     ✨ <strong>Photo générée avec succès !</strong><br>
-                    Sur iPhone/Android, l'image s'ouvre dans vos options de partage (choisissez <em>« Enregistrer l'image »</em>). Sur ordinateur, elle est téléchargée directement.
+                    Sur iPhone/Android, l'image s'ouvre dans vos options de partage (choisissez <em>« Enregistrer
+                        l'image »</em>). Sur ordinateur, elle est téléchargée directement.
                 </p>
             </div>
             <div class="modal-footer">
@@ -1442,10 +1448,6 @@
                 <span>Taux de pourboire moyen :</span>
                 <strong id="receiptAvgTipPct">0.0 %</strong>
             </div>
-        </div>
-
-        <div class="receipt-footer">
-            Généré automatiquement depuis holy-grm.github.io/t/shift-tracker.html • <span id="receiptTimestamp"></span>
         </div>
     </div>
 
@@ -1553,8 +1555,8 @@
         function isDateToday(targetDate) {
             const today = new Date();
             return targetDate.getDate() === today.getDate() &&
-                   targetDate.getMonth() === today.getMonth() &&
-                   targetDate.getFullYear() === today.getFullYear();
+                targetDate.getMonth() === today.getMonth() &&
+                targetDate.getFullYear() === today.getFullYear();
         }
 
         // Format hours without trailing .0 (e.g. 5 -> "5 h", 5.5 -> "5.5 h", 5.25 -> "5.25 h")
