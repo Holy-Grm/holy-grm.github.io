@@ -1,0 +1,2356 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Carnet de Shifts & Pourboires | Outils</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- html2canvas for photo export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --bg-card-subtle: #fbfbfd;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --text-tertiary: #a1a1a6;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --accent-subtle: rgba(0, 113, 227, 0.08);
+            --accent-border: rgba(0, 113, 227, 0.2);
+            --success: #34c759;
+            --success-subtle: rgba(52, 199, 89, 0.1);
+            --warning: #ff9500;
+            --warning-subtle: rgba(255, 149, 0, 0.1);
+            --danger: #ff3b30;
+            --danger-subtle: rgba(255, 59, 48, 0.1);
+            --purple: #af52de;
+            --purple-subtle: rgba(175, 82, 222, 0.1);
+            --border: #e5e5ea;
+            --border-subtle: #f0f0f2;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.09);
+            --radius-lg: 20px;
+            --radius-md: 14px;
+            --radius-sm: 10px;
+            --radius-pill: 999px;
+            --transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Inter", "Helvetica Neue", sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 24px 16px 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 860px;
+        }
+
+        /* Top Navigation Bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .save-indicator {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .save-indicator.visible {
+            opacity: 1;
+        }
+
+        /* Header Title */
+        .header-section {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            padding: 5px 12px;
+            background: var(--accent-subtle);
+            color: var(--accent);
+            border-radius: var(--radius-pill);
+            margin-bottom: 10px;
+        }
+
+        .app-title {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+
+        .app-subtitle {
+            font-size: 15px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        /* Week Navigator */
+        .week-nav-bar {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            gap: 8px;
+        }
+
+        .week-btn {
+            background: transparent;
+            border: none;
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-pill);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+
+        .week-btn:hover {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
+
+        .week-btn:active {
+            transform: scale(0.95);
+        }
+
+        .week-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .week-info:hover {
+            background: var(--bg-primary);
+        }
+
+        .week-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .week-sublabel {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 1px;
+        }
+
+        .btn-today {
+            background: var(--accent-subtle);
+            color: var(--accent);
+            border: 1px solid var(--accent-border);
+            font-size: 12px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .btn-today:hover {
+            background: var(--accent);
+            color: #ffffff;
+        }
+
+        /* Summary Dashboard Card */
+        .summary-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0071e3, #34c759, #af52de);
+        }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .summary-title {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .summary-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn {
+            border: none;
+            padding: 8px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+
+        .action-btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 2px 8px rgba(0, 113, 227, 0.25);
+        }
+
+        .action-btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 113, 227, 0.35);
+        }
+
+        .action-btn-primary:active {
+            transform: scale(0.97);
+        }
+
+        .action-btn-subtle {
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .action-btn-subtle:hover {
+            color: var(--text-primary);
+            background: #ffffff;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        @media (min-width: 640px) {
+            .metrics-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .metrics-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        .metric-box {
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 14px 16px;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition);
+        }
+
+        .metric-box.highlight-blue {
+            background: var(--accent-subtle);
+            border-color: var(--accent-border);
+        }
+
+        .metric-box.highlight-green {
+            background: var(--success-subtle);
+            border-color: rgba(52, 199, 89, 0.25);
+        }
+
+        .metric-box.highlight-purple {
+            background: var(--purple-subtle);
+            border-color: rgba(175, 82, 222, 0.25);
+        }
+
+        .metric-label {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .metric-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+        }
+
+        .metric-sub {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        /* Days Container */
+        .days-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Single Day Card */
+        .day-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            overflow: hidden;
+        }
+
+        .day-card.is-today {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent), var(--shadow-sm);
+        }
+
+        .day-card.is-off {
+            opacity: 0.72;
+            background: var(--bg-card-subtle);
+        }
+
+        .day-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+            background: transparent;
+            transition: background 0.15s ease;
+        }
+
+        .day-header:hover {
+            background: rgba(0, 0, 0, 0.015);
+        }
+
+        .day-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .day-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--text-primary);
+            letter-spacing: -0.01em;
+        }
+
+        .day-date {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .day-badge-today {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 3px 8px;
+            background: var(--accent);
+            color: #ffffff;
+            border-radius: var(--radius-pill);
+            letter-spacing: 0.02em;
+        }
+
+        .day-header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .day-quick-summary {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quick-tag {
+            font-size: 12px;
+            font-weight: 500;
+            padding: 2px 7px;
+            border-radius: 6px;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+        }
+
+        .quick-tag.green {
+            background: var(--success-subtle);
+            color: #248a3d;
+            font-weight: 600;
+        }
+
+        /* Apple-Style Toggle Switch */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .toggle-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .ios-toggle {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 26px;
+        }
+
+        .ios-toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .ios-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #e5e5ea;
+            transition: 0.25s;
+            border-radius: 26px;
+        }
+
+        .ios-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: 0.25s;
+            border-radius: 50%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .ios-toggle input:checked+.ios-slider {
+            background-color: var(--success);
+        }
+
+        .ios-toggle input:checked+.ios-slider:before {
+            transform: translateX(18px);
+        }
+
+        /* Day Body / Form */
+        .day-body {
+            padding: 0 20px 20px;
+            border-top: 1px solid var(--border-subtle);
+            display: block;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .day-card.is-off .day-body {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-4px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        @media (min-width: 640px) {
+            .form-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1.2fr 1.2fr 1fr 1fr;
+            }
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .input-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .input-field-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            color: var(--text-tertiary);
+            pointer-events: none;
+            width: 16px;
+            height: 16px;
+        }
+
+        .input-suffix {
+            position: absolute;
+            right: 12px;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .input-text,
+        .input-time {
+            width: 100%;
+            height: 42px;
+            padding: 8px 12px;
+            padding-left: 36px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .input-text:focus,
+        .input-time:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-subtle);
+        }
+
+        .input-text.has-suffix {
+            padding-right: 28px;
+        }
+
+        /* Computed Daily Results Strip */
+        .day-calc-strip {
+            margin-top: 16px;
+            background: var(--bg-primary);
+            border-radius: var(--radius-md);
+            padding: 12px 16px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            border: 1px solid var(--border-subtle);
+        }
+
+        @media (min-width: 640px) {
+            .day-calc-strip {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .calc-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .calc-title {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            letter-spacing: 0.03em;
+            margin-bottom: 3px;
+        }
+
+        .calc-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .calc-value.badge-8 {
+            color: var(--purple);
+        }
+
+        .calc-value.badge-tip {
+            color: var(--success);
+        }
+
+        /* Export Photo Preview Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 520px;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transform: scale(0.96);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 18px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-title {
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .modal-close-btn {
+            background: var(--bg-primary);
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            text-align: center;
+        }
+
+        .preview-img-container {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            background: var(--bg-primary);
+        }
+
+        .preview-img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .modal-tip {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 18px;
+            line-height: 1.4;
+        }
+
+        .modal-footer {
+            padding: 16px 22px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        /* Hidden Printable / Screenshot Template */
+        #screenshotTemplate {
+            position: fixed;
+            left: -9999px;
+            top: 0;
+            width: 640px;
+            background: #ffffff;
+            padding: 36px 32px;
+            color: #1d1d1f;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Inter", sans-serif;
+            border-radius: 0;
+            box-sizing: border-box;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 2px solid #e5e5ea;
+        }
+
+        .receipt-brand {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .receipt-period {
+            font-size: 14px;
+            color: #86868b;
+        }
+
+        .receipt-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 24px;
+            font-size: 13px;
+        }
+
+        .receipt-table th {
+            text-align: left;
+            padding: 8px 6px;
+            color: #86868b;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            border-bottom: 1px solid #e5e5ea;
+        }
+
+        .receipt-table td {
+            padding: 10px 6px;
+            border-bottom: 1px solid #f0f0f2;
+        }
+
+        .receipt-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .receipt-summary-box {
+            background: #f5f5f7;
+            border-radius: 14px;
+            padding: 18px 20px;
+            margin-bottom: 20px;
+        }
+
+        .receipt-summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .receipt-summary-row.total-row {
+            border-top: 1px solid #d2d2d7;
+            margin-top: 6px;
+            padding-top: 10px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .receipt-footer {
+            text-align: center;
+            font-size: 11px;
+            color: #a1a1a6;
+            margin-top: 12px;
+        }
+
+        /* Bottom Floating Bar on Mobile */
+        .mobile-quick-actions {
+            position: fixed;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        @media (min-width: 641px) {
+            .mobile-quick-actions {
+                display: none;
+            }
+        }
+
+        /* Apple-Style Time Button */
+        .apple-time-btn {
+            width: 100%;
+            height: 44px;
+            padding: 8px 14px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            font-family: inherit;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .apple-time-btn:hover {
+            border-color: var(--accent);
+            background: var(--bg-primary);
+        }
+
+        .apple-time-btn:active {
+            transform: scale(0.98);
+        }
+
+        .apple-time-btn-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .apple-time-val {
+            font-size: 15px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        /* Helper Mode Segmented Control */
+        .shift-role-container {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 14px;
+            margin-bottom: 6px;
+        }
+
+        .helper-segmented-bar {
+            display: inline-flex;
+            background: #e5e5ea;
+            padding: 2px;
+            border-radius: var(--radius-pill);
+        }
+
+        .seg-btn {
+            border: none;
+            background: transparent;
+            padding: 5px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: var(--transition);
+            user-select: none;
+        }
+
+        .seg-btn.active {
+            background: #ffffff;
+            color: var(--text-primary);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+        }
+
+        .badge-helper {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 7px;
+            background: var(--purple-subtle);
+            color: #7e22ce;
+            border-radius: 6px;
+        }
+
+        /* Helper Mode Layout Customizations */
+        .form-grid.is-helper {
+            grid-template-columns: repeat(2, 1fr) !important;
+            max-width: 440px;
+        }
+
+        .day-calc-strip.is-helper {
+            grid-template-columns: 1fr !important;
+            max-width: 200px;
+        }
+
+        /* iOS Clock-Style Drum Time Picker */
+        .ios-picker-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .ios-picker-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .ios-picker-card {
+            background: #ffffff;
+            width: 100%;
+            max-width: 440px;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+            padding: 10px 20px 34px;
+            transform: translateY(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @media (min-width: 641px) {
+            .ios-picker-backdrop {
+                align-items: center;
+            }
+            .ios-picker-card {
+                border-radius: 24px;
+                padding: 16px 24px 24px;
+                transform: scale(0.92);
+                transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            .ios-picker-backdrop.active .ios-picker-card {
+                transform: scale(1);
+            }
+        }
+
+        .ios-picker-backdrop.active .ios-picker-card {
+            transform: translateY(0);
+        }
+
+        .ios-picker-grabber {
+            width: 36px;
+            height: 5px;
+            background: #d1d1d6;
+            border-radius: 3px;
+            margin: 0 auto 10px;
+        }
+
+        @media (min-width: 641px) {
+            .ios-picker-grabber {
+                display: none;
+            }
+        }
+
+        .ios-picker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 8px;
+        }
+
+        .ios-picker-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .ios-picker-btn {
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            padding: 6px 10px;
+            font-family: inherit;
+        }
+
+        .ios-picker-btn.cancel {
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+
+        .ios-picker-btn.confirm {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .ios-picker-wheels-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            overflow: hidden;
+            margin: 10px 0;
+            gap: 12px;
+        }
+
+        .ios-picker-selection-bar {
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            right: 20px;
+            height: 44px;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.04);
+            border-radius: 12px;
+            pointer-events: none;
+            border-top: 1px solid rgba(0, 0, 0, 0.06);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+        }
+
+        .ios-drum-col {
+            flex: 1;
+            max-width: 130px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        .ios-drum-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .ios-drum-scroll {
+            width: 100%;
+            height: 200px;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 78px 0;
+            box-sizing: border-box;
+        }
+
+        .ios-drum-scroll::-webkit-scrollbar {
+            display: none;
+        }
+
+        .ios-drum-item {
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 500;
+            color: #8e8e93;
+            scroll-snap-align: center;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.12s ease, color 0.12s ease;
+        }
+
+        .ios-drum-item.active {
+            color: #1d1d1f;
+            font-weight: 700;
+            transform: scale(1.12);
+        }
+
+        .ios-drum-colon {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1d1d1f;
+            margin-top: 16px;
+            user-select: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <a href="./index.html" class="back-link">
+                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Boîte à Outils
+            </a>
+            <div id="saveIndicator" class="save-indicator">
+                <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i> Données enregistrées
+            </div>
+        </div>
+
+        <!-- Header -->
+        <header class="header-section">
+            <div class="badge-pill">
+                <i data-lucide="calendar" style="width: 13px; height: 13px;"></i> Restaurant • Serveuse
+            </div>
+            <h1 class="app-title">Carnet de Shifts & Pourboires</h1>
+            <p class="app-subtitle">Gestion hebdomadaire des heures travaillées, ventes et calcul automatique du 8%</p>
+        </header>
+
+        <!-- Week Navigation Bar -->
+        <div class="week-nav-bar">
+            <button id="prevWeekBtn" class="week-btn" title="Semaine précédente" aria-label="Semaine précédente">
+                <i data-lucide="chevron-left" style="width: 20px; height: 20px;"></i>
+            </button>
+
+            <div class="week-info" id="weekInfoPicker" title="Cliquez pour choisir une date">
+                <div class="week-label">
+                    <span id="weekLabelText">Semaine ...</span>
+                    <i data-lucide="calendar" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
+                </div>
+                <div class="week-sublabel" id="weekDateRangeText">...</div>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 6px;">
+                <button id="todayBtn" class="btn-today">Aujourd'hui</button>
+                <button id="nextWeekBtn" class="week-btn" title="Semaine suivante" aria-label="Semaine suivante">
+                    <i data-lucide="chevron-right" style="width: 20px; height: 20px;"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Weekly Summary Card -->
+        <div class="summary-card" id="summaryCard">
+            <div class="summary-header">
+                <div class="summary-title">
+                    <i data-lucide="bar-chart-3" style="width: 20px; height: 20px; color: var(--accent);"></i>
+                    <span>Bilan de la semaine</span>
+                    <span id="shiftsCountBadge" class="quick-tag" style="font-size: 12px; margin-left: 6px;">0 shift</span>
+                </div>
+                <div class="summary-actions">
+                    <button id="exportPhotoBtn" class="action-btn action-btn-primary">
+                        <i data-lucide="camera" style="width: 15px; height: 15px;"></i>
+                        <span>Enregistrer en photo</span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <!-- Total Heures -->
+                <div class="metric-box highlight-blue">
+                    <div class="metric-label">
+                        <span>Total Heures</span>
+                    </div>
+                    <div class="metric-value" id="summaryTotalHours">0.0 h</div>
+                </div>
+
+                <!-- Total Ventes -->
+                <div class="metric-box">
+                    <div class="metric-label">
+                        <span>Total Ventes</span>
+                    </div>
+                    <div class="metric-value" id="summaryTotalSales">0 $</div>
+                </div>
+
+                <!-- 8% des Ventes (Déclaration fiscale Québec) -->
+                <div class="metric-box highlight-purple">
+                    <div class="metric-label">
+                        <span>8% des Ventes</span>
+                    </div>
+                    <div class="metric-value" id="summaryEightPercent" style="color: var(--purple);">0,00 $</div>
+                </div>
+
+                <!-- Total Pourboires -->
+                <div class="metric-box highlight-green">
+                    <div class="metric-label">
+                        <span>Pourboires</span>
+                    </div>
+                    <div class="metric-value" id="summaryTotalTips" style="color: var(--success);">0,00 $</div>
+                </div>
+
+                <!-- Taux de Pourboire Moyen -->
+                <div class="metric-box">
+                    <div class="metric-label">
+                        <span>% Pourboire</span>
+                    </div>
+                    <div class="metric-value" id="summaryAvgTipPct">0.0 %</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Days of the Week List -->
+        <div class="days-list" id="daysList">
+            <!-- Rendered dynamically by JavaScript (Lundi à Dimanche) -->
+        </div>
+
+    </div>
+
+    <!-- Hidden native date picker input for week selection -->
+    <input type="date" id="hiddenDatePicker" style="position: fixed; left: -9999px; opacity: 0;">
+
+    <!-- Mobile Bottom Quick Action Bar -->
+    <div class="mobile-quick-actions">
+        <span id="mobileSummaryText" style="font-size: 13px; font-weight: 600;">0.0 h • 0,00 $ tips</span>
+        <button id="mobileExportBtn" class="action-btn action-btn-primary" style="padding: 6px 14px; font-size: 12px;">
+            <i data-lucide="camera" style="width: 14px; height: 14px;"></i> Photo
+        </button>
+    </div>
+
+    <!-- Modal for Photo Preview & Confirmation -->
+    <div class="modal-overlay" id="photoModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title">Sauvegarde de la semaine</div>
+                <button class="modal-close-btn" id="closeModalBtn" aria-label="Fermer">
+                    <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="preview-img-container">
+                    <img id="previewImage" src="" alt="Capture de la semaine">
+                </div>
+                <p class="modal-tip">
+                    ✨ <strong>Photo générée avec succès !</strong><br>
+                    Sur iPhone/Android, l'image s'ouvre dans vos options de partage (choisissez <em>« Enregistrer l'image »</em>). Sur ordinateur, elle est téléchargée directement.
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn action-btn-subtle" id="modalDismissBtn">Fermer</button>
+                <button class="action-btn action-btn-primary" id="modalDownloadAgainBtn">
+                    <i data-lucide="download" style="width: 15px; height: 15px;"></i> Télécharger l'image
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Apple iOS Clock-Style Time Picker Sheet -->
+    <div class="ios-picker-backdrop" id="iosPickerBackdrop">
+        <div class="ios-picker-card">
+            <div class="ios-picker-grabber"></div>
+            <div class="ios-picker-header">
+                <button type="button" class="ios-picker-btn cancel" id="iosPickerCancelBtn">Annuler</button>
+                <div class="ios-picker-title" id="iosPickerTitle">Heure</div>
+                <button type="button" class="ios-picker-btn confirm" id="iosPickerConfirmBtn">OK</button>
+            </div>
+
+            <div class="ios-picker-wheels-container">
+                <div class="ios-picker-selection-bar"></div>
+
+                <!-- Hours column -->
+                <div class="ios-drum-col">
+                    <div class="ios-drum-label">Heure</div>
+                    <div class="ios-drum-scroll" id="hoursDrum">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <div class="ios-drum-colon">h</div>
+
+                <!-- Minutes column -->
+                <div class="ios-drum-col">
+                    <div class="ios-drum-label">Minute</div>
+                    <div class="ios-drum-scroll" id="minutesDrum">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Template for rendering high-res receipt screenshot -->
+    <div id="screenshotTemplate">
+        <div class="receipt-header">
+            <div class="receipt-brand">Carnet de Shifts & Pourboires</div>
+            <div class="receipt-period" id="receiptPeriodText">Semaine ...</div>
+        </div>
+
+        <table class="receipt-table">
+            <thead>
+                <tr>
+                    <th>Jour</th>
+                    <th>Heures</th>
+                    <th style="text-align: right;">Ventes</th>
+                    <th style="text-align: right;">8 %</th>
+                    <th style="text-align: right;">Pourboire</th>
+                    <th style="text-align: right;">% Tip</th>
+                </tr>
+            </thead>
+            <tbody id="receiptTableBody">
+                <!-- Injected via JS -->
+            </tbody>
+        </table>
+
+        <div class="receipt-summary-box">
+            <div class="receipt-summary-row">
+                <span>Total des heures travaillées :</span>
+                <strong id="receiptTotalHours">0.0 h</strong>
+            </div>
+            <div class="receipt-summary-row">
+                <span>Total des ventes :</span>
+                <strong id="receiptTotalSales">0,00 $</strong>
+            </div>
+            <div class="receipt-summary-row" style="color: #af52de;">
+                <span>Total 8 % des ventes (déclaration) :</span>
+                <strong id="receiptEightPercent">0,00 $</strong>
+            </div>
+            <div class="receipt-summary-row" style="color: #34c759;">
+                <span>Total des pourboires perçus :</span>
+                <strong id="receiptTotalTips">0,00 $</strong>
+            </div>
+            <div class="receipt-summary-row total-row">
+                <span>Taux de pourboire moyen :</span>
+                <strong id="receiptAvgTipPct">0.0 %</strong>
+            </div>
+        </div>
+
+        <div class="receipt-footer">
+            Généré automatiquement depuis holy-grm.github.io/t/shift-tracker.html • <span id="receiptTimestamp"></span>
+        </div>
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // Days of week definitions (Monday=0 to Sunday=6)
+        const DAYS_META = [
+            { key: 0, name: "Lundi", short: "Lun" },
+            { key: 1, name: "Mardi", short: "Mar" },
+            { key: 2, name: "Mercredi", short: "Mer" },
+            { key: 3, name: "Jeudi", short: "Jeu" },
+            { key: 4, name: "Vendredi", short: "Ven" },
+            { key: 5, name: "Samedi", short: "Sam" },
+            { key: 6, name: "Dimanche", short: "Dim" }
+        ];
+
+        const STORAGE_KEY = "holy_server_shifts_v1";
+
+        // iOS Drum Picker constants & state
+        const HOURS_LIST = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0'));
+        const MINUTES_LIST = ["00", "15", "30", "45"];
+        const DRUM_ITEM_HEIGHT = 44;
+
+        let currentPickerDayIndex = null;
+        let currentPickerField = null; // 'start' or 'end'
+        let selectedHourIndex = 16;
+        let selectedMinuteIndex = 0;
+
+        // State
+        let currentMonday = getMondayOfCurrentWeek();
+        let appData = loadAllData();
+        let currentWeekKey = formatWeekKey(currentMonday);
+        let saveTimeout = null;
+
+        // Initialize App
+        document.addEventListener("DOMContentLoaded", () => {
+            lucide.createIcons();
+            initIosPicker();
+            setupEventListeners();
+            renderWeek();
+        });
+
+        /* =========================================================================
+           DATE & WEEK HELPERS
+           ========================================================================= */
+
+        // Get Monday of a given date (or current date by default)
+        function getMondayOfCurrentWeek(d = new Date()) {
+            const date = new Date(d);
+            const day = date.getDay(); // 0 is Sunday, 1 is Monday...
+            const diff = date.getDate() - day + (day === 0 ? -6 : 1); // adjust when day is sunday
+            date.setDate(diff);
+            date.setHours(0, 0, 0, 0);
+            return date;
+        }
+
+        // Format date to ISO week key: YYYY-Www
+        function formatWeekKey(mondayDate) {
+            const target = new Date(mondayDate);
+            const dayNr = (mondayDate.getDay() + 6) % 7;
+            target.setDate(target.getDate() - dayNr + 3);
+            const firstThursday = target.valueOf();
+            target.setMonth(0, 1);
+            if (target.getDay() !== 4) {
+                target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+            }
+            const weekNumber = 1 + Math.ceil((firstThursday - target) / 604800000);
+            const year = mondayDate.getFullYear();
+            return `${year}-W${String(weekNumber).padStart(2, '0')}`;
+        }
+
+        // Get readable label: "Semaine 46 • 2026"
+        function getWeekDisplayLabel(mondayDate) {
+            const target = new Date(mondayDate);
+            const dayNr = (mondayDate.getDay() + 6) % 7;
+            target.setDate(target.getDate() - dayNr + 3);
+            const firstThursday = target.valueOf();
+            target.setMonth(0, 1);
+            if (target.getDay() !== 4) {
+                target.setMonth(0, 1 + ((4 - target.getDay()) + 7) % 7);
+            }
+            const weekNumber = 1 + Math.ceil((firstThursday - target) / 604800000);
+            return `Semaine ${weekNumber} • ${mondayDate.getFullYear()}`;
+        }
+
+        // Get readable range: "10 nov. au 16 nov. 2026"
+        function getWeekRangeDisplay(mondayDate) {
+            const sundayDate = new Date(mondayDate);
+            sundayDate.setDate(sundayDate.getDate() + 6);
+
+            const options = { day: 'numeric', month: 'short' };
+            const startStr = mondayDate.toLocaleDateString('fr-CA', options);
+            const endStr = sundayDate.toLocaleDateString('fr-CA', { day: 'numeric', month: 'short', year: 'numeric' });
+            return `${startStr} au ${endStr}`;
+        }
+
+        // Get date for day index (0=Monday to 6=Sunday)
+        function getDateForDayIndex(mondayDate, index) {
+            const d = new Date(mondayDate);
+            d.setDate(d.getDate() + index);
+            return d;
+        }
+
+        // Check if date is today
+        function isDateToday(targetDate) {
+            const today = new Date();
+            return targetDate.getDate() === today.getDate() &&
+                   targetDate.getMonth() === today.getMonth() &&
+                   targetDate.getFullYear() === today.getFullYear();
+        }
+
+        // Format hours without trailing .0 (e.g. 5 -> "5 h", 5.5 -> "5.5 h", 5.25 -> "5.25 h")
+        function formatHours(h) {
+            if (isNaN(h) || h === null || h === undefined) return "0 h";
+            const rounded = Math.round(h * 100) / 100;
+            return `${rounded} h`;
+        }
+
+        // Format money without trailing .00 if whole number (e.g. 140 -> "140 $", 140.50 -> "140,50 $")
+        function formatMoneySmart(num) {
+            if (isNaN(num) || num === null || num === undefined) return "0 $";
+            const rounded = Math.round(num * 100) / 100;
+            if (rounded % 1 === 0) {
+                return rounded.toLocaleString('fr-CA') + ' $';
+            } else {
+                return rounded.toLocaleString('fr-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' $';
+            }
+        }
+
+        // Format sales currency without cents (e.g., "1 250 $")
+        function formatSales(num) {
+            if (isNaN(num) || num === null || num === undefined) return "0 $";
+            return Math.round(num).toLocaleString('fr-CA', { minimumFractionDigits: 0, maximumFractionDigits: 0 }) + ' $';
+        }
+
+        // Format percentage without trailing .0 (e.g. 15 -> "15 %", 15.6 -> "15.6 %")
+        function formatPctSmart(pct) {
+            if (isNaN(pct) || pct === null || pct === undefined || pct <= 0) return "0 %";
+            const rounded = Math.round(pct * 10) / 10;
+            return `${rounded % 1 === 0 ? rounded.toFixed(0) : rounded.toFixed(1)} %`;
+        }
+
+        // Format 24h time display: "16:00" -> "16h00" (no AM/PM)
+        function formatTimeDisplay(timeStr) {
+            if (!timeStr) return "16h00";
+            const [h, m] = timeStr.split(':');
+            return `${h}h${m || '00'}`;
+        }
+
+        // Snap time string "HH:mm" to nearest 15 minutes (00, 15, 30, 45)
+        function snapTo15Minutes(timeStr) {
+            if (!timeStr) return timeStr;
+            const parts = timeStr.split(':');
+            if (parts.length < 2) return timeStr;
+            const h = parseInt(parts[0], 10);
+            const m = parseInt(parts[1], 10);
+            if (isNaN(h) || isNaN(m)) return timeStr;
+
+            const roundedM = Math.round(m / 15) * 15;
+            if (roundedM === 60) {
+                const newH = (h + 1) % 24;
+                return `${String(newH).padStart(2, '0')}:00`;
+            }
+            return `${String(h).padStart(2, '0')}:${String(roundedM).padStart(2, '0')}`;
+        }
+
+        /* =========================================================================
+           LOCAL STORAGE
+           ========================================================================= */
+
+        function loadAllData() {
+            try {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                return stored ? JSON.parse(stored) : {};
+            } catch (e) {
+                console.error("Erreur de chargement localStorage:", e);
+                return {};
+            }
+        }
+
+        function saveAllData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(appData));
+                showSaveIndicator();
+            } catch (e) {
+                console.error("Erreur de sauvegarde localStorage:", e);
+            }
+        }
+
+        function showSaveIndicator() {
+            const el = document.getElementById('saveIndicator');
+            if (!el) return;
+            el.classList.add('visible');
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+                el.classList.remove('visible');
+            }, 1800);
+        }
+
+        // Ensure week structure exists in state
+        function getOrCreateWeekData(weekKey) {
+            if (!appData[weekKey]) {
+                appData[weekKey] = {};
+                for (let i = 0; i < 7; i++) {
+                    appData[weekKey][i] = {
+                        worked: false,
+                        helper: false,
+                        start: "16:00",
+                        end: "21:00",
+                        sales: "",
+                        tips: ""
+                    };
+                }
+            }
+            return appData[weekKey];
+        }
+
+        /* =========================================================================
+           HOURS & SHIFT CALCULATIONS
+           ========================================================================= */
+
+        // Calculate hours worked between two "HH:mm" strings
+        function calculateHours(startTime, endTime) {
+            if (!startTime || !endTime) return 0;
+            const [sh, sm] = startTime.split(':').map(Number);
+            const [eh, em] = endTime.split(':').map(Number);
+
+            if (isNaN(sh) || isNaN(sm) || isNaN(eh) || isNaN(em)) return 0;
+
+            let startMinutes = sh * 60 + sm;
+            let endMinutes = eh * 60 + em;
+
+            // Handle shifts crossing midnight (e.g. 17:00 to 01:00)
+            if (endMinutes < startMinutes) {
+                endMinutes += 24 * 60;
+            }
+
+            const totalMinutes = Math.max(0, endMinutes - startMinutes);
+            return totalMinutes / 60;
+        }
+
+        /* =========================================================================
+           RENDER WEEK
+           ========================================================================= */
+
+        function renderWeek() {
+            currentWeekKey = formatWeekKey(currentMonday);
+            const weekData = getOrCreateWeekData(currentWeekKey);
+
+            document.getElementById('weekLabelText').textContent = getWeekDisplayLabel(currentMonday);
+            document.getElementById('weekDateRangeText').textContent = getWeekRangeDisplay(currentMonday);
+
+            const daysContainer = document.getElementById('daysList');
+            daysContainer.innerHTML = '';
+
+            let totalWeekHours = 0;
+            let totalWeekSales = 0;
+            let totalWeekTips = 0;
+            let totalShiftsCount = 0;
+
+            DAYS_META.forEach((meta) => {
+                const dayIndex = meta.key;
+                const dayDate = getDateForDayIndex(currentMonday, dayIndex);
+                const isToday = isDateToday(dayDate);
+                const dayData = weekData[dayIndex] || {
+                    worked: false,
+                    helper: false,
+                    start: "16:00",
+                    end: "21:00",
+                    sales: "",
+                    tips: ""
+                };
+
+                const isHelper = !!dayData.helper;
+                const hours = dayData.worked ? calculateHours(dayData.start, dayData.end) : 0;
+                const sales = dayData.worked && !isHelper && dayData.sales !== "" ? parseFloat(dayData.sales) || 0 : 0;
+                const tips = dayData.worked && !isHelper && dayData.tips !== "" ? parseFloat(dayData.tips) || 0 : 0;
+                const eightPct = sales * 0.08;
+                const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+
+                if (dayData.worked) {
+                    totalWeekHours += hours;
+                    totalWeekSales += sales;
+                    totalWeekTips += tips;
+                    totalShiftsCount += 1;
+                }
+
+                const dayCard = document.createElement('div');
+                dayCard.className = `day-card ${isToday ? 'is-today' : ''} ${!dayData.worked ? 'is-off' : ''}`;
+                dayCard.dataset.dayIndex = dayIndex;
+
+                const dateNum = dayDate.getDate();
+                const monthName = dayDate.toLocaleDateString('fr-CA', { month: 'short' });
+
+                dayCard.innerHTML = `
+                    <div class="day-header" onclick="handleDayHeaderClick(${dayIndex}, event)">
+                        <div class="day-title-group">
+                            <span class="day-name">${meta.name}</span>
+                            <span class="day-date">${dateNum} ${monthName}</span>
+                            ${isToday ? '<span class="day-badge-today">Aujourd\'hui</span>' : ''}
+                        </div>
+                        <div class="day-header-right">
+                            <div class="day-quick-summary" id="quickSummary_${dayIndex}">
+                                ${dayData.worked ? `
+                                    <span class="quick-tag">${formatHours(hours)}</span>
+                                    ${isHelper ? '<span class="badge-helper">Helper</span>' : (tips > 0 ? `<span class="quick-tag green">+${formatMoneySmart(tips)}</span>` : '')}
+                                ` : '<span class="quick-tag">Congé</span>'}
+                            </div>
+                            <div class="toggle-wrapper" onclick="event.stopPropagation()">
+                                <label class="ios-toggle">
+                                    <input type="checkbox" id="toggle_${dayIndex}" ${dayData.worked ? 'checked' : ''} onchange="toggleDayWorked(${dayIndex}, this.checked)">
+                                    <span class="ios-slider"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="day-body" id="dayBody_${dayIndex}">
+                        <!-- Shift Role: Serveuse vs Helper -->
+                        <div class="shift-role-container">
+                            <div class="helper-segmented-bar">
+                                <button type="button" class="seg-btn ${!isHelper ? 'active' : ''}" onclick="toggleHelperMode(${dayIndex}, false)">
+                                    <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i> Serveuse
+                                </button>
+                                <button type="button" class="seg-btn ${isHelper ? 'active' : ''}" onclick="toggleHelperMode(${dayIndex}, true)">
+                                    <i data-lucide="user-check" style="width: 13px; height: 13px;"></i> Helper
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="form-grid ${isHelper ? 'is-helper' : ''}">
+                            <!-- Heure Début (Apple Time Picker) -->
+                            <div class="input-group">
+                                <label class="input-label">Début</label>
+                                <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, 'start')">
+                                    <div class="apple-time-btn-left">
+                                        <i data-lucide="clock" class="input-icon" style="position: static;"></i>
+                                        <span class="apple-time-val">${formatTimeDisplay(dayData.start || (isHelper ? '17:00' : '16:00'))}</span>
+                                    </div>
+                                    <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
+                                </button>
+                            </div>
+
+                            <!-- Heure Fin (Apple Time Picker) -->
+                            <div class="input-group">
+                                <label class="input-label">Fin</label>
+                                <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, 'end')">
+                                    <div class="apple-time-btn-left">
+                                        <i data-lucide="clock" class="input-icon" style="position: static;"></i>
+                                        <span class="apple-time-val">${formatTimeDisplay(dayData.end || (isHelper ? '20:00' : '21:00'))}</span>
+                                    </div>
+                                    <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
+                                </button>
+                            </div>
+
+                            ${!isHelper ? `
+                                <!-- Ventes -->
+                                <div class="input-group">
+                                    <label class="input-label" for="sales_${dayIndex}">
+                                        <span>Ventes ($)</span>
+                                    </label>
+                                    <div class="input-field-wrapper">
+                                        <i data-lucide="receipt" class="input-icon"></i>
+                                        <input type="number" step="1" min="0" placeholder="0" id="sales_${dayIndex}" class="input-text has-suffix" value="${dayData.sales !== undefined ? dayData.sales : ''}" oninput="updateDayField(${dayIndex}, 'sales', this.value)">
+                                        <span class="input-suffix">$</span>
+                                    </div>
+                                </div>
+
+                                <!-- Pourboire -->
+                                <div class="input-group">
+                                    <label class="input-label" for="tips_${dayIndex}">
+                                        <span>Pourboire ($)</span>
+                                    </label>
+                                    <div class="input-field-wrapper">
+                                        <i data-lucide="coins" class="input-icon"></i>
+                                        <input type="number" step="0.01" min="0" placeholder="0.00" id="tips_${dayIndex}" class="input-text has-suffix" value="${dayData.tips !== undefined ? dayData.tips : ''}" oninput="updateDayField(${dayIndex}, 'tips', this.value)">
+                                        <span class="input-suffix">$</span>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Mini Strip Calculs du jour -->
+                        <div class="day-calc-strip ${isHelper ? 'is-helper' : ''}">
+                            <div class="calc-item">
+                                <span class="calc-title">Heures travaillées</span>
+                                <span class="calc-value" id="calcHours_${dayIndex}">${formatHours(hours)}</span>
+                            </div>
+                            ${!isHelper ? `
+                                <div class="calc-item">
+                                    <span class="calc-title">8 % des Ventes</span>
+                                    <span class="calc-value badge-8" id="calcEight_${dayIndex}">${formatMoneySmart(eightPct)}</span>
+                                </div>
+                                <div class="calc-item">
+                                    <span class="calc-title">% Pourboire</span>
+                                    <span class="calc-value badge-tip" id="calcTipPct_${dayIndex}">${sales > 0 ? formatPctSmart(tipPct) : '—'}</span>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </div>
+                `;
+
+                daysContainer.appendChild(dayCard);
+            });
+
+            // Update Dashboard Summary
+            updateSummaryCards(totalWeekHours, totalWeekSales, totalWeekTips, totalShiftsCount);
+            lucide.createIcons();
+        }
+
+        /* =========================================================================
+           SUMMARY CALCULATIONS
+           ========================================================================= */
+
+        function updateSummaryCards(totalHours, totalSales, totalTips, shiftsCount) {
+            const totalEightPct = totalSales * 0.08;
+            const avgTipPct = totalSales > 0 ? (totalTips / totalSales) * 100 : 0;
+
+            document.getElementById('summaryTotalHours').textContent = formatHours(totalHours);
+            document.getElementById('shiftsCountBadge').textContent = `${shiftsCount} shift${shiftsCount > 1 ? 's' : ''}`;
+
+            document.getElementById('summaryTotalSales').textContent = formatSales(totalSales);
+            document.getElementById('summaryEightPercent').textContent = formatMoneySmart(totalEightPct);
+            document.getElementById('summaryTotalTips').textContent = formatMoneySmart(totalTips);
+            document.getElementById('summaryAvgTipPct').textContent = totalSales > 0 ? formatPctSmart(avgTipPct) : '0 %';
+
+            // Mobile Bar
+            const mobileText = document.getElementById('mobileSummaryText');
+            if (mobileText) {
+                mobileText.textContent = `${formatHours(totalHours)} • ${formatMoneySmart(totalTips)} tips`;
+            }
+        }
+
+        /* =========================================================================
+           USER INTERACTIONS & FIELD UPDATES
+           ========================================================================= */
+
+        function handleDayHeaderClick(dayIndex, event) {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            const checkbox = document.getElementById(`toggle_${dayIndex}`);
+            if (!weekData[dayIndex].worked) {
+                checkbox.checked = true;
+                toggleDayWorked(dayIndex, true);
+            }
+        }
+
+        function toggleDayWorked(dayIndex, isWorked) {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            weekData[dayIndex].worked = isWorked;
+
+            if (isWorked) {
+                const isHelper = !!weekData[dayIndex].helper;
+                if (!weekData[dayIndex].start || (isHelper && weekData[dayIndex].start === "16:00" && weekData[dayIndex].end === "21:00")) {
+                    weekData[dayIndex].start = isHelper ? "17:00" : "16:00";
+                    weekData[dayIndex].end = isHelper ? "20:00" : "21:00";
+                } else if (!weekData[dayIndex].end) {
+                    weekData[dayIndex].end = isHelper ? "20:00" : "21:00";
+                }
+            }
+
+            saveAllData();
+            renderWeek();
+        }
+
+        function toggleHelperMode(dayIndex, isHelper) {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            const dayData = weekData[dayIndex];
+            const prevHelper = !!dayData.helper;
+            if (prevHelper === isHelper) return;
+
+            const currentStart = dayData.start || "16:00";
+            const currentEnd = dayData.end || "21:00";
+
+            if (isHelper) {
+                // Serveuse -> Helper:
+                // Si les heures actuelles correspondent aux heures par défaut de Serveuse (16h à 21h),
+                // on bascule vers les heures par défaut de Helper (17h à 20h).
+                // Si des heures personnalisées ont été choisies (ex: 15h à 23h), on ne touche à rien !
+                if (currentStart === "16:00" && currentEnd === "21:00") {
+                    dayData.start = "17:00";
+                    dayData.end = "20:00";
+                }
+            } else {
+                // Helper -> Serveuse:
+                // Si les heures actuelles correspondent aux heures par défaut de Helper (17h à 20h),
+                // on restaure les heures par défaut de Serveuse (16h à 21h).
+                // Si des heures personnalisées ont été choisies, on ne touche à rien !
+                if (currentStart === "17:00" && currentEnd === "20:00") {
+                    dayData.start = "16:00";
+                    dayData.end = "21:00";
+                }
+            }
+
+            dayData.helper = isHelper;
+            saveAllData();
+            renderWeek();
+        }
+
+        function updateDayField(dayIndex, field, value) {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            if (field === 'start' || field === 'end') {
+                value = snapTo15Minutes(value);
+            }
+            weekData[dayIndex][field] = value;
+            saveAllData();
+
+            const dayData = weekData[dayIndex];
+            const isHelper = !!dayData.helper;
+            const hours = dayData.worked ? calculateHours(dayData.start, dayData.end) : 0;
+            const sales = dayData.worked && !isHelper && dayData.sales !== "" ? parseFloat(dayData.sales) || 0 : 0;
+            const tips = dayData.worked && !isHelper && dayData.tips !== "" ? parseFloat(dayData.tips) || 0 : 0;
+            const eightPct = sales * 0.08;
+            const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+
+            const calcHoursEl = document.getElementById(`calcHours_${dayIndex}`);
+            if (calcHoursEl) calcHoursEl.textContent = formatHours(hours);
+
+            const calcEightEl = document.getElementById(`calcEight_${dayIndex}`);
+            if (calcEightEl) calcEightEl.textContent = isHelper ? '—' : formatMoneySmart(eightPct);
+
+            const calcTipPctEl = document.getElementById(`calcTipPct_${dayIndex}`);
+            if (calcTipPctEl) calcTipPctEl.textContent = isHelper ? '—' : (sales > 0 ? formatPctSmart(tipPct) : '—');
+
+            // Update Quick Summary in header
+            const quickSummaryEl = document.getElementById(`quickSummary_${dayIndex}`);
+            if (quickSummaryEl && dayData.worked) {
+                quickSummaryEl.innerHTML = `
+                    <span class="quick-tag">${formatHours(hours)}</span>
+                    ${isHelper ? '<span class="badge-helper">Helper</span>' : (tips > 0 ? `<span class="quick-tag green">+${formatMoneySmart(tips)}</span>` : '')}
+                `;
+            }
+
+            // Recalculate totals
+            recalculateFullTotals();
+        }
+
+        function recalculateFullTotals() {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            let totalWeekHours = 0;
+            let totalWeekSales = 0;
+            let totalWeekTips = 0;
+            let totalShiftsCount = 0;
+
+            DAYS_META.forEach(meta => {
+                const dayData = weekData[meta.key];
+                if (dayData && dayData.worked) {
+                    const hours = calculateHours(dayData.start, dayData.end);
+                    const isHelper = !!dayData.helper;
+                    const sales = isHelper ? 0 : (parseFloat(dayData.sales) || 0);
+                    const tips = isHelper ? 0 : (parseFloat(dayData.tips) || 0);
+                    totalWeekHours += hours;
+                    totalWeekSales += sales;
+                    totalWeekTips += tips;
+                    totalShiftsCount += 1;
+                }
+            });
+
+            updateSummaryCards(totalWeekHours, totalWeekSales, totalWeekTips, totalShiftsCount);
+        }
+
+        /* =========================================================================
+           APPLE CLOCK-STYLE TIME PICKER (24H - 15 MIN SLICES)
+           ========================================================================= */
+
+        function initIosPicker() {
+            const hoursDrum = document.getElementById('hoursDrum');
+            const minutesDrum = document.getElementById('minutesDrum');
+
+            hoursDrum.innerHTML = '';
+            HOURS_LIST.forEach((h, i) => {
+                const item = document.createElement('div');
+                item.className = 'ios-drum-item';
+                item.textContent = `${h}h`;
+                item.dataset.index = i;
+                item.addEventListener('click', () => scrollDrumToIndex(hoursDrum, i));
+                hoursDrum.appendChild(item);
+            });
+
+            minutesDrum.innerHTML = '';
+            MINUTES_LIST.forEach((m, i) => {
+                const item = document.createElement('div');
+                item.className = 'ios-drum-item';
+                item.textContent = m;
+                item.dataset.index = i;
+                item.addEventListener('click', () => scrollDrumToIndex(minutesDrum, i));
+                minutesDrum.appendChild(item);
+            });
+
+            setupDrumScrollListener(hoursDrum, (idx) => {
+                selectedHourIndex = idx;
+            });
+
+            setupDrumScrollListener(minutesDrum, (idx) => {
+                selectedMinuteIndex = idx;
+            });
+
+            document.getElementById('iosPickerCancelBtn').addEventListener('click', closeIosPicker);
+            document.getElementById('iosPickerBackdrop').addEventListener('click', (e) => {
+                if (e.target.id === 'iosPickerBackdrop') closeIosPicker();
+            });
+
+            document.getElementById('iosPickerConfirmBtn').addEventListener('click', () => {
+                const h = HOURS_LIST[selectedHourIndex] || '16';
+                const m = MINUTES_LIST[selectedMinuteIndex] || '00';
+                const timeVal = `${h}:${m}`;
+                if (currentPickerDayIndex !== null && currentPickerField) {
+                    updateDayField(currentPickerDayIndex, currentPickerField, timeVal);
+                    renderWeek();
+                }
+                closeIosPicker();
+            });
+        }
+
+        function setupDrumScrollListener(drumEl, onIndexChange) {
+            let scrollTimer = null;
+            drumEl.addEventListener('scroll', () => {
+                clearTimeout(scrollTimer);
+                const idx = Math.max(0, Math.min(drumEl.children.length - 1, Math.round(drumEl.scrollTop / DRUM_ITEM_HEIGHT)));
+                updateActiveDrumItem(drumEl, idx);
+                scrollTimer = setTimeout(() => {
+                    const finalIdx = Math.max(0, Math.min(drumEl.children.length - 1, Math.round(drumEl.scrollTop / DRUM_ITEM_HEIGHT)));
+                    onIndexChange(finalIdx);
+                }, 60);
+            }, { passive: true });
+        }
+
+        function updateActiveDrumItem(drumEl, activeIdx) {
+            const items = drumEl.children;
+            for (let i = 0; i < items.length; i++) {
+                if (i === activeIdx) {
+                    items[i].classList.add('active');
+                } else {
+                    items[i].classList.remove('active');
+                }
+            }
+        }
+
+        function scrollDrumToIndex(drumEl, index, smooth = true) {
+            drumEl.scrollTo({
+                top: index * DRUM_ITEM_HEIGHT,
+                behavior: smooth ? 'smooth' : 'instant'
+            });
+            updateActiveDrumItem(drumEl, index);
+        }
+
+        function openAppleTimePicker(dayIndex, field) {
+            currentPickerDayIndex = dayIndex;
+            currentPickerField = field;
+
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            const dayData = weekData[dayIndex];
+            const isHelper = !!dayData.helper;
+            const defaultTime = field === 'start' ? (isHelper ? '17:00' : '16:00') : (isHelper ? '20:00' : '21:00');
+            const currentTime = dayData[field] || defaultTime;
+
+            const [h, m] = currentTime.split(':');
+            selectedHourIndex = HOURS_LIST.indexOf(h);
+            if (selectedHourIndex === -1) {
+                selectedHourIndex = field === 'start' ? (isHelper ? 17 : 16) : (isHelper ? 20 : 21);
+            }
+
+            const mNum = parseInt(m, 10) || 0;
+            const roundedM = Math.round(mNum / 15) * 15;
+            const mStr = String(roundedM === 60 ? 0 : roundedM).padStart(2, '0');
+            selectedMinuteIndex = MINUTES_LIST.indexOf(mStr);
+            if (selectedMinuteIndex === -1) selectedMinuteIndex = 0;
+
+            const dayMeta = DAYS_META[dayIndex];
+            document.getElementById('iosPickerTitle').textContent = `${dayMeta.name} • ${field === 'start' ? 'Début' : 'Fin'}`;
+
+            const backdrop = document.getElementById('iosPickerBackdrop');
+            backdrop.classList.add('active');
+
+            requestAnimationFrame(() => {
+                setTimeout(() => {
+                    const hoursDrum = document.getElementById('hoursDrum');
+                    const minutesDrum = document.getElementById('minutesDrum');
+                    scrollDrumToIndex(hoursDrum, selectedHourIndex, false);
+                    scrollDrumToIndex(minutesDrum, selectedMinuteIndex, false);
+                }, 40);
+            });
+        }
+
+        function closeIosPicker() {
+            document.getElementById('iosPickerBackdrop').classList.remove('active');
+            currentPickerDayIndex = null;
+            currentPickerField = null;
+        }
+
+        /* =========================================================================
+           NAVIGATION (PREV, NEXT, TODAY, PICKER)
+           ========================================================================= */
+
+        function setupEventListeners() {
+            document.getElementById('prevWeekBtn').addEventListener('click', () => {
+                currentMonday.setDate(currentMonday.getDate() - 7);
+                renderWeek();
+            });
+
+            document.getElementById('nextWeekBtn').addEventListener('click', () => {
+                currentMonday.setDate(currentMonday.getDate() + 7);
+                renderWeek();
+            });
+
+            document.getElementById('todayBtn').addEventListener('click', () => {
+                currentMonday = getMondayOfCurrentWeek();
+                renderWeek();
+            });
+
+            const picker = document.getElementById('hiddenDatePicker');
+            document.getElementById('weekInfoPicker').addEventListener('click', () => {
+                picker.showPicker ? picker.showPicker() : picker.click();
+            });
+
+            picker.addEventListener('change', (e) => {
+                if (e.target.value) {
+                    const chosen = new Date(e.target.value + "T12:00:00");
+                    currentMonday = getMondayOfCurrentWeek(chosen);
+                    renderWeek();
+                }
+            });
+
+            document.getElementById('exportPhotoBtn').addEventListener('click', exportToPhoto);
+            document.getElementById('mobileExportBtn').addEventListener('click', exportToPhoto);
+
+            document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+            document.getElementById('modalDismissBtn').addEventListener('click', closeModal);
+            document.getElementById('photoModal').addEventListener('click', (e) => {
+                if (e.target.id === 'photoModal') closeModal();
+            });
+        }
+
+        function closeModal() {
+            document.getElementById('photoModal').classList.remove('active');
+        }
+
+        /* =========================================================================
+           EXPORT AS PHOTO (SCREENSHOT CAPTURE)
+           ========================================================================= */
+
+        let lastGeneratedBlob = null;
+        let lastGeneratedFileName = "shifts-semaine.png";
+
+        async function exportToPhoto() {
+            const exportBtn = document.getElementById('exportPhotoBtn');
+            const originalBtnHtml = exportBtn.innerHTML;
+            exportBtn.innerHTML = `<i data-lucide="loader-2" class="spin" style="width: 15px; height: 15px;"></i> Génération...`;
+            exportBtn.disabled = true;
+
+            try {
+                populateScreenshotTemplate();
+
+                const template = document.getElementById('screenshotTemplate');
+
+                const canvas = await html2canvas(template, {
+                    scale: 2.5,
+                    useCORS: true,
+                    backgroundColor: "#ffffff",
+                    logging: false
+                });
+
+                const fileName = `Shifts_${currentWeekKey}.png`;
+                lastGeneratedFileName = fileName;
+
+                canvas.toBlob(async (blob) => {
+                    lastGeneratedBlob = blob;
+                    const imageUrl = URL.createObjectURL(blob);
+
+                    if (navigator.share && navigator.canShare) {
+                        try {
+                            const file = new File([blob], fileName, { type: 'image/png' });
+                            if (navigator.canShare({ files: [file] })) {
+                                await navigator.share({
+                                    files: [file],
+                                    title: `Mes shifts - ${getWeekDisplayLabel(currentMonday)}`,
+                                    text: `Bilan de mes heures et pourboires pour la ${getWeekDisplayLabel(currentMonday)}`
+                                });
+                                resetExportBtn();
+                                return;
+                            }
+                        } catch (err) {
+                            if (err.name !== 'AbortError') {
+                                console.log("Partage direct ignoré ou non supporté:", err);
+                            } else {
+                                resetExportBtn();
+                                return;
+                            }
+                        }
+                    }
+
+                    triggerFileDownload(imageUrl, fileName);
+                    showPreviewModal(imageUrl);
+                    resetExportBtn();
+                }, 'image/png');
+
+            } catch (err) {
+                console.error("Erreur capture image:", err);
+                alert("Une erreur est survenue lors de la création de la photo.");
+                resetExportBtn();
+            }
+
+            function resetExportBtn() {
+                exportBtn.innerHTML = originalBtnHtml;
+                exportBtn.disabled = false;
+                lucide.createIcons();
+            }
+        }
+
+        function populateScreenshotTemplate() {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+
+            document.getElementById('receiptPeriodText').textContent = `${getWeekDisplayLabel(currentMonday)} (${getWeekRangeDisplay(currentMonday)})`;
+            document.getElementById('receiptTimestamp').textContent = new Date().toLocaleDateString('fr-CA', {
+                year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+
+            const tbody = document.getElementById('receiptTableBody');
+            tbody.innerHTML = '';
+
+            let totalHours = 0;
+            let totalSales = 0;
+            let totalTips = 0;
+
+            DAYS_META.forEach(meta => {
+                const dayIndex = meta.key;
+                const dayData = weekData[dayIndex];
+                const dayDate = getDateForDayIndex(currentMonday, dayIndex);
+                const dayLabel = `${meta.name} ${dayDate.getDate()} ${dayDate.toLocaleDateString('fr-CA', { month: 'short' })}`;
+
+                // Only display worked days on screenshot! Days in congé are omitted!
+                if (dayData && dayData.worked) {
+                    const hours = calculateHours(dayData.start, dayData.end);
+                    const isHelper = !!dayData.helper;
+                    const sales = isHelper ? 0 : (parseFloat(dayData.sales) || 0);
+                    const tips = isHelper ? 0 : (parseFloat(dayData.tips) || 0);
+                    const eightPct = sales * 0.08;
+                    const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+
+                    totalHours += hours;
+                    totalSales += sales;
+                    totalTips += tips;
+
+                    const row = document.createElement('tr');
+                    if (isHelper) {
+                        row.innerHTML = `
+                            <td><strong>${dayLabel}</strong> <span style="font-size: 10px; background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Helper</span></td>
+                            <td>${formatHours(hours)} (${formatTimeDisplay(dayData.start)} - ${formatTimeDisplay(dayData.end)})</td>
+                            <td style="text-align: right; color: #86868b;">—</td>
+                            <td style="text-align: right; color: #86868b;">—</td>
+                            <td style="text-align: right; color: #86868b;">—</td>
+                            <td style="text-align: right; color: #86868b;">—</td>
+                        `;
+                    } else {
+                        row.innerHTML = `
+                            <td><strong>${dayLabel}</strong></td>
+                            <td>${formatHours(hours)} (${formatTimeDisplay(dayData.start)} - ${formatTimeDisplay(dayData.end)})</td>
+                            <td style="text-align: right;">${formatSales(sales)}</td>
+                            <td style="text-align: right; color: #af52de;">${formatMoneySmart(eightPct)}</td>
+                            <td style="text-align: right; color: #34c759; font-weight: 600;">${formatMoneySmart(tips)}</td>
+                            <td style="text-align: right;">${sales > 0 ? formatPctSmart(tipPct) : '—'}</td>
+                        `;
+                    }
+                    tbody.appendChild(row);
+                }
+            });
+
+            if (tbody.children.length === 0) {
+                const emptyRow = document.createElement('tr');
+                emptyRow.innerHTML = `<td colspan="6" style="text-align: center; color: #86868b; padding: 20px; font-style: italic;">Aucun shift travaillé cette semaine</td>`;
+                tbody.appendChild(emptyRow);
+            }
+
+            const totalEightPct = totalSales * 0.08;
+            const avgTipPct = totalSales > 0 ? (totalTips / totalSales) * 100 : 0;
+
+            document.getElementById('receiptTotalHours').textContent = formatHours(totalHours);
+            document.getElementById('receiptTotalSales').textContent = formatSales(totalSales);
+            document.getElementById('receiptEightPercent').textContent = formatMoneySmart(totalEightPct);
+            document.getElementById('receiptTotalTips').textContent = formatMoneySmart(totalTips);
+            document.getElementById('receiptAvgTipPct').textContent = totalSales > 0 ? formatPctSmart(avgTipPct) : '0 %';
+        }
+
+        function triggerFileDownload(url, filename) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        function showPreviewModal(imageUrl) {
+            const previewImg = document.getElementById('previewImage');
+            previewImg.src = imageUrl;
+
+            document.getElementById('modalDownloadAgainBtn').onclick = () => {
+                if (lastGeneratedBlob) {
+                    const url = URL.createObjectURL(lastGeneratedBlob);
+                    triggerFileDownload(url, lastGeneratedFileName);
+                }
+            };
+
+            document.getElementById('photoModal').classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
