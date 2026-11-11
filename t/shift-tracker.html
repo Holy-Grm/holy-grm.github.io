@@ -1654,10 +1654,17 @@
                         worked: false,
                         helper: false,
                         start: "16:00",
-                        end: "21:00",
+                        end: "20:00",
                         sales: "",
                         tips: ""
                     };
+                }
+            } else {
+                // Si une journée non travaillée contenait l'ancien défaut 21:00, moderniser à 20:00
+                for (let i = 0; i < 7; i++) {
+                    if (appData[weekKey][i] && !appData[weekKey][i].worked && appData[weekKey][i].end === "21:00") {
+                        appData[weekKey][i].end = "20:00";
+                    }
                 }
             }
             return appData[weekKey];
@@ -1714,13 +1721,15 @@
                     worked: false,
                     helper: false,
                     start: "16:00",
-                    end: "21:00",
+                    end: "20:00",
                     sales: "",
                     tips: ""
                 };
 
                 const isHelper = !!dayData.helper;
-                const hours = dayData.worked ? calculateHours(dayData.start, dayData.end) : 0;
+                const currentStart = dayData.start || (isHelper ? "17:00" : "16:00");
+                const currentEnd = dayData.end || "20:00";
+                const hours = dayData.worked ? calculateHours(currentStart, currentEnd) : 0;
                 const sales = dayData.worked && !isHelper && dayData.sales !== "" ? parseFloat(dayData.sales) || 0 : 0;
                 const tips = dayData.worked && !isHelper && dayData.tips !== "" ? parseFloat(dayData.tips) || 0 : 0;
                 const eightPct = sales * 0.08;
@@ -1795,7 +1804,7 @@
                                 <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, 'end')">
                                     <div class="apple-time-btn-left">
                                         <i data-lucide="clock" class="input-icon" style="position: static;"></i>
-                                        <span class="apple-time-val">${formatTimeDisplay(dayData.end || (isHelper ? '20:00' : '21:00'))}</span>
+                                        <span class="apple-time-val">${formatTimeDisplay(dayData.end || '20:00')}</span>
                                     </div>
                                     <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
                                 </button>
@@ -1898,11 +1907,11 @@
 
             if (isWorked) {
                 const isHelper = !!weekData[dayIndex].helper;
-                if (!weekData[dayIndex].start || (isHelper && weekData[dayIndex].start === "16:00" && weekData[dayIndex].end === "21:00")) {
+                if (!weekData[dayIndex].start) {
                     weekData[dayIndex].start = isHelper ? "17:00" : "16:00";
-                    weekData[dayIndex].end = isHelper ? "20:00" : "21:00";
-                } else if (!weekData[dayIndex].end) {
-                    weekData[dayIndex].end = isHelper ? "20:00" : "21:00";
+                }
+                if (!weekData[dayIndex].end || weekData[dayIndex].end === "21:00") {
+                    weekData[dayIndex].end = "20:00";
                 }
             }
 
@@ -1916,28 +1925,20 @@
             const prevHelper = !!dayData.helper;
             if (prevHelper === isHelper) return;
 
-            const currentStart = dayData.start || "16:00";
-            const currentEnd = dayData.end || "21:00";
+            const currentStart = dayData.start || (prevHelper ? "17:00" : "16:00");
 
             if (isHelper) {
-                // Serveuse -> Helper:
-                // Si les heures actuelles correspondent aux heures par défaut de Serveuse (16h à 21h),
-                // on bascule vers les heures par défaut de Helper (17h à 20h).
-                // Si des heures personnalisées ont été choisies (ex: 15h à 23h), on ne touche à rien !
-                if (currentStart === "16:00" && currentEnd === "21:00") {
+                // Serveuse -> Helper : l'heure de début passe à 17h, mais JAMAIS l'heure de fin !
+                if (currentStart === "16:00" || !dayData.start) {
                     dayData.start = "17:00";
-                    dayData.end = "20:00";
                 }
             } else {
-                // Helper -> Serveuse:
-                // Si les heures actuelles correspondent aux heures par défaut de Helper (17h à 20h),
-                // on restaure les heures par défaut de Serveuse (16h à 21h).
-                // Si des heures personnalisées ont été choisies, on ne touche à rien !
-                if (currentStart === "17:00" && currentEnd === "20:00") {
+                // Helper -> Serveuse : l'heure de début passe à 16h, mais JAMAIS l'heure de fin !
+                if (currentStart === "17:00" || !dayData.start) {
                     dayData.start = "16:00";
-                    dayData.end = "21:00";
                 }
             }
+            // Note essentielle : l'heure de fin (dayData.end) ne change JAMAIS lors d'un switch de statut
 
             dayData.helper = isHelper;
             saveAllData();
@@ -2098,13 +2099,13 @@
             const weekData = getOrCreateWeekData(currentWeekKey);
             const dayData = weekData[dayIndex];
             const isHelper = !!dayData.helper;
-            const defaultTime = field === 'start' ? (isHelper ? '17:00' : '16:00') : (isHelper ? '20:00' : '21:00');
+            const defaultTime = field === 'start' ? (isHelper ? '17:00' : '16:00') : '20:00';
             const currentTime = dayData[field] || defaultTime;
 
             const [h, m] = currentTime.split(':');
             selectedHourIndex = HOURS_LIST.indexOf(h);
             if (selectedHourIndex === -1) {
-                selectedHourIndex = field === 'start' ? (isHelper ? 17 : 16) : (isHelper ? 20 : 21);
+                selectedHourIndex = field === 'start' ? (isHelper ? 17 : 16) : 20;
             }
 
             const mNum = parseInt(m, 10) || 0;
