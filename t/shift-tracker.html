@@ -1162,6 +1162,8 @@
             flex-direction: column;
             align-items: center;
             position: relative;
+            overflow-x: hidden;
+            touch-action: pan-y;
         }
 
         .ios-drum-label {
@@ -1171,17 +1173,23 @@
             letter-spacing: 0.04em;
             color: var(--text-secondary);
             margin-bottom: 4px;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         .ios-drum-scroll {
             width: 100%;
             height: 200px;
             overflow-y: scroll;
+            overflow-x: hidden;
             scroll-snap-type: y mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             padding: 78px 0;
             box-sizing: border-box;
+            touch-action: pan-y;
+            overscroll-behavior-x: none;
+            overscroll-behavior-y: contain;
         }
 
         .ios-drum-scroll::-webkit-scrollbar {
@@ -1190,6 +1198,7 @@
 
         .ios-drum-item {
             height: 44px;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -1199,6 +1208,8 @@
             scroll-snap-align: center;
             cursor: pointer;
             user-select: none;
+            -webkit-user-select: none;
+            touch-action: pan-y;
             transition: transform 0.12s ease, color 0.12s ease;
         }
 
@@ -2079,7 +2090,24 @@
             }, { passive: true });
         }
 
-        function updateActiveDrumItem(drumEl, activeIdx) {
+        function triggerHapticFeedback() {
+            if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+                try {
+                    navigator.vibrate(10);
+                } catch (e) {
+                    // Vibration non supportée ou restreinte
+                }
+            }
+        }
+
+        function updateActiveDrumItem(drumEl, activeIdx, triggerVibrate = true) {
+            const prevIdx = drumEl.dataset.activeIdx !== undefined ? parseInt(drumEl.dataset.activeIdx, 10) : -1;
+            if (prevIdx !== activeIdx) {
+                drumEl.dataset.activeIdx = activeIdx;
+                if (triggerVibrate && prevIdx !== -1) {
+                    triggerHapticFeedback();
+                }
+            }
             const items = drumEl.children;
             for (let i = 0; i < items.length; i++) {
                 if (i === activeIdx) {
@@ -2095,7 +2123,7 @@
                 top: index * DRUM_ITEM_HEIGHT,
                 behavior: smooth ? 'smooth' : 'instant'
             });
-            updateActiveDrumItem(drumEl, index);
+            updateActiveDrumItem(drumEl, index, smooth);
         }
 
         function openAppleTimePicker(dayIndex, field) {
