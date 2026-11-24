@@ -4,6 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Shifts">
     <title>Carnet de Shifts & Pourboires | Outils</title>
 
     <!-- Google Fonts: Inter -->
@@ -102,6 +106,39 @@
             color: var(--text-primary);
             box-shadow: var(--shadow-md);
             transform: translateY(-1px);
+        }
+
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .info-icon-btn:hover {
+            color: var(--accent);
+            border-color: var(--accent-border);
+            box-shadow: var(--shadow-md);
+            transform: translateY(-1px);
+        }
+
+        .info-icon-btn:active {
+            transform: scale(0.95);
         }
 
         .save-indicator {
@@ -815,6 +852,107 @@
             justify-content: flex-end;
         }
 
+        /* Install Guide Modal Content */
+        .install-guide-body {
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .install-intro {
+            font-size: 13.5px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .install-platform-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 16px;
+        }
+
+        .install-platform-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .install-platform-badge {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: var(--radius-pill);
+            background: var(--accent-subtle);
+            color: var(--accent);
+        }
+
+        .install-platform-badge.android {
+            background: var(--success-subtle);
+            color: #248a3d;
+        }
+
+        .install-browser-note {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-sm);
+            padding: 8px 10px;
+            margin-bottom: 12px;
+            line-height: 1.45;
+        }
+
+        .install-steps {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .install-steps li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 13.5px;
+            line-height: 1.45;
+            color: var(--text-primary);
+        }
+
+        .install-step-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: #ffffff;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .install-platform-card.android-card .install-step-num {
+            background: #248a3d;
+        }
+
+        .install-note-box {
+            font-size: 12.5px;
+            color: var(--text-secondary);
+            background: var(--accent-subtle);
+            border: 1px solid var(--accent-border);
+            border-radius: var(--radius-sm);
+            padding: 10px 12px;
+            line-height: 1.45;
+        }
+
         /* Hidden Printable / Screenshot Template */
         #screenshotTemplate {
             position: fixed;
@@ -968,13 +1106,109 @@
             letter-spacing: -0.01em;
         }
 
-        /* Helper Mode Segmented Control */
+        /* Helper Mode Segmented Control & Multi-Shift Controls */
+        .shift-block+.shift-block {
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+        }
+
         .shift-role-container {
             display: flex;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: space-between;
+            gap: 10px;
             margin-top: 14px;
             margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+
+        .shift-role-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .shift-index-badge {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+        }
+
+        .remove-shift-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .remove-shift-btn:hover {
+            color: var(--danger);
+            border-color: rgba(255, 59, 48, 0.3);
+            background: var(--danger-subtle);
+        }
+
+        .day-actions-row {
+            margin-top: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .add-shift-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            height: 30px;
+            padding: 0 12px;
+            border-radius: var(--radius-pill);
+            border: 1px dashed var(--accent-border);
+            background: var(--accent-subtle);
+            color: var(--accent);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-shift-btn:hover {
+            background: var(--accent);
+            color: #ffffff;
+            border-style: solid;
+            border-color: var(--accent);
+        }
+
+        .add-shift-btn:active {
+            transform: scale(0.96);
+        }
+
+        .day-total-summary {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .day-total-summary strong {
+            color: var(--text-primary);
         }
 
         .helper-segmented-bar {
@@ -1238,9 +1472,14 @@
             <a href="./index.html" class="back-link">
                 <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Boîte à Outils
             </a>
-            <div id="saveIndicator" class="save-indicator">
-                <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i> Données
-                enregistrées
+            <div class="top-bar-right">
+                <div id="saveIndicator" class="save-indicator">
+                    <i data-lucide="check-circle" style="width: 14px; height: 14px; color: var(--success);"></i> Données
+                    enregistrées
+                </div>
+                <button type="button" id="installHelpBtn" class="info-icon-btn" title="Installer comme application sur téléphone" aria-label="Comment installer le site comme une application">
+                    <i data-lucide="info" style="width: 18px; height: 18px;"></i>
+                </button>
             </div>
         </div>
 
@@ -1282,7 +1521,7 @@
                     <i data-lucide="bar-chart-3" style="width: 20px; height: 20px; color: var(--accent);"></i>
                     <span>Bilan de la semaine</span>
                     <span id="shiftsCountBadge" class="quick-tag" style="font-size: 12px; margin-left: 6px;">0
-                        shift</span>
+                        Shift</span>
                 </div>
                 <div class="summary-actions">
                     <button id="exportPhotoBtn" class="action-btn action-btn-primary">
@@ -1377,6 +1616,91 @@
                 <button class="action-btn action-btn-primary" id="modalDownloadAgainBtn">
                     <i data-lucide="download" style="width: 15px; height: 15px;"></i> Télécharger l'image
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Mobile App Installation Guide -->
+    <div class="modal-overlay" id="installModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div class="modal-title" style="display: flex; align-items: center; gap: 8px;">
+                    <i data-lucide="smartphone" style="width: 18px; height: 18px; color: var(--accent);"></i>
+                    <span>Installer sur mon cellulaire</span>
+                </div>
+                <button class="modal-close-btn" id="closeInstallModalBtn" aria-label="Fermer">
+                    <i data-lucide="x" style="width: 16px; height: 16px;"></i>
+                </button>
+            </div>
+            <div class="modal-body install-guide-body">
+                <p class="install-intro">
+                    Vous pouvez ajouter ce carnet directement sur l'écran d'accueil de votre téléphone pour l'ouvrir en un seul toucher, comme une vraie application.
+                </p>
+
+                <!-- iPhone Guide -->
+                <div class="install-platform-card">
+                    <div class="install-platform-header">
+                        <span>Sur iPhone</span>
+                        <span class="install-platform-badge">Safari</span>
+                    </div>
+                    <div class="install-browser-note">
+                        Important : ouvrez cette page dans <strong>Safari</strong> (l'installation ne fonctionne pas si la page est ouverte dans Messenger, Instagram ou Chrome).
+                    </div>
+                    <ol class="install-steps">
+                        <li>
+                            <span class="install-step-num">1</span>
+                            <span>Ouvrez ce site dans <strong>Safari</strong> sur votre iPhone.</span>
+                        </li>
+                        <li>
+                            <span class="install-step-num">2</span>
+                            <span>Appuyez sur le bouton <strong>Partager (Share)</strong> en bas de l'écran (le petit carré avec une flèche vers le haut).</span>
+                        </li>
+                        <li>
+                            <span class="install-step-num">3</span>
+                            <span>Appuyez sur <strong>View more</strong> (ou <strong>Voir plus</strong> / faites défiler le menu vers le bas).</span>
+                        </li>
+                        <li>
+                            <span class="install-step-num">4</span>
+                            <span>Sélectionnez <strong>Add to Home Screen</strong> (ou <strong>Sur l'écran d'accueil</strong>), puis appuyez sur <strong>Add / Ajouter</strong> en haut à droite.</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <!-- Android Guide -->
+                <div class="install-platform-card android-card">
+                    <div class="install-platform-header">
+                        <span>Sur Android</span>
+                        <span class="install-platform-badge android">Chrome</span>
+                    </div>
+                    <div class="install-browser-note">
+                        Ouvrez cette page dans <strong>Google Chrome</strong> (si vous l'avez ouverte depuis un lien Messenger ou SMS, touchez ⋮ puis <em>Ouvrir dans Chrome</em>).
+                    </div>
+                    <ol class="install-steps">
+                        <li>
+                            <span class="install-step-num">1</span>
+                            <span>Ouvrez ce site dans <strong>Chrome</strong> sur votre téléphone Android.</span>
+                        </li>
+                        <li>
+                            <span class="install-step-num">2</span>
+                            <span>Appuyez sur les <strong>trois petits points (⋮)</strong> en haut à droite de l'écran.</span>
+                        </li>
+                        <li>
+                            <span class="install-step-num">3</span>
+                            <span>Appuyez sur <strong>Ajouter à l'écran d'accueil</strong> (ou <strong>Add to Home screen</strong> / <strong>Installer l'application</strong>).</span>
+                        </li>
+                        <li>
+                            <span class="install-step-num">4</span>
+                            <span>Appuyez sur <strong>Ajouter</strong> (ou <strong>Installer</strong>) pour confirmer. L'icône apparaîtra sur votre écran d'accueil.</span>
+                        </li>
+                    </ol>
+                </div>
+
+                <div class="install-note-box">
+                    💡 <strong>Bon à savoir :</strong> Vos relevés sont sauvegardés localement sur votre téléphone. Pensez à toujours ouvrir l'outil depuis cette même icône pour retrouver vos semaines enregistrées.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="action-btn action-btn-primary" id="dismissInstallModalBtn">Compris</button>
             </div>
         </div>
     </div>
@@ -1487,6 +1811,7 @@
         const DRUM_ITEM_HEIGHT = 44;
 
         let currentPickerDayIndex = null;
+        let currentPickerShiftIndex = null;
         let currentPickerField = null; // 'start' or 'end'
         let selectedHourIndex = 16;
         let selectedMinuteIndex = 0;
@@ -1662,27 +1987,57 @@
             }, 1800);
         }
 
+        function createDefaultShift(isHelper = false) {
+            return {
+                helper: !!isHelper,
+                start: isHelper ? "17:00" : "16:00",
+                end: "20:00",
+                sales: "",
+                tips: ""
+            };
+        }
+
+        function normalizeShift(rawShift, isDayWorked = true) {
+            const isHelper = !!(rawShift && rawShift.helper);
+            const defaultStart = isHelper ? "17:00" : "16:00";
+            let end = (rawShift && rawShift.end) ? rawShift.end : "20:00";
+            if (!isDayWorked && end === "21:00") {
+                end = "20:00";
+            }
+            return {
+                helper: isHelper,
+                start: (rawShift && rawShift.start) ? rawShift.start : defaultStart,
+                end,
+                sales: rawShift && rawShift.sales !== undefined ? rawShift.sales : "",
+                tips: rawShift && rawShift.tips !== undefined ? rawShift.tips : ""
+            };
+        }
+
+        function normalizeDayData(rawDay) {
+            if (!rawDay) {
+                return { worked: false, shifts: [createDefaultShift(false)] };
+            }
+            const worked = !!rawDay.worked;
+            if (Array.isArray(rawDay.shifts)) {
+                const shifts = rawDay.shifts.length > 0
+                    ? rawDay.shifts.map(s => normalizeShift(s, worked))
+                    : [createDefaultShift(false)];
+                return { worked, shifts };
+            }
+            // Migration depuis l'ancien format (1 seul shift par jour)
+            return {
+                worked,
+                shifts: [normalizeShift(rawDay, worked)]
+            };
+        }
+
         // Ensure week structure exists in state
         function getOrCreateWeekData(weekKey) {
             if (!appData[weekKey]) {
                 appData[weekKey] = {};
-                for (let i = 0; i < 7; i++) {
-                    appData[weekKey][i] = {
-                        worked: false,
-                        helper: false,
-                        start: "16:00",
-                        end: "20:00",
-                        sales: "",
-                        tips: ""
-                    };
-                }
-            } else {
-                // Si une journée non travaillée contenait l'ancien défaut 21:00, moderniser à 20:00
-                for (let i = 0; i < 7; i++) {
-                    if (appData[weekKey][i] && !appData[weekKey][i].worked && appData[weekKey][i].end === "21:00") {
-                        appData[weekKey][i].end = "20:00";
-                    }
-                }
+            }
+            for (let i = 0; i < 7; i++) {
+                appData[weekKey][i] = normalizeDayData(appData[weekKey][i]);
             }
             return appData[weekKey];
         }
@@ -1711,6 +2066,80 @@
             return totalMinutes / 60;
         }
 
+        function computeShiftMetrics(shift, worked = true) {
+            const isHelper = !!shift.helper;
+            const start = shift.start || (isHelper ? "17:00" : "16:00");
+            const end = shift.end || "20:00";
+            const hours = worked ? calculateHours(start, end) : 0;
+            const sales = worked && !isHelper && shift.sales !== "" ? parseFloat(shift.sales) || 0 : 0;
+            const tips = worked && !isHelper && shift.tips !== "" ? parseFloat(shift.tips) || 0 : 0;
+            const eightPct = sales * 0.08;
+            const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+            return { isHelper, start, end, hours, sales, tips, eightPct, tipPct };
+        }
+
+        function computeDayTotals(dayData) {
+            let hours = 0;
+            let sales = 0;
+            let tips = 0;
+            let hasHelper = false;
+            let hasServer = false;
+            const shifts = dayData.shifts || [];
+
+            if (dayData.worked) {
+                shifts.forEach(shift => {
+                    const m = computeShiftMetrics(shift, true);
+                    hours += m.hours;
+                    sales += m.sales;
+                    tips += m.tips;
+                    if (m.isHelper) hasHelper = true;
+                    else hasServer = true;
+                });
+            }
+
+            return {
+                hours,
+                sales,
+                tips,
+                hasHelper,
+                hasServer,
+                shiftCount: dayData.worked ? shifts.length : 0
+            };
+        }
+
+        function renderQuickSummaryHtml(dayData) {
+            if (!dayData.worked) {
+                return '<span class="quick-tag">Congé</span>';
+            }
+            const totals = computeDayTotals(dayData);
+            const shiftsLen = dayData.shifts.length;
+            const countTag = shiftsLen > 1 ? `<span class="quick-tag">${shiftsLen} shifts</span>` : '';
+            const roleTag = (shiftsLen === 1 && totals.hasHelper)
+                ? '<span class="badge-helper">Helper</span>'
+                : (shiftsLen > 1 && totals.hasHelper && totals.hasServer ? '<span class="badge-helper">Mixte</span>' : (shiftsLen > 1 && totals.hasHelper ? '<span class="badge-helper">Helper</span>' : ''));
+            const tipsTag = totals.tips > 0 ? `<span class="quick-tag green">+${formatMoneySmart(totals.tips)}</span>` : '';
+
+            return `
+                <span class="quick-tag">${formatHours(totals.hours)}</span>
+                ${countTag}
+                ${roleTag}
+                ${tipsTag}
+            `;
+        }
+
+        function renderDayTotalSummaryHtml(dayData) {
+            if (!dayData.worked || dayData.shifts.length <= 1) return '';
+            const totals = computeDayTotals(dayData);
+            const parts = [`Total jour : <strong>${formatHours(totals.hours)}</strong>`];
+            if (totals.hasServer && totals.sales > 0) {
+                parts.push(`Ventes <strong>${formatSales(totals.sales)}</strong>`);
+            }
+            if (totals.hasServer && totals.tips > 0) {
+                parts.push(`Tips <strong style="color: var(--success);">${formatMoneySmart(totals.tips)}</strong>`);
+            }
+            return parts.join(' • ');
+        }
+
         /* =========================================================================
            RENDER WEEK
            ========================================================================= */
@@ -1734,29 +2163,14 @@
                 const dayIndex = meta.key;
                 const dayDate = getDateForDayIndex(currentMonday, dayIndex);
                 const isToday = isDateToday(dayDate);
-                const dayData = weekData[dayIndex] || {
-                    worked: false,
-                    helper: false,
-                    start: "16:00",
-                    end: "20:00",
-                    sales: "",
-                    tips: ""
-                };
-
-                const isHelper = !!dayData.helper;
-                const currentStart = dayData.start || (isHelper ? "17:00" : "16:00");
-                const currentEnd = dayData.end || "20:00";
-                const hours = dayData.worked ? calculateHours(currentStart, currentEnd) : 0;
-                const sales = dayData.worked && !isHelper && dayData.sales !== "" ? parseFloat(dayData.sales) || 0 : 0;
-                const tips = dayData.worked && !isHelper && dayData.tips !== "" ? parseFloat(dayData.tips) || 0 : 0;
-                const eightPct = sales * 0.08;
-                const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+                const dayData = weekData[dayIndex];
+                const dayTotals = computeDayTotals(dayData);
 
                 if (dayData.worked) {
-                    totalWeekHours += hours;
-                    totalWeekSales += sales;
-                    totalWeekTips += tips;
-                    totalShiftsCount += 1;
+                    totalWeekHours += dayTotals.hours;
+                    totalWeekSales += dayTotals.sales;
+                    totalWeekTips += dayTotals.tips;
+                    totalShiftsCount += dayTotals.shiftCount;
                 }
 
                 const dayCard = document.createElement('div');
@@ -1765,6 +2179,105 @@
 
                 const dateNum = dayDate.getDate();
                 const monthName = dayDate.toLocaleDateString('fr-CA', { month: 'short' });
+                const hasMultipleShifts = dayData.shifts.length > 1;
+
+                const shiftsHtml = dayData.shifts.map((shift, shiftIndex) => {
+                    const m = computeShiftMetrics(shift, dayData.worked);
+                    const isHelper = m.isHelper;
+                    return `
+                        <div class="shift-block" data-shift-index="${shiftIndex}">
+                            <!-- Shift Role: Serveuse vs Helper -->
+                            <div class="shift-role-container">
+                                <div class="shift-role-left">
+                                    ${hasMultipleShifts ? `<span class="shift-index-badge">Shift ${shiftIndex + 1}</span>` : ''}
+                                    <div class="helper-segmented-bar">
+                                        <button type="button" class="seg-btn ${!isHelper ? 'active' : ''}" onclick="toggleHelperMode(${dayIndex}, ${shiftIndex}, false)">
+                                            <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i> Serveuse
+                                        </button>
+                                        <button type="button" class="seg-btn ${isHelper ? 'active' : ''}" onclick="toggleHelperMode(${dayIndex}, ${shiftIndex}, true)">
+                                            <i data-lucide="user-check" style="width: 13px; height: 13px;"></i> Helper
+                                        </button>
+                                    </div>
+                                </div>
+                                ${hasMultipleShifts ? `
+                                    <button type="button" class="remove-shift-btn" onclick="removeShift(${dayIndex}, ${shiftIndex})" title="Supprimer ce shift" aria-label="Supprimer ce shift">
+                                        <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                                    </button>
+                                ` : ''}
+                            </div>
+
+                            <div class="form-grid ${isHelper ? 'is-helper' : ''}">
+                                <!-- Heure Début (Apple Time Picker) -->
+                                <div class="input-group">
+                                    <label class="input-label">Début</label>
+                                    <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, ${shiftIndex}, 'start')">
+                                        <div class="apple-time-btn-left">
+                                            <i data-lucide="clock" class="input-icon" style="position: static;"></i>
+                                            <span class="apple-time-val">${formatTimeDisplay(m.start)}</span>
+                                        </div>
+                                        <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
+                                    </button>
+                                </div>
+
+                                <!-- Heure Fin (Apple Time Picker) -->
+                                <div class="input-group">
+                                    <label class="input-label">Fin</label>
+                                    <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, ${shiftIndex}, 'end')">
+                                        <div class="apple-time-btn-left">
+                                            <i data-lucide="clock" class="input-icon" style="position: static;"></i>
+                                            <span class="apple-time-val">${formatTimeDisplay(m.end)}</span>
+                                        </div>
+                                        <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
+                                    </button>
+                                </div>
+
+                                ${!isHelper ? `
+                                    <!-- Ventes -->
+                                    <div class="input-group">
+                                        <label class="input-label" for="sales_${dayIndex}_${shiftIndex}">
+                                            <span>Ventes ($)</span>
+                                        </label>
+                                        <div class="input-field-wrapper">
+                                            <i data-lucide="receipt" class="input-icon"></i>
+                                            <input type="number" step="1" min="0" placeholder="0" id="sales_${dayIndex}_${shiftIndex}" class="input-text has-suffix" value="${shift.sales !== undefined ? shift.sales : ''}" oninput="updateShiftField(${dayIndex}, ${shiftIndex}, 'sales', this.value)">
+                                            <span class="input-suffix">$</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Pourboire -->
+                                    <div class="input-group">
+                                        <label class="input-label" for="tips_${dayIndex}_${shiftIndex}">
+                                            <span>Pourboire ($)</span>
+                                        </label>
+                                        <div class="input-field-wrapper">
+                                            <i data-lucide="coins" class="input-icon"></i>
+                                            <input type="number" step="0.01" min="0" placeholder="0.00" id="tips_${dayIndex}_${shiftIndex}" class="input-text has-suffix" value="${shift.tips !== undefined ? shift.tips : ''}" oninput="updateShiftField(${dayIndex}, ${shiftIndex}, 'tips', this.value)">
+                                            <span class="input-suffix">$</span>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                            </div>
+
+                            <!-- Mini Strip Calculs du shift -->
+                            <div class="day-calc-strip ${isHelper ? 'is-helper' : ''}">
+                                <div class="calc-item">
+                                    <span class="calc-title">Heures travaillées</span>
+                                    <span class="calc-value" id="calcHours_${dayIndex}_${shiftIndex}">${formatHours(m.hours)}</span>
+                                </div>
+                                ${!isHelper ? `
+                                    <div class="calc-item">
+                                        <span class="calc-title">8 % des Ventes</span>
+                                        <span class="calc-value badge-8" id="calcEight_${dayIndex}_${shiftIndex}">${formatMoneySmart(m.eightPct)}</span>
+                                    </div>
+                                    <div class="calc-item">
+                                        <span class="calc-title">% Pourboire</span>
+                                        <span class="calc-value badge-tip" id="calcTipPct_${dayIndex}_${shiftIndex}">${m.sales > 0 ? formatPctSmart(m.tipPct) : '—'}</span>
+                                    </div>
+                                ` : ''}
+                            </div>
+                        </div>
+                    `;
+                }).join('');
 
                 dayCard.innerHTML = `
                     <div class="day-header" onclick="handleDayHeaderClick(${dayIndex}, event)">
@@ -1775,10 +2288,7 @@
                         </div>
                         <div class="day-header-right">
                             <div class="day-quick-summary" id="quickSummary_${dayIndex}">
-                                ${dayData.worked ? `
-                                    <span class="quick-tag">${formatHours(hours)}</span>
-                                    ${isHelper ? '<span class="badge-helper">Helper</span>' : (tips > 0 ? `<span class="quick-tag green">+${formatMoneySmart(tips)}</span>` : '')}
-                                ` : '<span class="quick-tag">Congé</span>'}
+                                ${renderQuickSummaryHtml(dayData)}
                             </div>
                             <div class="toggle-wrapper" onclick="event.stopPropagation()">
                                 <label class="ios-toggle">
@@ -1790,86 +2300,15 @@
                     </div>
 
                     <div class="day-body" id="dayBody_${dayIndex}">
-                        <!-- Shift Role: Serveuse vs Helper -->
-                        <div class="shift-role-container">
-                            <div class="helper-segmented-bar">
-                                <button type="button" class="seg-btn ${!isHelper ? 'active' : ''}" onclick="toggleHelperMode(${dayIndex}, false)">
-                                    <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i> Serveuse
-                                </button>
-                                <button type="button" class="seg-btn ${isHelper ? 'active' : ''}" onclick="toggleHelperMode(${dayIndex}, true)">
-                                    <i data-lucide="user-check" style="width: 13px; height: 13px;"></i> Helper
-                                </button>
+                        ${shiftsHtml}
+                        <div class="day-actions-row">
+                            <button type="button" class="add-shift-btn" onclick="addShift(${dayIndex})" title="Ajouter un autre shift pour cette journée">
+                                <i data-lucide="plus" style="width: 14px; height: 14px;"></i>
+                                <span>Ajouter un shift</span>
+                            </button>
+                            <div class="day-total-summary" id="dayTotalSummary_${dayIndex}">
+                                ${renderDayTotalSummaryHtml(dayData)}
                             </div>
-                        </div>
-
-                        <div class="form-grid ${isHelper ? 'is-helper' : ''}">
-                            <!-- Heure Début (Apple Time Picker) -->
-                            <div class="input-group">
-                                <label class="input-label">Début</label>
-                                <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, 'start')">
-                                    <div class="apple-time-btn-left">
-                                        <i data-lucide="clock" class="input-icon" style="position: static;"></i>
-                                        <span class="apple-time-val">${formatTimeDisplay(dayData.start || (isHelper ? '17:00' : '16:00'))}</span>
-                                    </div>
-                                    <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
-                                </button>
-                            </div>
-
-                            <!-- Heure Fin (Apple Time Picker) -->
-                            <div class="input-group">
-                                <label class="input-label">Fin</label>
-                                <button type="button" class="apple-time-btn" onclick="openAppleTimePicker(${dayIndex}, 'end')">
-                                    <div class="apple-time-btn-left">
-                                        <i data-lucide="clock" class="input-icon" style="position: static;"></i>
-                                        <span class="apple-time-val">${formatTimeDisplay(dayData.end || '20:00')}</span>
-                                    </div>
-                                    <i data-lucide="chevron-down" style="width: 14px; height: 14px; color: var(--text-tertiary);"></i>
-                                </button>
-                            </div>
-
-                            ${!isHelper ? `
-                                <!-- Ventes -->
-                                <div class="input-group">
-                                    <label class="input-label" for="sales_${dayIndex}">
-                                        <span>Ventes ($)</span>
-                                    </label>
-                                    <div class="input-field-wrapper">
-                                        <i data-lucide="receipt" class="input-icon"></i>
-                                        <input type="number" step="1" min="0" placeholder="0" id="sales_${dayIndex}" class="input-text has-suffix" value="${dayData.sales !== undefined ? dayData.sales : ''}" oninput="updateDayField(${dayIndex}, 'sales', this.value)">
-                                        <span class="input-suffix">$</span>
-                                    </div>
-                                </div>
-
-                                <!-- Pourboire -->
-                                <div class="input-group">
-                                    <label class="input-label" for="tips_${dayIndex}">
-                                        <span>Pourboire ($)</span>
-                                    </label>
-                                    <div class="input-field-wrapper">
-                                        <i data-lucide="coins" class="input-icon"></i>
-                                        <input type="number" step="0.01" min="0" placeholder="0.00" id="tips_${dayIndex}" class="input-text has-suffix" value="${dayData.tips !== undefined ? dayData.tips : ''}" oninput="updateDayField(${dayIndex}, 'tips', this.value)">
-                                        <span class="input-suffix">$</span>
-                                    </div>
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <!-- Mini Strip Calculs du jour -->
-                        <div class="day-calc-strip ${isHelper ? 'is-helper' : ''}">
-                            <div class="calc-item">
-                                <span class="calc-title">Heures travaillées</span>
-                                <span class="calc-value" id="calcHours_${dayIndex}">${formatHours(hours)}</span>
-                            </div>
-                            ${!isHelper ? `
-                                <div class="calc-item">
-                                    <span class="calc-title">8 % des Ventes</span>
-                                    <span class="calc-value badge-8" id="calcEight_${dayIndex}">${formatMoneySmart(eightPct)}</span>
-                                </div>
-                                <div class="calc-item">
-                                    <span class="calc-title">% Pourboire</span>
-                                    <span class="calc-value badge-tip" id="calcTipPct_${dayIndex}">${sales > 0 ? formatPctSmart(tipPct) : '—'}</span>
-                                </div>
-                            ` : ''}
                         </div>
                     </div>
                 `;
@@ -1920,80 +2359,108 @@
 
         function toggleDayWorked(dayIndex, isWorked) {
             const weekData = getOrCreateWeekData(currentWeekKey);
-            weekData[dayIndex].worked = isWorked;
+            const dayData = weekData[dayIndex];
+            dayData.worked = isWorked;
 
             if (isWorked) {
-                const isHelper = !!weekData[dayIndex].helper;
-                if (!weekData[dayIndex].start) {
-                    weekData[dayIndex].start = isHelper ? "17:00" : "16:00";
+                if (!Array.isArray(dayData.shifts) || dayData.shifts.length === 0) {
+                    dayData.shifts = [createDefaultShift(false)];
                 }
-                if (!weekData[dayIndex].end || weekData[dayIndex].end === "21:00") {
-                    weekData[dayIndex].end = "20:00";
-                }
+                dayData.shifts.forEach(shift => {
+                    const isHelper = !!shift.helper;
+                    if (!shift.start) {
+                        shift.start = isHelper ? "17:00" : "16:00";
+                    }
+                    if (!shift.end || shift.end === "21:00") {
+                        shift.end = "20:00";
+                    }
+                });
             }
 
             saveAllData();
             renderWeek();
         }
 
-        function toggleHelperMode(dayIndex, isHelper) {
+        function addShift(dayIndex) {
             const weekData = getOrCreateWeekData(currentWeekKey);
             const dayData = weekData[dayIndex];
-            const prevHelper = !!dayData.helper;
+            dayData.worked = true;
+            const lastShift = dayData.shifts[dayData.shifts.length - 1];
+            const nextHelper = lastShift ? !lastShift.helper : false;
+            dayData.shifts.push(createDefaultShift(nextHelper));
+            saveAllData();
+            renderWeek();
+        }
+
+        function removeShift(dayIndex, shiftIndex) {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            const dayData = weekData[dayIndex];
+            if (!dayData.shifts || dayData.shifts.length <= 1) return;
+            dayData.shifts.splice(shiftIndex, 1);
+            saveAllData();
+            renderWeek();
+        }
+
+        function toggleHelperMode(dayIndex, shiftIndex, isHelper) {
+            const weekData = getOrCreateWeekData(currentWeekKey);
+            const shift = weekData[dayIndex].shifts[shiftIndex];
+            if (!shift) return;
+            const prevHelper = !!shift.helper;
             if (prevHelper === isHelper) return;
 
-            const currentStart = dayData.start || (prevHelper ? "17:00" : "16:00");
+            const currentStart = shift.start || (prevHelper ? "17:00" : "16:00");
 
             if (isHelper) {
                 // Serveuse -> Helper : l'heure de début passe à 17h, mais JAMAIS l'heure de fin !
-                if (currentStart === "16:00" || !dayData.start) {
-                    dayData.start = "17:00";
+                if (currentStart === "16:00" || !shift.start) {
+                    shift.start = "17:00";
                 }
             } else {
                 // Helper -> Serveuse : l'heure de début passe à 16h, mais JAMAIS l'heure de fin !
-                if (currentStart === "17:00" || !dayData.start) {
-                    dayData.start = "16:00";
+                if (currentStart === "17:00" || !shift.start) {
+                    shift.start = "16:00";
                 }
             }
-            // Note essentielle : l'heure de fin (dayData.end) ne change JAMAIS lors d'un switch de statut
+            // Note essentielle : l'heure de fin (shift.end) ne change JAMAIS lors d'un switch de statut
 
-            dayData.helper = isHelper;
+            shift.helper = isHelper;
             saveAllData();
             renderWeek();
         }
 
-        function updateDayField(dayIndex, field, value) {
+        function updateShiftField(dayIndex, shiftIndex, field, value) {
             const weekData = getOrCreateWeekData(currentWeekKey);
+            const dayData = weekData[dayIndex];
+            const shift = dayData.shifts[shiftIndex];
+            if (!shift) return;
+
             if (field === 'start' || field === 'end') {
                 value = snapTo15Minutes(value);
             }
-            weekData[dayIndex][field] = value;
+            shift[field] = value;
             saveAllData();
 
-            const dayData = weekData[dayIndex];
-            const isHelper = !!dayData.helper;
-            const hours = dayData.worked ? calculateHours(dayData.start, dayData.end) : 0;
-            const sales = dayData.worked && !isHelper && dayData.sales !== "" ? parseFloat(dayData.sales) || 0 : 0;
-            const tips = dayData.worked && !isHelper && dayData.tips !== "" ? parseFloat(dayData.tips) || 0 : 0;
-            const eightPct = sales * 0.08;
-            const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+            const m = computeShiftMetrics(shift, dayData.worked);
 
-            const calcHoursEl = document.getElementById(`calcHours_${dayIndex}`);
-            if (calcHoursEl) calcHoursEl.textContent = formatHours(hours);
+            const calcHoursEl = document.getElementById(`calcHours_${dayIndex}_${shiftIndex}`);
+            if (calcHoursEl) calcHoursEl.textContent = formatHours(m.hours);
 
-            const calcEightEl = document.getElementById(`calcEight_${dayIndex}`);
-            if (calcEightEl) calcEightEl.textContent = isHelper ? '—' : formatMoneySmart(eightPct);
+            const calcEightEl = document.getElementById(`calcEight_${dayIndex}_${shiftIndex}`);
+            if (calcEightEl) calcEightEl.textContent = m.isHelper ? '—' : formatMoneySmart(m.eightPct);
 
-            const calcTipPctEl = document.getElementById(`calcTipPct_${dayIndex}`);
-            if (calcTipPctEl) calcTipPctEl.textContent = isHelper ? '—' : (sales > 0 ? formatPctSmart(tipPct) : '—');
+            const calcTipPctEl = document.getElementById(`calcTipPct_${dayIndex}_${shiftIndex}`);
+            if (calcTipPctEl) calcTipPctEl.textContent = m.isHelper ? '—' : (m.sales > 0 ? formatPctSmart(m.tipPct) : '—');
 
             // Update Quick Summary in header
             const quickSummaryEl = document.getElementById(`quickSummary_${dayIndex}`);
-            if (quickSummaryEl && dayData.worked) {
-                quickSummaryEl.innerHTML = `
-                    <span class="quick-tag">${formatHours(hours)}</span>
-                    ${isHelper ? '<span class="badge-helper">Helper</span>' : (tips > 0 ? `<span class="quick-tag green">+${formatMoneySmart(tips)}</span>` : '')}
-                `;
+            if (quickSummaryEl) {
+                quickSummaryEl.innerHTML = renderQuickSummaryHtml(dayData);
+            }
+
+            // Update Day Total Summary
+            const dayTotalEl = document.getElementById(`dayTotalSummary_${dayIndex}`);
+            if (dayTotalEl) {
+                dayTotalEl.innerHTML = renderDayTotalSummaryHtml(dayData);
             }
 
             // Recalculate totals
@@ -2009,15 +2476,12 @@
 
             DAYS_META.forEach(meta => {
                 const dayData = weekData[meta.key];
+                const dayTotals = computeDayTotals(dayData);
                 if (dayData && dayData.worked) {
-                    const hours = calculateHours(dayData.start, dayData.end);
-                    const isHelper = !!dayData.helper;
-                    const sales = isHelper ? 0 : (parseFloat(dayData.sales) || 0);
-                    const tips = isHelper ? 0 : (parseFloat(dayData.tips) || 0);
-                    totalWeekHours += hours;
-                    totalWeekSales += sales;
-                    totalWeekTips += tips;
-                    totalShiftsCount += 1;
+                    totalWeekHours += dayTotals.hours;
+                    totalWeekSales += dayTotals.sales;
+                    totalWeekTips += dayTotals.tips;
+                    totalShiftsCount += dayTotals.shiftCount;
                 }
             });
 
@@ -2069,8 +2533,8 @@
                 const h = HOURS_LIST[selectedHourIndex] || '16';
                 const m = MINUTES_LIST[selectedMinuteIndex] || '00';
                 const timeVal = `${h}:${m}`;
-                if (currentPickerDayIndex !== null && currentPickerField) {
-                    updateDayField(currentPickerDayIndex, currentPickerField, timeVal);
+                if (currentPickerDayIndex !== null && currentPickerShiftIndex !== null && currentPickerField) {
+                    updateShiftField(currentPickerDayIndex, currentPickerShiftIndex, currentPickerField, timeVal);
                     renderWeek();
                 }
                 closeIosPicker();
@@ -2126,15 +2590,17 @@
             updateActiveDrumItem(drumEl, index, smooth);
         }
 
-        function openAppleTimePicker(dayIndex, field) {
+        function openAppleTimePicker(dayIndex, shiftIndex, field) {
             currentPickerDayIndex = dayIndex;
+            currentPickerShiftIndex = shiftIndex;
             currentPickerField = field;
 
             const weekData = getOrCreateWeekData(currentWeekKey);
             const dayData = weekData[dayIndex];
-            const isHelper = !!dayData.helper;
+            const shift = dayData.shifts[shiftIndex] || createDefaultShift(false);
+            const isHelper = !!shift.helper;
             const defaultTime = field === 'start' ? (isHelper ? '17:00' : '16:00') : '20:00';
-            const currentTime = dayData[field] || defaultTime;
+            const currentTime = shift[field] || defaultTime;
 
             const [h, m] = currentTime.split(':');
             selectedHourIndex = HOURS_LIST.indexOf(h);
@@ -2149,7 +2615,8 @@
             if (selectedMinuteIndex === -1) selectedMinuteIndex = 0;
 
             const dayMeta = DAYS_META[dayIndex];
-            document.getElementById('iosPickerTitle').textContent = `${dayMeta.name} • ${field === 'start' ? 'Début' : 'Fin'}`;
+            const shiftSuffix = dayData.shifts.length > 1 ? ` (Shift ${shiftIndex + 1})` : '';
+            document.getElementById('iosPickerTitle').textContent = `${dayMeta.name}${shiftSuffix} • ${field === 'start' ? 'Début' : 'Fin'}`;
 
             const backdrop = document.getElementById('iosPickerBackdrop');
             backdrop.classList.add('active');
@@ -2167,6 +2634,7 @@
         function closeIosPicker() {
             document.getElementById('iosPickerBackdrop').classList.remove('active');
             currentPickerDayIndex = null;
+            currentPickerShiftIndex = null;
             currentPickerField = null;
         }
 
@@ -2211,10 +2679,25 @@
             document.getElementById('photoModal').addEventListener('click', (e) => {
                 if (e.target.id === 'photoModal') closeModal();
             });
+
+            document.getElementById('installHelpBtn').addEventListener('click', openInstallModal);
+            document.getElementById('closeInstallModalBtn').addEventListener('click', closeInstallModal);
+            document.getElementById('dismissInstallModalBtn').addEventListener('click', closeInstallModal);
+            document.getElementById('installModal').addEventListener('click', (e) => {
+                if (e.target.id === 'installModal') closeInstallModal();
+            });
         }
 
         function closeModal() {
             document.getElementById('photoModal').classList.remove('active');
+        }
+
+        function openInstallModal() {
+            document.getElementById('installModal').classList.add('active');
+        }
+
+        function closeInstallModal() {
+            document.getElementById('installModal').classList.remove('active');
         }
 
         /* =========================================================================
@@ -2312,38 +2795,39 @@
 
                 // Only display worked days on screenshot! Days in congé are omitted!
                 if (dayData && dayData.worked) {
-                    const hours = calculateHours(dayData.start, dayData.end);
-                    const isHelper = !!dayData.helper;
-                    const sales = isHelper ? 0 : (parseFloat(dayData.sales) || 0);
-                    const tips = isHelper ? 0 : (parseFloat(dayData.tips) || 0);
-                    const eightPct = sales * 0.08;
-                    const tipPct = sales > 0 ? (tips / sales) * 100 : 0;
+                    (dayData.shifts || []).forEach((shift, shiftIdx) => {
+                        const m = computeShiftMetrics(shift, true);
 
-                    totalHours += hours;
-                    totalSales += sales;
-                    totalTips += tips;
+                        totalHours += m.hours;
+                        totalSales += m.sales;
+                        totalTips += m.tips;
 
-                    const row = document.createElement('tr');
-                    if (isHelper) {
-                        row.innerHTML = `
-                            <td><strong>${dayLabel}</strong> <span style="font-size: 10px; background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Helper</span></td>
-                            <td>${formatHours(hours)} (${formatTimeDisplay(dayData.start)} - ${formatTimeDisplay(dayData.end)})</td>
-                            <td style="text-align: right; color: #86868b;">—</td>
-                            <td style="text-align: right; color: #86868b;">—</td>
-                            <td style="text-align: right; color: #86868b;">—</td>
-                            <td style="text-align: right; color: #86868b;">—</td>
-                        `;
-                    } else {
-                        row.innerHTML = `
-                            <td><strong>${dayLabel}</strong></td>
-                            <td>${formatHours(hours)} (${formatTimeDisplay(dayData.start)} - ${formatTimeDisplay(dayData.end)})</td>
-                            <td style="text-align: right;">${formatSales(sales)}</td>
-                            <td style="text-align: right; color: #af52de;">${formatMoneySmart(eightPct)}</td>
-                            <td style="text-align: right; color: #34c759; font-weight: 600;">${formatMoneySmart(tips)}</td>
-                            <td style="text-align: right;">${sales > 0 ? formatPctSmart(tipPct) : '—'}</td>
-                        `;
-                    }
-                    tbody.appendChild(row);
+                        const labelHtml = shiftIdx === 0
+                            ? `<strong>${dayLabel}</strong>`
+                            : `<span style="color: #86868b; padding-left: 8px;">↳ shift ${shiftIdx + 1}</span>`;
+
+                        const row = document.createElement('tr');
+                        if (m.isHelper) {
+                            row.innerHTML = `
+                                <td>${labelHtml} <span style="font-size: 10px; background: #f3e8ff; color: #7e22ce; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Helper</span></td>
+                                <td>${formatHours(m.hours)} (${formatTimeDisplay(m.start)} - ${formatTimeDisplay(m.end)})</td>
+                                <td style="text-align: right; color: #86868b;">—</td>
+                                <td style="text-align: right; color: #86868b;">—</td>
+                                <td style="text-align: right; color: #86868b;">—</td>
+                                <td style="text-align: right; color: #86868b;">—</td>
+                            `;
+                        } else {
+                            row.innerHTML = `
+                                <td>${labelHtml}</td>
+                                <td>${formatHours(m.hours)} (${formatTimeDisplay(m.start)} - ${formatTimeDisplay(m.end)})</td>
+                                <td style="text-align: right;">${formatSales(m.sales)}</td>
+                                <td style="text-align: right; color: #af52de;">${formatMoneySmart(m.eightPct)}</td>
+                                <td style="text-align: right; color: #34c759; font-weight: 600;">${formatMoneySmart(m.tips)}</td>
+                                <td style="text-align: right;">${m.sales > 0 ? formatPctSmart(m.tipPct) : '—'}</td>
+                            `;
+                        }
+                        tbody.appendChild(row);
+                    });
                 }
             });
 
