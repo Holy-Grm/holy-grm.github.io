@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Compresseur Vidéo Discord | Outils</title>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #f5f5f7;
+            --bg-card: #ffffff;
+            --text-primary: #1d1d1f;
+            --text-secondary: #86868b;
+            --text-tertiary: #a1a1a6;
+            --accent: #0071e3;
+            --accent-hover: #0077ed;
+            --accent-subtle: rgba(0, 113, 227, 0.08);
+            --discord: #5865F2;
+            --discord-hover: #4752c4;
+            --discord-subtle: rgba(88, 101, 242, 0.1);
+            --border: #d2d2d7;
+            --border-subtle: #e5e5ea;
+            --success: #34c759;
+            --success-subtle: rgba(52, 199, 89, 0.12);
+            --warning: #ff9500;
+            --warning-subtle: rgba(255, 149, 0, 0.12);
+            --danger: #ff3b30;
+            --radius-sm: 10px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-pill: 9999px;
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.1);
+            --transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'SF Pro Display', 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px 16px 80px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 820px;
+            margin: 0 auto;
+        }
+
+        /* Top Nav */
+        .top-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 24px;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 14px;
+            background: var(--bg-card);
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-subtle);
+            transition: var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--accent);
+            border-color: var(--accent);
+            transform: translateX(-2px);
+        }
+
+        .privacy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.04);
+            padding: 6px 12px;
+            border-radius: var(--radius-pill);
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .discord-pill-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--discord-subtle);
+            color: var(--discord);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 14px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #1d1d1f 0%, #434346 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            max-width: 580px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Card Layout */
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 24px;
+            transition: var(--transition);
+        }
+
+        /* Drop Zone */
+        .drop-zone {
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-md);
+            padding: 48px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #fafafc;
+            position: relative;
+        }
+
+        .drop-zone:hover,
+        .drop-zone.dragover {
+            border-color: var(--discord);
+            background: var(--discord-subtle);
+            transform: scale(0.995);
+        }
+
+        .drop-icon-wrapper {
+            width: 68px;
+            height: 68px;
+            margin: 0 auto 16px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-sm);
+            color: var(--discord);
+        }
+
+        .drop-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-primary);
+        }
+
+        .drop-subtitle {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .drop-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--discord);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-pill);
+            font-size: 14px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .drop-btn:hover {
+            background: var(--discord-hover);
+            transform: translateY(-1px);
+        }
+
+        /* Video Info Banner */
+        .video-loaded-card {
+            display: none;
+            gap: 20px;
+            align-items: center;
+            background: #fafafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 24px;
+        }
+
+        .video-loaded-preview {
+            width: 140px;
+            height: 90px;
+            border-radius: 10px;
+            background: #000;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+
+        .video-loaded-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .video-filename {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .video-meta-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .meta-tag {
+            background: white;
+            border: 1px solid var(--border-subtle);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+
+        .meta-tag.highlight {
+            background: #fff0f0;
+            border-color: #ffd0d0;
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .change-video-btn {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            padding: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .change-video-btn:hover {
+            text-decoration: underline;
+        }
+
+        /* Target Size Selector */
+        .section-label {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .presets-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 18px;
+        }
+
+        @media (min-width: 580px) {
+            .presets-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .preset-btn {
+            background: var(--bg-primary);
+            border: 2px solid transparent;
+            border-radius: var(--radius-md);
+            padding: 14px 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .preset-btn:hover {
+            background: #ececee;
+        }
+
+        .preset-btn.active {
+            background: white;
+            border-color: var(--discord);
+            box-shadow: 0 4px 14px rgba(88, 101, 242, 0.18);
+        }
+
+        .preset-tag {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            color: var(--text-secondary);
+        }
+
+        .preset-btn.active .preset-tag {
+            color: var(--discord);
+        }
+
+        .preset-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .preset-desc {
+            font-size: 11px;
+            color: var(--text-tertiary);
+        }
+
+        /* Custom Slider Group */
+        .custom-size-box {
+            background: #fafafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            margin-bottom: 20px;
+        }
+
+        .custom-slider-row {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .ios-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            height: 6px;
+            background: #e5e5ea;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .ios-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            cursor: pointer;
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            transition: transform 0.1s ease;
+        }
+
+        .ios-slider::-webkit-slider-thumb:active {
+            transform: scale(1.15);
+        }
+
+        .custom-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 6px 12px;
+            width: 100px;
+        }
+
+        .custom-input-wrapper input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: right;
+            font-family: inherit;
+        }
+
+        .custom-input-wrapper span {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .safety-note {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        /* Settings Grid */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 600px) {
+            .settings-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .setting-card {
+            background: #fafafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .setting-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .ios-select {
+            width: 100%;
+            height: 40px;
+            padding: 0 12px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: white;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .ios-select:focus {
+            border-color: var(--discord);
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.15);
+        }
+
+        /* Estimate Bar */
+        .estimate-strip {
+            background: linear-gradient(135deg, rgba(88, 101, 242, 0.06) 0%, rgba(0, 113, 227, 0.06) 100%);
+            border: 1px solid rgba(88, 101, 242, 0.2);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .estimate-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .estimate-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+        }
+
+        .estimate-val {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .estimate-val.discord-badge {
+            color: var(--discord);
+        }
+
+        .estimate-val.green {
+            color: var(--success);
+        }
+
+        /* Primary Action Button */
+        .action-button {
+            width: 100%;
+            height: 52px;
+            background: var(--discord);
+            color: white;
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 16px;
+            font-weight: 600;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 18px rgba(88, 101, 242, 0.35);
+            transition: var(--transition);
+        }
+
+        .action-button:hover:not(:disabled) {
+            background: var(--discord-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(88, 101, 242, 0.45);
+        }
+
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        /* Progress Card */
+        .progress-card {
+            display: none;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 32px 24px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 24px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .progress-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .progress-status-title {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .progress-percentage {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--discord);
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #e5e5ea;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--discord) 0%, #34c759 100%);
+            border-radius: 5px;
+            transition: width 0.15s ease;
+        }
+
+        .progress-subtext {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .cancel-btn {
+            background: #f2f2f7;
+            border: none;
+            color: var(--danger);
+            padding: 8px 18px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .cancel-btn:hover {
+            background: #ffe5e5;
+        }
+
+        /* Result Card */
+        .result-card {
+            display: none;
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 32px 28px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-subtle);
+            margin-bottom: 24px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .result-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--success-subtle);
+            color: #248a3d;
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .result-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .result-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            background: #fafafc;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .result-stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .result-stat-label {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+        }
+
+        .result-stat-val {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .result-stat-val.green {
+            color: var(--success);
+        }
+
+        .result-video-preview {
+            width: 100%;
+            max-height: 380px;
+            background: #000;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            outline: none;
+        }
+
+        .result-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        @media (min-width: 580px) {
+            .result-actions {
+                flex-direction: row;
+            }
+        }
+
+        .download-btn {
+            flex: 1;
+            height: 50px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(52, 199, 89, 0.35);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .download-btn:hover {
+            background: #2db34f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 199, 89, 0.45);
+        }
+
+        .reset-btn {
+            height: 50px;
+            padding: 0 24px;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-pill);
+            font-size: 15px;
+            font-weight: 600;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .reset-btn:hover {
+            background: #e8e8ed;
+        }
+
+        /* Hidden helpers */
+        #hiddenFileInput {
+            display: none;
+        }
+
+        #hiddenVideoPlayer {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <a href="./index.html" class="back-link">
+                <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Boîte à Outils
+            </a>
+            <div class="privacy-badge">
+                <i data-lucide="shield-check" style="width: 14px; height: 14px; color: var(--success);"></i>
+                Traitement 100% local
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <div class="discord-pill-badge">
+                <i data-lucide="message-square" style="width: 14px; height: 14px;"></i>
+                Optimisé pour Discord (20 Mo)
+            </div>
+            <h1>Compresseur Vidéo</h1>
+            <p>
+                Ajustez précisément la taille finale de votre vidéo pour la partager sans blocage sur Discord ou le Web, directement dans votre navigateur.
+            </p>
+        </div>
+
+        <!-- Main Workspace Card -->
+        <div class="card" id="settingsCard">
+
+            <!-- Drag & Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <input type="file" id="hiddenFileInput" accept="video/*">
+                <div class="drop-icon-wrapper">
+                    <i data-lucide="video" style="width: 32px; height: 32px;"></i>
+                </div>
+                <div class="drop-title">Importez votre fichier vidéo</div>
+                <div class="drop-subtitle">Glissez-déposez ici ou cliquez pour parcourir (MP4, MOV, WebM, MKV...)</div>
+                <button type="button" class="drop-btn" onclick="document.getElementById('hiddenFileInput').click()">
+                    <i data-lucide="upload" style="width: 16px; height: 16px;"></i> Sélectionner un fichier
+                </button>
+            </div>
+
+            <!-- Video Loaded Banner -->
+            <div class="video-loaded-card" id="videoLoadedCard">
+                <video id="miniPreview" class="video-loaded-preview" muted playsinline></video>
+                <div class="video-loaded-info">
+                    <div class="video-filename" id="videoFileName">video.mp4</div>
+                    <div class="video-meta-tags">
+                        <span class="meta-tag highlight" id="videoOriginalSize">0 Mo</span>
+                        <span class="meta-tag" id="videoDuration">0:00</span>
+                        <span class="meta-tag" id="videoResolution">1080p</span>
+                    </div>
+                    <button type="button" class="change-video-btn" onclick="document.getElementById('hiddenFileInput').click()">
+                        <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i> Choisir une autre vidéo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Target Size Presets -->
+            <div class="section-label">
+                <span>Taille cible résultante</span>
+                <span id="targetSizeLabelText" style="color: var(--discord); font-weight: 700;">20 Mo</span>
+            </div>
+
+            <div class="presets-grid">
+                <button type="button" class="preset-btn active" data-mb="20" onclick="selectPreset(20, this)">
+                    <span class="preset-tag">Discord Max</span>
+                    <span class="preset-val">20 Mo</span>
+                    <span class="preset-desc">Limite gratuite</span>
+                </button>
+                <button type="button" class="preset-btn" data-mb="8" onclick="selectPreset(8, this)">
+                    <span class="preset-tag">Classique</span>
+                    <span class="preset-val">8 Mo</span>
+                    <span class="preset-desc">Ultra léger</span>
+                </button>
+                <button type="button" class="preset-btn" data-mb="10" onclick="selectPreset(10, this)">
+                    <span class="preset-tag">Web / Email</span>
+                    <span class="preset-val">10 Mo</span>
+                    <span class="preset-desc">Polyvalent</span>
+                </button>
+                <button type="button" class="preset-btn" data-mb="50" onclick="selectPreset(50, this)">
+                    <span class="preset-tag">Nitro Basic</span>
+                    <span class="preset-val">50 Mo</span>
+                    <span class="preset-desc">Discord Nitro</span>
+                </button>
+            </div>
+
+            <!-- Custom Size Slider Box -->
+            <div class="custom-size-box">
+                <div class="custom-slider-row">
+                    <input type="range" id="sizeSlider" class="ios-slider" min="1" max="100" value="20" step="1" oninput="onSliderChange(this.value)">
+                    <div class="custom-input-wrapper">
+                        <input type="number" id="sizeInput" min="1" max="500" value="20" oninput="onInputChange(this.value)">
+                        <span>Mo</span>
+                    </div>
+                </div>
+                <div class="safety-note">
+                    <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i>
+                    <span id="safetyMarginText">Marge de sécurité incluse (~18.8 Mo cible) pour garantir l'envoi sans blocage Discord.</span>
+                </div>
+            </div>
+
+            <!-- Video Settings Grid -->
+            <div class="settings-grid">
+                <div class="setting-card">
+                    <label class="setting-title" for="resolutionSelect">
+                        <i data-lucide="monitor" style="width: 15px; height: 15px;"></i> Résolution de sortie
+                    </label>
+                    <select id="resolutionSelect" class="ios-select" onchange="updateEstimations()">
+                        <option value="auto" selected>Auto (Recommandé selon le débit)</option>
+                        <option value="1080">1080p (Full HD)</option>
+                        <option value="720">720p (HD - Idéal Discord)</option>
+                        <option value="480">480p (SD - Économique)</option>
+                        <option value="360">360p (Ultra compact)</option>
+                    </select>
+                </div>
+
+                <div class="setting-card">
+                    <label class="setting-title" for="audioSelect">
+                        <i data-lucide="volume-2" style="width: 15px; height: 15px;"></i> Piste Audio
+                    </label>
+                    <select id="audioSelect" class="ios-select" onchange="updateEstimations()">
+                        <option value="keep" selected>Conserver le son (Stéréo 96k)</option>
+                        <option value="remove">Supprimer le son (Maximise la netteté)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Dynamic Bitrate & Estimate Strip -->
+            <div class="estimate-strip">
+                <div class="estimate-item">
+                    <span class="estimate-label">Taille Cible</span>
+                    <span class="estimate-val discord-badge" id="estTargetSize">20 Mo</span>
+                </div>
+                <div class="estimate-item">
+                    <span class="estimate-label">Débit Estimé</span>
+                    <span class="estimate-val" id="estBitrate">~ 1.8 Mbps</span>
+                </div>
+                <div class="estimate-item">
+                    <span class="estimate-label">Résolution Estimée</span>
+                    <span class="estimate-val" id="estResolution">720p</span>
+                </div>
+                <div class="estimate-item">
+                    <span class="estimate-label">Gain Prévu</span>
+                    <span class="estimate-val green" id="estReduction">—</span>
+                </div>
+            </div>
+
+            <!-- Action Button -->
+            <button type="button" id="startBtn" class="action-button" disabled onclick="startCompression()">
+                <i data-lucide="play" style="width: 18px; height: 18px;"></i>
+                <span id="startBtnText">Sélectionnez une vidéo pour commencer</span>
+            </button>
+        </div>
+
+        <!-- Progress Card -->
+        <div class="progress-card" id="progressCard">
+            <div class="progress-header">
+                <div class="progress-status-title">
+                    <i data-lucide="loader-2" class="spin" style="width: 20px; height: 20px; color: var(--discord);"></i>
+                    <span>Compression en cours...</span>
+                </div>
+                <div class="progress-percentage" id="progressPctText">0 %</div>
+            </div>
+
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <p class="progress-subtext" id="progressSubtext">
+                Encodage des images et du son à vitesse optimale...
+            </p>
+
+            <button type="button" class="cancel-btn" onclick="cancelCompression()">
+                Annuler la compression
+            </button>
+        </div>
+
+        <!-- Result Card -->
+        <div class="result-card" id="resultCard">
+            <div class="result-header">
+                <div class="result-badge" id="resultDiscordBadge">
+                    <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+                    Prêt pour Discord (< 20 Mo)
+                </div>
+                <h2 class="result-title">Vidéo compressée avec succès !</h2>
+                <p style="color: var(--text-secondary); font-size: 14px;">
+                    Votre vidéo a été réduite pour respecter parfaitement la taille sélectionnée.
+                </p>
+            </div>
+
+            <div class="result-stats-grid">
+                <div class="result-stat-item">
+                    <span class="result-stat-label">Avant</span>
+                    <span class="result-stat-val" id="resOriginalSize">0 Mo</span>
+                </div>
+                <div class="result-stat-item">
+                    <span class="result-stat-label">Après</span>
+                    <span class="result-stat-val" id="resFinalSize" style="color: var(--discord);">0 Mo</span>
+                </div>
+                <div class="result-stat-item">
+                    <span class="result-stat-label">Économie</span>
+                    <span class="result-stat-val green" id="resSavingsPct">- 0%</span>
+                </div>
+            </div>
+
+            <video id="resultVideoPlayer" class="result-video-preview" controls playsinline></video>
+
+            <div class="result-actions">
+                <a id="downloadBtn" class="download-btn" download="video_discord.mp4">
+                    <i data-lucide="download" style="width: 18px; height: 18px;"></i>
+                    Télécharger la vidéo
+                </a>
+                <button type="button" class="reset-btn" onclick="resetApp()">
+                    <i data-lucide="refresh-cw" style="width: 16px; height: 16px;"></i>
+                    Compresser une autre vidéo
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden Video Element for decoding frames -->
+    <video id="hiddenVideoPlayer" playsinline preload="auto"></video>
+
+    <!-- Application Script -->
+    <script>
+        // State
+        let currentFile = null;
+        let videoDuration = 0;
+        let videoWidth = 0;
+        let videoHeight = 0;
+        let targetSizeMB = 20;
+
+        // Compression Engine State
+        let isCompressing = false;
+        let isCancelled = false;
+        let activeRecorder = null;
+        let activeAudioCtx = null;
+        let compressedBlobUrl = null;
+
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('hiddenFileInput');
+        const hiddenVideo = document.getElementById('hiddenVideoPlayer');
+        const miniPreview = document.getElementById('miniPreview');
+
+        // Setup Drag & Drop
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+                handleFileSelection(e.dataTransfer.files[0]);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files.length > 0) {
+                handleFileSelection(e.target.files[0]);
+            }
+        });
+
+        function handleFileSelection(file) {
+            if (!file.type.startsWith('video/') && !file.name.match(/\.(mp4|mov|webm|mkv|avi|m4v)$/i)) {
+                alert("Veuillez sélectionner un fichier vidéo valide (MP4, MOV, WebM, etc.).");
+                return;
+            }
+
+            currentFile = file;
+            const fileUrl = URL.createObjectURL(file);
+
+            hiddenVideo.src = fileUrl;
+            miniPreview.src = fileUrl;
+
+            hiddenVideo.onloadedmetadata = () => {
+                videoDuration = hiddenVideo.duration;
+                videoWidth = hiddenVideo.videoWidth;
+                videoHeight = hiddenVideo.videoHeight;
+
+                // Update UI Card
+                document.getElementById('videoFileName').textContent = file.name;
+                document.getElementById('videoOriginalSize').textContent = formatBytes(file.size);
+                document.getElementById('videoDuration').textContent = formatDuration(videoDuration);
+                document.getElementById('videoResolution').textContent = `${videoWidth} × ${videoHeight}`;
+
+                dropZone.style.display = 'none';
+                document.getElementById('videoLoadedCard').style.display = 'flex';
+
+                const startBtn = document.getElementById('startBtn');
+                startBtn.disabled = false;
+                document.getElementById('startBtnText').textContent = "Compresser la vidéo maintenant";
+
+                updateEstimations();
+                lucide.createIcons();
+            };
+        }
+
+        /* Preset Handlers */
+        function selectPreset(mb, btnEl) {
+            targetSizeMB = mb;
+            document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+            if (btnEl) btnEl.classList.add('active');
+
+            document.getElementById('sizeSlider').value = mb;
+            document.getElementById('sizeInput').value = mb;
+            document.getElementById('targetSizeLabelText').textContent = `${mb} Mo`;
+
+            updateEstimations();
+        }
+
+        function onSliderChange(val) {
+            targetSizeMB = parseFloat(val);
+            document.getElementById('sizeInput').value = val;
+            document.getElementById('targetSizeLabelText').textContent = `${val} Mo`;
+            updatePresetActiveState(val);
+            updateEstimations();
+        }
+
+        function onInputChange(val) {
+            let num = parseFloat(val);
+            if (isNaN(num) || num < 1) num = 1;
+            targetSizeMB = num;
+            document.getElementById('sizeSlider').value = Math.min(100, num);
+            document.getElementById('targetSizeLabelText').textContent = `${num} Mo`;
+            updatePresetActiveState(num);
+            updateEstimations();
+        }
+
+        function updatePresetActiveState(val) {
+            document.querySelectorAll('.preset-btn').forEach(b => {
+                if (parseFloat(b.dataset.mb) === parseFloat(val)) {
+                    b.classList.add('active');
+                } else {
+                    b.classList.remove('active');
+                }
+            });
+        }
+
+        /* Estimates */
+        function updateEstimations() {
+            document.getElementById('estTargetSize').textContent = `${targetSizeMB} Mo`;
+
+            // Safety Margin Text
+            const safeMB = (targetSizeMB * 0.94).toFixed(1);
+            const safetyText = targetSizeMB <= 20
+                ? `Marge de sécurité incluse (~${safeMB} Mo cible) pour garantir l'envoi sans blocage Discord.`
+                : `Marge de sécurité incluse (~${safeMB} Mo cible) pour respecter votre taille souhaitée.`;
+            document.getElementById('safetyMarginText').textContent = safetyText;
+
+            if (!currentFile || !videoDuration) {
+                document.getElementById('estBitrate').textContent = '—';
+                document.getElementById('estResolution').textContent = '—';
+                document.getElementById('estReduction').textContent = '—';
+                return;
+            }
+
+            const targetBytes = targetSizeMB * 1024 * 1024 * 0.94;
+            const targetBits = targetBytes * 8;
+            const totalBitrate = Math.max(80000, Math.floor(targetBits / videoDuration));
+
+            const audioOption = document.getElementById('audioSelect').value;
+            const audioBitrate = audioOption === 'keep' ? 96000 : 0;
+            const videoBitrate = Math.max(60000, totalBitrate - audioBitrate);
+
+            // Format Bitrate Display
+            const bitrateMbps = (videoBitrate / 1000000).toFixed(2);
+            document.getElementById('estBitrate').textContent = `~ ${bitrateMbps} Mbps`;
+
+            // Resolution estimate
+            const resChoice = document.getElementById('resolutionSelect').value;
+            let estH = videoHeight;
+            if (resChoice === 'auto') {
+                if (videoBitrate < 600000) estH = Math.min(videoHeight, 480);
+                else if (videoBitrate < 1800000) estH = Math.min(videoHeight, 720);
+                else estH = Math.min(videoHeight, 1080);
+            } else {
+                estH = Math.min(videoHeight, parseInt(resChoice, 10));
+            }
+            document.getElementById('estResolution').textContent = `${estH}p`;
+
+            // Reduction estimate
+            if (currentFile.size > 0) {
+                const diffPct = Math.round(((currentFile.size - targetBytes) / currentFile.size) * 100);
+                if (diffPct > 0) {
+                    document.getElementById('estReduction').textContent = `- ${diffPct} %`;
+                    document.getElementById('estReduction').className = 'estimate-val green';
+                } else {
+                    document.getElementById('estReduction').textContent = `Fichier déjà < ${targetSizeMB} Mo`;
+                    document.getElementById('estReduction').className = 'estimate-val';
+                }
+            }
+        }
+
+        /* =========================================================================
+           CORE COMPRESSION ENGINE (CANVAS + MEDIARECORDER + AUDIOCONTEXT)
+           ========================================================================= */
+
+        async function startCompression() {
+            if (!currentFile || !videoDuration) return;
+
+            isCompressing = true;
+            isCancelled = false;
+
+            // UI Mode Switching
+            document.getElementById('settingsCard').style.display = 'none';
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('progressCard').style.display = 'block';
+
+            updateProgressUI(0, 0, videoDuration);
+
+            try {
+                // Determine Dimensions
+                const resChoice = document.getElementById('resolutionSelect').value;
+                const audioChoice = document.getElementById('audioSelect').value;
+                const includeAudio = audioChoice === 'keep';
+
+                const targetBytes = targetSizeMB * 1024 * 1024 * 0.94;
+                const targetBits = targetBytes * 8;
+                const totalBitrate = Math.max(90000, Math.floor(targetBits / videoDuration));
+                const audioBitrate = includeAudio ? 96000 : 0;
+                const videoBitrate = Math.max(70000, totalBitrate - audioBitrate);
+
+                let maxH = videoHeight;
+                if (resChoice === 'auto') {
+                    if (videoBitrate < 600000) maxH = 480;
+                    else if (videoBitrate < 1800000) maxH = 720;
+                    else maxH = 1080;
+                } else {
+                    maxH = parseInt(resChoice, 10);
+                }
+
+                let outW = videoWidth;
+                let outH = videoHeight;
+
+                if (outH > maxH) {
+                    const scale = maxH / outH;
+                    outH = maxH;
+                    outW = Math.round(videoWidth * scale);
+                }
+
+                // Video dimensions must be even numbers
+                outW = Math.round(outW / 2) * 2;
+                outH = Math.round(outH / 2) * 2;
+
+                // Prepare Canvas
+                const canvas = document.createElement('canvas');
+                canvas.width = outW;
+                canvas.height = outH;
+                const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
+
+                const fps = 30;
+                const canvasStream = canvas.captureStream(fps);
+
+                // Prepare Audio Context
+                let audioTracks = [];
+                activeAudioCtx = null;
+
+                if (includeAudio) {
+                    try {
+                        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                        activeAudioCtx = new AudioContextClass();
+                        if (activeAudioCtx.state === 'suspended') {
+                            await activeAudioCtx.resume();
+                        }
+                        const source = activeAudioCtx.createMediaElementSource(hiddenVideo);
+                        const dest = activeAudioCtx.createMediaStreamDestination();
+                        source.connect(dest);
+                        // Do not connect to activeAudioCtx.destination so audio remains silent to user!
+                        audioTracks = dest.stream.getAudioTracks();
+                    } catch (e) {
+                        console.warn("Audio capture unavailable or video silent:", e);
+                    }
+                }
+
+                const streamTracks = [
+                    ...canvasStream.getVideoTracks(),
+                    ...audioTracks
+                ];
+                const combinedStream = new MediaStream(streamTracks);
+
+                // Best Mime Type
+                const chosenMime = getBestMimeType();
+                const recorderOpts = {
+                    videoBitsPerSecond: videoBitrate
+                };
+                if (chosenMime) recorderOpts.mimeType = chosenMime;
+                if (includeAudio && audioTracks.length > 0) {
+                    recorderOpts.audioBitsPerSecond = audioBitrate;
+                }
+
+                activeRecorder = new MediaRecorder(combinedStream, recorderOpts);
+                const chunks = [];
+
+                activeRecorder.ondataavailable = (e) => {
+                    if (e.data && e.data.size > 0) {
+                        chunks.push(e.data);
+                    }
+                };
+
+                activeRecorder.onstop = () => {
+                    if (isCancelled) return;
+
+                    const ext = (chosenMime && chosenMime.includes('mp4')) ? 'mp4' : 'webm';
+                    const finalBlob = new Blob(chunks, { type: chosenMime || 'video/mp4' });
+
+                    finishCompression(finalBlob, ext);
+                };
+
+                // Start playback and recording
+                hiddenVideo.currentTime = 0;
+                hiddenVideo.muted = false; // Must be unmuted to feed Web Audio destination
+                hiddenVideo.playbackRate = 1.0;
+
+                activeRecorder.start(400);
+                await hiddenVideo.play();
+
+                // Frame Drawing Loop
+                function processFrame() {
+                    if (isCancelled || !isCompressing) return;
+
+                    ctx.drawImage(hiddenVideo, 0, 0, outW, outH);
+
+                    const curr = hiddenVideo.currentTime;
+                    const pct = Math.min(99, Math.round((curr / videoDuration) * 100));
+                    updateProgressUI(pct, curr, videoDuration);
+
+                    if (!hiddenVideo.paused && !hiddenVideo.ended) {
+                        if ('requestVideoFrameCallback' in hiddenVideo) {
+                            hiddenVideo.requestVideoFrameCallback(processFrame);
+                        } else {
+                            requestAnimationFrame(processFrame);
+                        }
+                    }
+                }
+
+                if ('requestVideoFrameCallback' in hiddenVideo) {
+                    hiddenVideo.requestVideoFrameCallback(processFrame);
+                } else {
+                    requestAnimationFrame(processFrame);
+                }
+
+                hiddenVideo.onended = () => {
+                    setTimeout(() => {
+                        if (activeRecorder && activeRecorder.state === 'recording') {
+                            activeRecorder.stop();
+                        }
+                    }, 200);
+                };
+
+            } catch (err) {
+                console.error("Compression Error:", err);
+                alert("Une erreur est survenue lors de l'encodage : " + err.message);
+                cancelCompression();
+            }
+        }
+
+        function getBestMimeType() {
+            const types = [
+                'video/mp4;codecs=avc1.42E01E,mp4a.40.2',
+                'video/mp4;codecs=avc1',
+                'video/mp4',
+                'video/webm;codecs=vp9,opus',
+                'video/webm;codecs=vp8,opus',
+                'video/webm'
+            ];
+            for (const t of types) {
+                if (MediaRecorder.isTypeSupported(t)) return t;
+            }
+            return '';
+        }
+
+        function updateProgressUI(pct, currentSec, totalSec) {
+            document.getElementById('progressFill').style.width = `${pct}%`;
+            document.getElementById('progressPctText').textContent = `${pct} %`;
+            document.getElementById('progressSubtext').textContent =
+                `Traitement : ${formatDuration(currentSec)} / ${formatDuration(totalSec)} (${pct} %)`;
+        }
+
+        function cancelCompression() {
+            isCancelled = true;
+            isCompressing = false;
+
+            if (hiddenVideo) {
+                hiddenVideo.pause();
+                hiddenVideo.currentTime = 0;
+            }
+
+            if (activeRecorder && activeRecorder.state !== 'inactive') {
+                try { activeRecorder.stop(); } catch (e) {}
+            }
+
+            if (activeAudioCtx) {
+                try { activeAudioCtx.close(); } catch (e) {}
+            }
+
+            document.getElementById('progressCard').style.display = 'none';
+            document.getElementById('settingsCard').style.display = 'block';
+            lucide.createIcons();
+        }
+
+        function finishCompression(blob, ext) {
+            isCompressing = false;
+
+            if (compressedBlobUrl) {
+                URL.revokeObjectURL(compressedBlobUrl);
+            }
+            compressedBlobUrl = URL.createObjectURL(blob);
+
+            // Populate Result View
+            document.getElementById('resOriginalSize').textContent = formatBytes(currentFile.size);
+            document.getElementById('resFinalSize').textContent = formatBytes(blob.size);
+
+            const savingsPct = Math.round(((currentFile.size - blob.size) / currentFile.size) * 100);
+            document.getElementById('resSavingsPct').textContent = `${savingsPct > 0 ? '-' : '+'}${Math.abs(savingsPct)} %`;
+
+            // Discord check badge
+            const isDiscordSafe = blob.size <= 20 * 1024 * 1024;
+            const badgeEl = document.getElementById('resultDiscordBadge');
+            if (isDiscordSafe) {
+                badgeEl.innerHTML = `<i data-lucide="check" style="width: 14px; height: 14px;"></i> Prêt pour Discord (< 20 Mo)`;
+                badgeEl.style.background = 'var(--success-subtle)';
+                badgeEl.style.color = '#248a3d';
+            } else {
+                badgeEl.innerHTML = `<i data-lucide="info" style="width: 14px; height: 14px;"></i> Taille finale : ${formatBytes(blob.size)}`;
+                badgeEl.style.background = 'var(--discord-subtle)';
+                badgeEl.style.color = 'var(--discord)';
+            }
+
+            // Preview Video
+            const resultPlayer = document.getElementById('resultVideoPlayer');
+            resultPlayer.src = compressedBlobUrl;
+
+            // Download Button Setup
+            const baseName = currentFile.name.substring(0, currentFile.name.lastIndexOf('.')) || 'video';
+            const safeTargetName = `${baseName}_discord_${targetSizeMB}Mo.${ext}`;
+            const dlBtn = document.getElementById('downloadBtn');
+            dlBtn.href = compressedBlobUrl;
+            dlBtn.download = safeTargetName;
+
+            document.getElementById('progressCard').style.display = 'none';
+            document.getElementById('resultCard').style.display = 'block';
+
+            lucide.createIcons();
+        }
+
+        function resetApp() {
+            cancelCompression();
+            document.getElementById('resultCard').style.display = 'none';
+            document.getElementById('settingsCard').style.display = 'block';
+            document.getElementById('videoLoadedCard').style.display = 'none';
+            dropZone.style.display = 'block';
+
+            currentFile = null;
+            videoDuration = 0;
+            fileInput.value = '';
+
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('startBtnText').textContent = "Sélectionnez une vidéo pour commencer";
+            updateEstimations();
+            lucide.createIcons();
+        }
+
+        /* Utilities */
+        function formatBytes(bytes) {
+            if (bytes === 0) return '0 Mo';
+            const k = 1024;
+            const sizes = ['Octets', 'Ko', 'Mo', 'Go'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            const val = (bytes / Math.pow(k, i)).toFixed(1);
+            return `${val} ${sizes[i]}`;
+        }
+
+        function formatDuration(seconds) {
+            if (isNaN(seconds) || seconds < 0) return '0:00';
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Initialize Lucide
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>
+
